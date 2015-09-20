@@ -2,12 +2,12 @@ package com.candyz.eenam;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 
@@ -19,24 +19,40 @@ import android.widget.ImageView;
 
 import android.os.Handler;
 
-import com.google.android.youtube.player.YouTubePlayerFragment;
+import com.candyz.eenam.drawer.DrawerEntries;
+import com.candyz.eenam.drawer.FilterItem;
+import com.candyz.eenam.drawer.FragmentDrawer;
+import com.candyz.eenam.misc.VolleySingleton;
+import com.candyz.eenam.videoList.VideoList;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements VideoList.OnFragmentInteractionListener
 {
 
-    private Toolbar myToolbar;
+    //private Toolbar myToolbar;
 
     private static final int STOPSPLASH = 0;
     //time in milliseconds
-    private static final long SPLASHTIME = 3000;
+    private static final long SPLASHTIME = 2;
 
     private ImageView splash;
 
     private VideoList myVideoList;
     VideoFragment myVideoFragment;
 
-    private FragmentDrawer myDrawerFragment;
+    //private FloatingActionButton myFAB;
+   // private FloatingActionMenu myFABMenu;
+
+
+    //private FragmentDrawer myDrawerFragment;
+
+    UIDecorator myDecorator;
 
     //handler for splash screen
     private Handler splashHandler = new Handler() {
@@ -65,33 +81,15 @@ public class MainActivity extends AppCompatActivity implements VideoList.OnFragm
 
 
         /*splash = (ImageView) findViewById(R.id.splashscreen);
-        Message msg = new Message();
-        msg.what = STOPSPLASH;
-        splashHandler.sendMessageDelayed(msg, SPLASHTIME);*/
+        if(splash != null)
+        {
+            Message msg = new Message();
+            msg.what = STOPSPLASH;
+            splashHandler.sendMessageDelayed(msg, SPLASHTIME);
+        }*/
 
-
-        myToolbar = (Toolbar) findViewById(R.id.app_bar);
-        setSupportActionBar(myToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle(R.string.app_name);
-
-        //getSupportActionBar().setDisplayUseLogoEnabled(true);
-        //getSupportActionBar().setLogo(R.drawable.rainbow_cd);
-
-        setupDrawer();
-
-    }
-
-    private void setupDrawer() {
-
-        //setup the NavigationDrawer
-        myDrawerFragment = (FragmentDrawer)getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer_id);
-        myDrawerFragment.setUp(R.id.fragment_navigation_drawer_id, (DrawerLayout) findViewById(R.id.drawer_layout), myToolbar);
-    }
-
-    public void onDrawerSlide(float slideOffset) {
-        //toggleTranslateFAB(slideOffset);
+        myDecorator = new UIDecorator();
+        myDecorator.create(this);
     }
 
     @Override
@@ -129,6 +127,8 @@ public class MainActivity extends AppCompatActivity implements VideoList.OnFragm
         return super.onOptionsItemSelected(item);
     }
 
+
+
     @Override
     public void onFragmentInteraction(Uri uri)
     {
@@ -142,4 +142,7 @@ public class MainActivity extends AppCompatActivity implements VideoList.OnFragm
         myVideoList = (VideoList)aFragment_in;
         myVideoList.setVideoFragment(myVideoFragment);
     }
+
+
+
 }

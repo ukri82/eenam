@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/primary"
-                tools:context="com.candyz.eenam.VideoList">
+                tools:context="com.candyz.eenam.videoList.VideoList">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/video_list"

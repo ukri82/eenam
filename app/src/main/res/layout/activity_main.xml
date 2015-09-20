@@ -12,17 +12,18 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
+                  android:id="@+id/linear_layout"
                   android:orientation="vertical">
 
         <!--<ImageView android:id="@+id/splashscreen" android:layout_width="match_parent"
                    android:layout_height="match_parent"
-                   android:src="@drawable/rainbow_cd_splash"
+                   android:src="@drawable/rainbow"
                    android:layout_gravity="center"/>-->
 
 
-        <include
+        <!--<include
             android:id="@+id/app_bar"
-            layout="@layout/app_bar"></include>
+            layout="@layout/app_bar"></include>-->
 
         <fragment
             class="com.candyz.eenam.VideoFragment"
@@ -33,7 +34,7 @@
 
         <fragment
             android:id="@+id/fragment_video_list"
-            android:name="com.candyz.eenam.VideoList"
+            android:name="com.candyz.eenam.videoList.VideoList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:layout="@layout/fragment_video_list"/>
@@ -41,13 +42,13 @@
     </LinearLayout>
 
 
-    <fragment
+    <!--<fragment
         android:id="@+id/fragment_navigation_drawer_id"
-        android:name="com.candyz.eenam.FragmentDrawer"
+        android:name="com.candyz.eenam.drawer.FragmentDrawer"
         android:layout_width="@dimen/nav_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:layout="@layout/fragment_navigation_drawer"
-        tools:layout="@layout/fragment_navigation_drawer" />
+        tools:layout="@layout/fragment_navigation_drawer" /> -->
 
 </android.support.v4.widget.DrawerLayout>
