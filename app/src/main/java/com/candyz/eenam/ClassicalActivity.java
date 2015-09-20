@@ -12,9 +12,8 @@ import com.candyz.eenam.json.VideoQuery;
 import com.candyz.eenam.misc.VolleySingleton;
 import com.candyz.eenam.videoList.VideoList;
 
-public class NewGenActivity extends AppCompatActivity  implements VideoList.OnFragmentInteractionListener
+public class ClassicalActivity extends AppCompatActivity  implements VideoList.OnFragmentInteractionListener
 {
-
     private VideoList myVideoList;
     VideoFragment myVideoFragment;
     int myBackgroundColor;
@@ -29,18 +28,17 @@ public class NewGenActivity extends AppCompatActivity  implements VideoList.OnFr
         Intent intent = getIntent();
         myBackgroundColor = Integer.parseInt(intent.getStringExtra("BackGroundColor"));
 
-        setContentView(R.layout.activity_new_gen);
+        setContentView(R.layout.activity_classical);
 
         myDecorator = new UIDecorator();
-        myDecorator.create(this, "NewGen");
+        myDecorator.create(this, "Classical");
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_new_gen, menu);
+        getMenuInflater().inflate(R.menu.menu_classical, menu);
         return true;
     }
 
@@ -66,15 +64,14 @@ public class NewGenActivity extends AppCompatActivity  implements VideoList.OnFr
     {
 
     }
-
     @Override
     public void onFragmentCreation(Fragment aFragment_in)
     {
-        myVideoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container_new_gen);
+        myVideoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container_classical);
         myVideoList = (VideoList)aFragment_in;
-        VideoQuery aNewGenQuery = new VideoQuery();
-        aNewGenQuery.myQuery = "get_new_gen_songs";
-        myVideoList.initialize(myVideoFragment, aNewGenQuery);
+        VideoQuery aQuery = new VideoQuery();
+        aQuery.myQuery = "get_classical_songs";
+        myVideoList.initialize(myVideoFragment, aQuery);
         myVideoList.getView().setBackgroundColor(myBackgroundColor);
     }
 }

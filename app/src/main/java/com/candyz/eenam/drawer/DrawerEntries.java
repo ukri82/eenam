@@ -29,7 +29,7 @@ public class DrawerEntries
         aFilterList.add(new FilterItem(FILTER_MOTHERS, R.drawable.button_action_fg_mothers, anActivity_in.getResources().getColor(R.color.violet), "MOTHERS_NOSTALGIA"));
         aFilterList.add(new FilterItem(FILTER_NOSTALGIC_NUMBERS, R.drawable.button_action_fg_nostalgic_numbers, anActivity_in.getResources().getColor(R.color.indgio), "NOSTALGIC_NUMBERS"));
         aFilterList.add(new FilterItem(FILTER_NOSTALGIC, R.drawable.button_action_fg_nostalgic, anActivity_in.getResources().getColor(R.color.blue), "NOSTALGIC"));
-        aFilterList.add(new FilterItem(FILTER_CLASSICAL, R.drawable.button_action_fg_classical, anActivity_in.getResources().getColor(R.color.green), "CLASSICAL"));
+        aFilterList.add(new FilterItem(FILTER_CLASSICAL, R.drawable.button_action_fg_classical, anActivity_in.getResources().getColor(R.color.green), "ClassicalActivity"));
         aFilterList.add(new FilterItem(FILTER_ACCEPTED, R.drawable.button_action_fg_accepted, anActivity_in.getResources().getColor(R.color.yellow), "ACCEPTED"));
         aFilterList.add(new FilterItem(FILTER_CONTRA, R.drawable.button_action_fg_contra, anActivity_in.getResources().getColor(R.color.orange), "CONTRA"));
         aFilterList.add(new FilterItem(FILTER_NEW_GEN, R.drawable.button_action_fg_new_gen, anActivity_in.getResources().getColor(R.color.red), "NewGenActivity"));

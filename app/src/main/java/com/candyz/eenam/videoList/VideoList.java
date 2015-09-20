@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.candyz.eenam.R;
 import com.candyz.eenam.VideoFragment;
+import com.candyz.eenam.json.VideoQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +32,6 @@ import jp.wasabeef.recyclerview.animators.LandingAnimator;
  */
 public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoadedListener, VideoItemSelectedListener
 {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
     RecyclerView myVideoListView;
@@ -49,22 +41,13 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
 
     private String YoutTubeKey = "AIzaSyBXf7ZTTBYL9c36PLaCxa6ssp2FOBDYZkY";
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment VideoList.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static VideoList newInstance(String param1, String param2)
+    VideoFragment myVideoFragment;
+
+    VideoQuery myQuery;
+
+    public static VideoList newInstance()
     {
         VideoList fragment = new VideoList();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -77,11 +60,6 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null)
-        {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -122,10 +100,11 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
         mListener = null;
     }
 
-    VideoFragment myVideoFragment;
-    public void setVideoFragment(VideoFragment aFragment_in)
+
+    public void initialize(VideoFragment aFragment_in, VideoQuery aQuery_in)
     {
         myVideoFragment = aFragment_in;
+        myQuery = aQuery_in;
     }
 
     /**
@@ -171,7 +150,7 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
             @Override
             public void onLoadMore(int current_page)
             {
-                new TaskLoadVideos(aListener, myVideoAdapter.getItemCount(), 10).execute();
+                new TaskLoadVideos(aListener, myQuery, myVideoAdapter.getItemCount(), 10).execute();
             }
 
 
@@ -179,7 +158,7 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
 
 
 
-        new TaskLoadVideos(this, 0, 10).execute();
+        new TaskLoadVideos(this, myQuery, 0, 10).execute();
 
         //enableItemAnimation();
     }

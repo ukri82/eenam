@@ -3,6 +3,7 @@ package com.candyz.eenam.videoList;
 import android.os.AsyncTask;
 
 import com.android.volley.RequestQueue;
+import com.candyz.eenam.json.VideoQuery;
 import com.candyz.eenam.misc.VolleySingleton;
 
 import java.util.ArrayList;
@@ -22,10 +23,12 @@ public class TaskLoadVideos extends AsyncTask<Void, Void, ArrayList<VideoItem>>
     private RequestQueue requestQueue;
     private int myStart = 0;
     private int myCount = 10;
+    VideoQuery myQuery;
 
 
-    public TaskLoadVideos(VideoItemsLoadedListener aListener_in, int aStart_in, int limit) {
-
+    public TaskLoadVideos(VideoItemsLoadedListener aListener_in, VideoQuery aQuery_in, int aStart_in, int limit)
+    {
+        myQuery = aQuery_in;
         myStart = aStart_in;
         myCount = limit;
         this.myListener = aListener_in;
@@ -35,15 +38,22 @@ public class TaskLoadVideos extends AsyncTask<Void, Void, ArrayList<VideoItem>>
 
 
     @Override
-    protected ArrayList<VideoItem> doInBackground(Void... params) {
+    protected ArrayList<VideoItem> doInBackground(Void... params)
+    {
 
-        ArrayList<VideoItem> listVideo = VideoUtils.loadVideoItems(requestQueue, myStart, myCount);
+        ArrayList<VideoItem> listVideo = null;
+        if(!myQuery.myQuery.isEmpty())
+        {
+            listVideo = VideoUtils.loadVideoItems(requestQueue, myQuery, myStart, myCount);
+        }
         return listVideo;
     }
 
     @Override
-    protected void onPostExecute(ArrayList<VideoItem> listVideo) {
-        if (myListener != null) {
+    protected void onPostExecute(ArrayList<VideoItem> listVideo)
+    {
+        if (myListener != null)
+        {
             myListener.onVideoItemsLoaded(listVideo);
         }
     }

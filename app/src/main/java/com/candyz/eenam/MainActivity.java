@@ -2,14 +2,11 @@ package com.candyz.eenam;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,17 +16,9 @@ import android.widget.ImageView;
 
 import android.os.Handler;
 
-import com.candyz.eenam.drawer.DrawerEntries;
-import com.candyz.eenam.drawer.FilterItem;
-import com.candyz.eenam.drawer.FragmentDrawer;
+import com.candyz.eenam.json.VideoQuery;
 import com.candyz.eenam.misc.VolleySingleton;
 import com.candyz.eenam.videoList.VideoList;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
-import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
-
-import java.util.Arrays;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements VideoList.OnFragmentInteractionListener
@@ -89,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements VideoList.OnFragm
         }*/
 
         myDecorator = new UIDecorator();
-        myDecorator.create(this);
+        myDecorator.create(this, "Popular");
     }
 
     @Override
@@ -140,7 +129,9 @@ public class MainActivity extends AppCompatActivity implements VideoList.OnFragm
     {
         myVideoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container);
         myVideoList = (VideoList)aFragment_in;
-        myVideoList.setVideoFragment(myVideoFragment);
+        VideoQuery aNewGenQuery = new VideoQuery();
+        aNewGenQuery.myQuery = "get_songs";
+        myVideoList.initialize(myVideoFragment, aNewGenQuery);
     }
 
 

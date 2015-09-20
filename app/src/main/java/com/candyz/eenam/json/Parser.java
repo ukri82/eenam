@@ -20,7 +20,7 @@ public class Parser {
     private static final String KEY_UTUBE_URL = "youtube_url";
     private static final String KEY_UTUBE_LIKES = "youtube_likes";
 
-    public static ArrayList<VideoItem> parseMoviesJSON(JSONObject response) {
+    public static ArrayList<VideoItem> parseVideosJSON(JSONObject response) {
         ArrayList<VideoItem> listVideo = new ArrayList<>();
         if (response != null && response.length() > 0) {
             try {

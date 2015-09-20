@@ -39,10 +39,12 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
 
     private FragmentDrawer myDrawerFragment;
 
-    public void create(AppCompatActivity parentActivity_in)
+    String myMode;
+
+    public void create(AppCompatActivity parentActivity_in, String aMode_in)
     {
         myParentActivity = parentActivity_in;
-
+        myMode = aMode_in;
 
         setUpActionBar();
 
@@ -105,7 +107,7 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
         myParentActivity.setSupportActionBar(myToolbar);
         myParentActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
         myParentActivity.getSupportActionBar().setDisplayShowHomeEnabled(true);
-        myParentActivity.getSupportActionBar().setTitle(R.string.app_name);
+        myParentActivity.getSupportActionBar().setTitle("eenam" + " - " + myMode);
     }
 
     private void setupFAB()
