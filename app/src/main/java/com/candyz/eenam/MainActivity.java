@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements VideoList.OnFragm
         }*/
 
         myDecorator = new UIDecorator();
-        myDecorator.create(this, "Popular");
+        myDecorator.create(this, "Today's special");
     }
 
     @Override

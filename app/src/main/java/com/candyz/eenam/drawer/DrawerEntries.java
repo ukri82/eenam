@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class DrawerEntries
 {
-    public static final String NO_FILTER = "All";
+    public static final String NO_FILTER = "Today's special";
     public static final String FILTER_NEW_GEN = "New Gen";
     public static final String FILTER_ACCEPTED = "Widely Accepted";
     public static final String FILTER_CLASSICAL = "Classical Based";
@@ -30,11 +30,11 @@ public class DrawerEntries
         aFilterList.add(new FilterItem(FILTER_NOSTALGIC_NUMBERS, R.drawable.button_action_fg_nostalgic_numbers, anActivity_in.getResources().getColor(R.color.indgio), "NOSTALGIC_NUMBERS"));
         aFilterList.add(new FilterItem(FILTER_NOSTALGIC, R.drawable.button_action_fg_nostalgic, anActivity_in.getResources().getColor(R.color.blue), "NOSTALGIC"));
         aFilterList.add(new FilterItem(FILTER_CLASSICAL, R.drawable.button_action_fg_classical, anActivity_in.getResources().getColor(R.color.green), "ClassicalActivity"));
-        aFilterList.add(new FilterItem(FILTER_ACCEPTED, R.drawable.button_action_fg_accepted, anActivity_in.getResources().getColor(R.color.yellow), "ACCEPTED"));
+        aFilterList.add(new FilterItem(FILTER_ACCEPTED, R.drawable.button_action_fg_accepted, anActivity_in.getResources().getColor(R.color.yellow), "AcceptedActivity"));
         aFilterList.add(new FilterItem(FILTER_CONTRA, R.drawable.button_action_fg_contra, anActivity_in.getResources().getColor(R.color.orange), "CONTRA"));
         aFilterList.add(new FilterItem(FILTER_NEW_GEN, R.drawable.button_action_fg_new_gen, anActivity_in.getResources().getColor(R.color.red), "NewGenActivity"));
 
-        aFilterList.add(new FilterItem(NO_FILTER, R.drawable.button_action_fg_filter_cross, anActivity_in.getResources().getColor(R.color.white), "NO_FILTER"));
+        aFilterList.add(new FilterItem(NO_FILTER, R.drawable.button_action_fg_filter_cross, anActivity_in.getResources().getColor(R.color.white), "MainActivity"));
 
         return aFilterList;
     }

@@ -13,6 +13,7 @@
     <string name="search_title">Search eenam</string>
     <string name="title_activity_new_gen">NewGenActivity</string>
     <string name="title_activity_classical">ClassicalActivity</string>
+    <string name="title_activity_accepted">AcceptedActivity</string>
 
 
 </resources>
