@@ -1,0 +1,25 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="220dp">
+
+    <fragment
+        android:id="@+id/video_fragment_container"
+        class="com.candyz.eenam.VideoFragment"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="0dp"
+        android:layout_height="0dp">
+
+
+    </fragment>
+
+
+    <WebView android:id="@+id/youtube_webview"
+             class="com.candyz.eenam.VideoFragment"
+             xmlns:android="http://schemas.android.com/apk/res/android"
+             android:background="@color/black"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"/>
+
+</FrameLayout>

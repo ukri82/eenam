@@ -12,6 +12,7 @@
         android:icon="@drawable/rainbow_cd"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:hardwareAccelerated="true"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
@@ -44,19 +45,20 @@
             android:name=".NewGenActivity"
             android:label="@string/title_activity_new_gen"
             android:noHistory="true" >
-            <intent-filter>
-                <category android:name="android.intent.action.NEW_GEN" />
-            </intent-filter>
         </activity>
+
         <activity
             android:name=".ClassicalActivity"
             android:label="@string/title_activity_classical"
             android:noHistory="true" >
         </activity>
+
         <activity
             android:name=".AcceptedActivity"
-            android:label="@string/title_activity_accepted" >
+            android:label="@string/title_activity_accepted"
+            android:noHistory="true">
         </activity>
+
     </application>
 
 </manifest>

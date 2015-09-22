@@ -180,6 +180,7 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
     public void onVideoItemSelected(View v)
     {
         int itemPosition = myVideoListView.getChildPosition(v);
+
         final String aUTubeId = myVideoAdapter.getVideoID(itemPosition);
         try
         {

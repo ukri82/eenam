@@ -9,11 +9,9 @@
                   android:layout_height="match_parent"
                   android:orientation="vertical">
 
-        <fragment
-            class="com.candyz.eenam.VideoFragment"
-            android:id="@+id/video_fragment_container_classical"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"/>
+        <include
+            layout="@layout/fragment_video"></include>
+
 
 
         <fragment

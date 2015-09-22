@@ -67,11 +67,9 @@ public class ClassicalActivity extends AppCompatActivity  implements VideoList.O
     @Override
     public void onFragmentCreation(Fragment aFragment_in)
     {
-        myVideoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container_classical);
+        myVideoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container);
         myVideoList = (VideoList)aFragment_in;
-        VideoQuery aQuery = new VideoQuery();
-        aQuery.myQuery = "get_classical_songs";
-        myVideoList.initialize(myVideoFragment, aQuery);
+        myVideoList.initialize(myVideoFragment, new VideoQuery("get_classical_songs"));
         myVideoList.getView().setBackgroundColor(myBackgroundColor);
     }
 }

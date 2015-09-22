@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.candyz.eenam.drawer.DrawerEntries;
 import com.candyz.eenam.drawer.FilterItem;
@@ -167,9 +168,17 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
             {
                 e.printStackTrace();
             }
-            Intent aIntent = new Intent(myParentActivity, c);
-            aIntent.putExtra("BackGroundColor", aTokens.get(1));
-            myParentActivity.startActivity(aIntent);
+            if(c != null)
+            {
+                myParentActivity.finish();
+                Intent aIntent = new Intent(myParentActivity, c);
+                aIntent.putExtra("BackGroundColor", aTokens.get(1));
+                myParentActivity.startActivity(aIntent);
+            }
+            else
+            {
+                Toast.makeText(myParentActivity.getApplicationContext(), "No activity is configured :(", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

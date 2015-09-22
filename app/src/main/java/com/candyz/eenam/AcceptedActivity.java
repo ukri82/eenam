@@ -69,11 +69,9 @@ public class AcceptedActivity extends AppCompatActivity  implements VideoList.On
     @Override
     public void onFragmentCreation(Fragment aFragment_in)
     {
-        myVideoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container_accepted);
+        myVideoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container);
         myVideoList = (VideoList)aFragment_in;
-        VideoQuery aQuery = new VideoQuery();
-        aQuery.myQuery = "get_accepted_songs";
-        myVideoList.initialize(myVideoFragment, aQuery);
+        myVideoList.initialize(myVideoFragment, new VideoQuery("get_accepted_songs"));
         myVideoList.getView().setBackgroundColor(myBackgroundColor);
     }
 }

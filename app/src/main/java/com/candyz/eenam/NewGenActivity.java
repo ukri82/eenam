@@ -70,11 +70,9 @@ public class NewGenActivity extends AppCompatActivity  implements VideoList.OnFr
     @Override
     public void onFragmentCreation(Fragment aFragment_in)
     {
-        myVideoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container_new_gen);
+        myVideoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container);
         myVideoList = (VideoList)aFragment_in;
-        VideoQuery aNewGenQuery = new VideoQuery();
-        aNewGenQuery.myQuery = "get_new_gen_songs";
-        myVideoList.initialize(myVideoFragment, aNewGenQuery);
+        myVideoList.initialize(myVideoFragment, new VideoQuery("get_new_gen_songs"));
         myVideoList.getView().setBackgroundColor(myBackgroundColor);
     }
 }

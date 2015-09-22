@@ -7,8 +7,6 @@
     tools:context=".MainActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
@@ -20,16 +18,8 @@
                    android:src="@drawable/rainbow"
                    android:layout_gravity="center"/>-->
 
-
-        <!--<include
-            android:id="@+id/app_bar"
-            layout="@layout/app_bar"></include>-->
-
-        <fragment
-            class="com.candyz.eenam.VideoFragment"
-            android:id="@+id/video_fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"/>
+        <include
+            layout="@layout/fragment_video"></include>
 
 
         <fragment

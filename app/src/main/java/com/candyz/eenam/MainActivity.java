@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Message;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
@@ -11,7 +12,9 @@ import android.support.v7.widget.SearchView;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import android.view.View;
+
 import android.widget.ImageView;
 
 import android.os.Handler;
@@ -60,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements VideoList.OnFragm
         }
     };
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -79,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements VideoList.OnFragm
 
         myDecorator = new UIDecorator();
         myDecorator.create(this, "Today's special");
+
+
+
     }
 
     @Override
@@ -116,8 +124,6 @@ public class MainActivity extends AppCompatActivity implements VideoList.OnFragm
         return super.onOptionsItemSelected(item);
     }
 
-
-
     @Override
     public void onFragmentInteraction(Uri uri)
     {
@@ -128,12 +134,9 @@ public class MainActivity extends AppCompatActivity implements VideoList.OnFragm
     public void onFragmentCreation(Fragment aFragment_in)
     {
         myVideoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container);
-        myVideoList = (VideoList)aFragment_in;
-        VideoQuery aNewGenQuery = new VideoQuery();
-        aNewGenQuery.myQuery = "get_songs";
-        myVideoList.initialize(myVideoFragment, aNewGenQuery);
+        myVideoList = (VideoList) aFragment_in;
+        myVideoList.initialize(myVideoFragment, new VideoQuery("get_songs"));
+
     }
-
-
 
 }
