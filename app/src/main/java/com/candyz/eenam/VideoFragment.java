@@ -1,7 +1,17 @@
 package com.candyz.eenam;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -14,49 +24,98 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     private YouTubePlayer player;
     private String videoId;
 
+    WebView myWebView;
+
     public static VideoFragment newInstance() {
         return new VideoFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
-        initialize("AIzaSyCPr3jFeOIvjURMtVdclayyx2COd_pzlBg", this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        {
+            initialize("AIzaSyCPr3jFeOIvjURMtVdclayyx2COd_pzlBg", this);
+        }
     }
 
     @Override
-    public void onDestroy() {
-        if (player != null) {
+    public void onStart()
+    {
+        super.onStart();
+
+        initializeWebView();
+    }
+
+    private void initializeWebView()
+    {
+        myWebView = (WebView) getActivity().findViewById(R.id.youtube_webview);
+
+        if(myWebView == null)
+        {
+            Log.e("The webview is null", " ");
+            return;
+        }
+
+        myWebView.getSettings().setJavaScriptEnabled(true);
+        myWebView.setWebChromeClient(new WebChromeClient());
+
+        myWebView.setBackgroundColor(Color.BLACK);
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        if (player != null)
+        {
             player.release();
+        }
+        else if(myWebView != null)
+        {
+            myWebView.destroy();
         }
         super.onDestroy();
     }
 
-    public void setVideoId(String videoId) {
-        if (videoId != null && !videoId.equals(this.videoId)) {
+    public void setVideoId(String videoId)
+    {
+        if (videoId != null && !videoId.equals(this.videoId))
+        {
             this.videoId = videoId;
-            if (player != null) {
-                player.loadVideo(videoId);
-                player.play();
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+            {
+                loadVideo();
+            }
+            else
+            {
+                if (player != null)
+                {
+                    player.loadVideo(videoId);
+                    player.play();
+                }
             }
         }
     }
 
-    public void pause() {
-        if (player != null) {
+    public void pause()
+    {
+        if (player != null)
+        {
             player.pause();
+        }
+        else if(myWebView != null)
+        {
+            myWebView.onPause();
         }
     }
 
     @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean restored) {
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean restored)
+    {
         this.player = player;
-        //player.addFullscreenControlFlag(YouTubePlayer.FULLSCREEN_FLAG_CUSTOM_LAYOUT);
-        //player.setOnFullscreenListener((MainActivity) getActivity());
-        /*if (!restored && videoId != null) {
-            player.cueVideo(videoId);
-        }*/
     }
 
     @Override
@@ -66,4 +125,47 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
         Toast.makeText(this.getActivity().getApplicationContext(), "Initialize error : " +  youTubeInitializationResult, Toast.LENGTH_LONG).show();
     }
 
+
+    private void emulateClick(final WebView webview)
+    {
+        long delta = 100;
+        long downTime = SystemClock.uptimeMillis();
+        float x = webview.getLeft() + webview.getWidth()/2; //in the middle of the webview
+        float y = webview.getTop() + webview.getHeight()/2;
+
+        final MotionEvent motionEvent = MotionEvent.obtain( downTime, downTime + delta, MotionEvent.ACTION_DOWN, x, y, 0 );
+        final MotionEvent motionEvent2 = MotionEvent.obtain( downTime + delta + 1, downTime + delta * 2, MotionEvent.ACTION_UP, x, y, 0 );
+
+        Runnable tapdown = new Runnable() {
+            @Override
+            public void run() {
+                if (webview != null) {
+                    webview.dispatchTouchEvent(motionEvent);
+                }
+            }
+        };
+
+        Runnable tapup = new Runnable() {
+            @Override
+            public void run() {
+                if (webview != null) {
+                    webview.dispatchTouchEvent(motionEvent2);
+                }
+            }
+        };
+
+        int toWait = 0;
+        int delay = 2000;
+        webview.postDelayed(tapdown, delay);
+        delay += 100;
+        webview.postDelayed(tapup, delay);
+    }
+    public void loadVideo()
+    {
+        String aWebPage = "<iframe id=\"ytplayer\" type=\"text/html\" width=\"300\" height=\"200\" src=\"http://www.youtube.com/embed/" + this.videoId + "?autoplay=1\" frameborder=\"0\"/>";
+        Log.d("Youtube video URL is : ", " " + aWebPage);
+
+        myWebView.loadData(aWebPage, "text/html", null);
+        emulateClick(myWebView);
+    }
 }
