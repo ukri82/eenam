@@ -1,7 +1,5 @@
-package com.candyz.eenam.videoList;
+package com.candyz.eenam.video_list;
 
-import java.net.MalformedURLException;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

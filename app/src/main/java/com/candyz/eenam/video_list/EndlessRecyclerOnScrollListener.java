@@ -1,4 +1,4 @@
-package com.candyz.eenam.videoList;
+package com.candyz.eenam.video_list;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;

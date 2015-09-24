@@ -1,6 +1,6 @@
 package com.candyz.eenam.json;
 
-import com.candyz.eenam.videoList.VideoItem;
+import com.candyz.eenam.video_list.VideoItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;

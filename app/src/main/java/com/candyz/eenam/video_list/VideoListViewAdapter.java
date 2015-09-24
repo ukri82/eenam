@@ -1,4 +1,4 @@
-package com.candyz.eenam.videoList;
+package com.candyz.eenam.video_list;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -44,7 +44,7 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
 
     private int myPreviousPosition = 0;
 
-    private String myCurrentFilter = DrawerEntries.NO_FILTER;
+    //private String myCurrentFilter = DrawerEntries.NO_FILTER;
 
 
     public VideoListViewAdapter(Context context, List<VideoItem> data, VideoItemSelectedListener aVideoItemSelectedListener_in){
@@ -131,35 +131,6 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
         return holder;
     }
 
-    private String getTimeText(Date aDate_in)
-    {
-        Time now = new Time();
-        now.setToNow();
-        long diffInSeconds = (now.toMillis(true) - aDate_in.getTime()) / 1000;
-        String aTimeText = "";
-        long aNumber = 0;
-        if(diffInSeconds > 86400)
-        {
-            aNumber = diffInSeconds / 86400;
-            aTimeText = aNumber > 1 ? " Days ago" : " Day ago";
-        }
-        else if(diffInSeconds > 3600)
-        {
-            aNumber = diffInSeconds / 3600;
-            aTimeText = aNumber > 1 ? " Hours ago" : " Hour ago";
-        }
-        else if(diffInSeconds > 60)
-        {
-            aNumber = diffInSeconds / 60;
-            aTimeText = aNumber > 1 ? " Minutes ago" : " Minute ago";
-        }
-        else
-        {
-            aNumber = diffInSeconds;
-            aTimeText = aNumber > 1 ? " Seconds ago" : " Second ago";
-        }
-        return aNumber + aTimeText;
-    }
     @Override
     public void onBindViewHolder(VideoItemViewHolder holder, int position) {
 
@@ -204,12 +175,12 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
     {
         int aNumItems = 0;
 
-        if(myCurrentFilter.equals(DrawerEntries.NO_FILTER))
+        //if(myCurrentFilter.equals(DrawerEntries.NO_FILTER))
         {
             aNumItems = myVideoList.size();
             myVideoList.addAll(data);
         }
-        else
+        /*else
         {
             for (VideoItem aVideoItem : data)
             {
@@ -220,7 +191,7 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
                 }
             }
             myBackupVideoList.addAll(data);
-        }
+        }*/
         notifyItemRangeInserted(aNumItems, data.size());
     }
 
@@ -235,6 +206,7 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
         return myVideoList.get(anItemIndex_in).getUTubeID();
     }
 
+    /*
     public void filterVideoList(String aCategory_in)
     {
         myCurrentFilter = aCategory_in;
@@ -262,4 +234,5 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
         notifyDataSetChanged();
 
     }
+    */
 }

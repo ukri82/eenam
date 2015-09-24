@@ -42,18 +42,6 @@
             android:value=".SearchActivity" />
 
         <activity
-            android:name=".NewGenActivity"
-            android:label="@string/title_activity_new_gen"
-            android:noHistory="true" >
-        </activity>
-
-        <activity
-            android:name=".ClassicalActivity"
-            android:label="@string/title_activity_classical"
-            android:noHistory="true" >
-        </activity>
-
-        <activity
             android:name=".AcceptedActivity"
             android:label="@string/title_activity_accepted"
             android:noHistory="true">

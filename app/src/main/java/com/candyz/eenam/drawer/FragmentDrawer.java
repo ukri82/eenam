@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -42,7 +42,7 @@ public class FragmentDrawer extends Fragment
     private RecyclerView myRecyclerDrawer;
     private AdapterDrawer myAdapter;
 
-    private int myFragmentId;
+    //private int myFragmentId;
     private Toolbar myToolBar;
 
     public interface DrawerEventsListener
@@ -61,8 +61,8 @@ public class FragmentDrawer extends Fragment
     public void initialize(int fragmentId, DrawerLayout drawerLayout, final Toolbar toolbar, DrawerEventsListener aListener_in)
     {
         myToolBar = toolbar;
-        myFragmentId = fragmentId;
-        myDrawerLayout = drawerLayout;
+        //myFragmentId = fragmentId;
+        //myDrawerLayout = drawerLayout;
         myDrawerEventsListener = aListener_in;
     }
 
@@ -80,12 +80,18 @@ public class FragmentDrawer extends Fragment
 
 
 
-    public void setUp()
+    //public void setUp()
+    public void setUp(int fragmentId, DrawerLayout drawerLayout, final Toolbar toolbar, DrawerEventsListener aListener_in)
     {
-        resize();
+        myContainer = getActivity().findViewById(fragmentId);
+        myDrawerLayout = drawerLayout;
+        myToolBar = toolbar;
+        myDrawerEventsListener = aListener_in;
+
+        //resize();
 
         //myContainer = getActivity().findViewById(myFragmentId);
-        myContainer = getView();
+        //myContainer = getView();
 
         myDrawerToggle = new ActionBarDrawerToggle(getActivity(), myDrawerLayout, myToolBar, R.string.drawer_open, R.string.drawer_close) {
             @Override
@@ -96,14 +102,14 @@ public class FragmentDrawer extends Fragment
                     mUserLearnedDrawer = true;
                     UBApplication.saveToPreferences(getActivity(), KEY_USER_LEARNED_DRAWER, mUserLearnedDrawer);
                 }
-                getActivity().supportInvalidateOptionsMenu();
+                //getActivity().supportInvalidateOptionsMenu();
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 Log.d("VIVZ", "onDrawerClosed");
-                getActivity().supportInvalidateOptionsMenu();
+                //getActivity().supportInvalidateOptionsMenu();
             }
 
             @Override
@@ -150,7 +156,7 @@ public class FragmentDrawer extends Fragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
-        setUp();
+        //setUp();
 
         myRecyclerDrawer = (RecyclerView) view.findViewById(R.id.drawerList);
         myAdapter = new AdapterDrawer(getActivity(), DrawerEntries.getFilterList(getActivity()));

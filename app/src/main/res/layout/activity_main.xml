@@ -7,18 +7,34 @@
     tools:context=".MainActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:id="@+id/linear_layout"
                   android:orientation="vertical">
 
+        <include
+            android:id="@+id/app_bar"
+            layout="@layout/app_bar"></include>
+
+        <include
+            layout="@layout/fragment_video"></include>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:id="@+id/palette_holder"
+                  android:orientation="vertical">
+    </RelativeLayout>
+
+    </LinearLayout>
         <!--<ImageView android:id="@+id/splashscreen" android:layout_width="match_parent"
                    android:layout_height="match_parent"
                    android:src="@drawable/rainbow"
                    android:layout_gravity="center"/>-->
 
-        <include
+     <!--   <include
             layout="@layout/fragment_video"></include>
 
 
@@ -27,18 +43,16 @@
             android:name="com.candyz.eenam.videoList.VideoList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout="@layout/fragment_video_list"/>
-
-    </LinearLayout>
+            tools:layout="@layout/fragment_video_list"/>-->
 
 
-    <!--<fragment
+    <fragment
         android:id="@+id/fragment_navigation_drawer_id"
         android:name="com.candyz.eenam.drawer.FragmentDrawer"
         android:layout_width="@dimen/nav_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:layout="@layout/fragment_navigation_drawer"
-        tools:layout="@layout/fragment_navigation_drawer" /> -->
+        tools:layout="@layout/fragment_navigation_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

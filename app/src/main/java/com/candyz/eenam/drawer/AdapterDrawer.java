@@ -70,7 +70,7 @@ public class AdapterDrawer extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             FilterItem current=data.get(position-1);
             itemHolder.title.setText(current.myName);
             itemHolder.icon.setImageResource(current.myResId);
-            itemHolder.layout.setBackgroundColor(current.myBGColor);
+            itemHolder.layout.setBackgroundColor(context.getResources().getColor(current.myBGColor));
         }
 
     }
@@ -85,7 +85,7 @@ public class AdapterDrawer extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             return "";
 
 
-        return data.get(aPosition_in).getTag();
+        return data.get(aPosition_in).myName;
     }
 
     class ItemHolder extends RecyclerView.ViewHolder {

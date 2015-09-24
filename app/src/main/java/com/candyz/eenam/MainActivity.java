@@ -2,11 +2,8 @@ package com.candyz.eenam;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Message;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
 
 import android.os.Bundle;
@@ -19,15 +16,13 @@ import android.widget.ImageView;
 
 import android.os.Handler;
 
-import com.candyz.eenam.json.VideoQuery;
 import com.candyz.eenam.misc.VolleySingleton;
-import com.candyz.eenam.videoList.VideoList;
+import com.candyz.eenam.palette_concrete.PaletteFactory;
+import com.candyz.eenam.video_list.VideoList;
 
 
-public class MainActivity extends AppCompatActivity implements VideoList.OnFragmentInteractionListener
+public class MainActivity extends AppCompatActivity
 {
-
-    //private Toolbar myToolbar;
 
     private static final int STOPSPLASH = 0;
     //time in milliseconds
@@ -37,12 +32,7 @@ public class MainActivity extends AppCompatActivity implements VideoList.OnFragm
 
     private VideoList myVideoList;
     VideoFragment myVideoFragment;
-
-    //private FloatingActionButton myFAB;
-   // private FloatingActionMenu myFABMenu;
-
-
-    //private FragmentDrawer myDrawerFragment;
+    PaletteFactory myPaletteFactory = new PaletteFactory();
 
     UIDecorator myDecorator;
 
@@ -83,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements VideoList.OnFragm
         }*/
 
         myDecorator = new UIDecorator();
-        myDecorator.create(this, "Today's special");
+        myDecorator.create(this, myPaletteFactory);
 
 
 
@@ -124,19 +114,5 @@ public class MainActivity extends AppCompatActivity implements VideoList.OnFragm
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri)
-    {
-
-    }
-
-    @Override
-    public void onFragmentCreation(Fragment aFragment_in)
-    {
-        myVideoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container);
-        myVideoList = (VideoList) aFragment_in;
-        myVideoList.initialize(myVideoFragment, new VideoQuery("get_songs"));
-
-    }
 
 }

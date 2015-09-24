@@ -152,7 +152,7 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
                     webview.dispatchTouchEvent(motionEvent2);
                 }
             }
-        }; 
+        };
 
         int toWait = 0;
         int delay = 2000;

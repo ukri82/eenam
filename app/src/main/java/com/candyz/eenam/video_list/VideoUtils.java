@@ -1,4 +1,4 @@
-package com.candyz.eenam.videoList;
+package com.candyz.eenam.video_list;
 
 import com.android.volley.RequestQueue;
 import com.candyz.eenam.json.Endpoints;

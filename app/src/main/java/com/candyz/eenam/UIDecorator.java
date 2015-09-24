@@ -1,28 +1,23 @@
 package com.candyz.eenam;
 
-import android.content.Intent;
-import android.os.Build;
-import android.support.v4.app.Fragment;
+import android.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+
 
 import com.candyz.eenam.drawer.DrawerEntries;
 import com.candyz.eenam.drawer.FilterItem;
 import com.candyz.eenam.drawer.FragmentDrawer;
-import com.candyz.eenam.json.Utils;
+import com.candyz.eenam.palette_framework.ColorPalette;
+import com.candyz.eenam.palette_concrete.PaletteFactory;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
-import java.util.Arrays;
+
 import java.util.List;
 
 /**
@@ -37,42 +32,29 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
 
     AppCompatActivity myParentActivity;
 
+    String myCurrentPaletteName = "";
 
-    private FragmentDrawer myDrawerFragment;
+    PaletteFactory myPaletteFactory;
 
-    String myMode;
-
-    public void create(AppCompatActivity parentActivity_in, String aMode_in)
+    public void create(AppCompatActivity parentActivity_in, PaletteFactory aPaletteFactory_in)
     {
         myParentActivity = parentActivity_in;
-        myMode = aMode_in;
+        myPaletteFactory = aPaletteFactory_in;
 
         setUpActionBar();
 
         setupDrawer();
 
         setupFAB();
+
+
+        slidePalette(myPaletteFactory.getDefaultPaletteName());
     }
 
     private void setupDrawer()
     {
-        final DrawerLayout aDrawerLayout = (DrawerLayout) ((ViewGroup) myParentActivity.findViewById(android.R.id.content)).getChildAt(0); //  Top layout should be DrawerLayout
-
-        Fragment aFragment = FragmentDrawer.newInstance();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)
-        {
-            aDrawerLayout.setId(Utils.generateViewId());
-        }
-        else
-        {
-            aDrawerLayout.setId(View.generateViewId());
-        }
-
-
-        myDrawerFragment = (FragmentDrawer)aFragment;
-        myParentActivity.getSupportFragmentManager().beginTransaction().add(aDrawerLayout.getId(), aFragment).commit();
-
-        myDrawerFragment.initialize(aFragment.getId(), aDrawerLayout, myToolbar, this);
+        FragmentDrawer myDrawerFragment = (FragmentDrawer)myParentActivity.getFragmentManager().findFragmentById(R.id.fragment_navigation_drawer_id);
+        myDrawerFragment.setUp(R.id.fragment_navigation_drawer_id, (DrawerLayout) myParentActivity.findViewById(R.id.drawer_layout), myToolbar, this);
     }
 
     private void toggleTranslateFAB(float slideOffset)
@@ -91,24 +73,13 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
 
     private void setUpActionBar()
     {
-        LayoutInflater inflator = LayoutInflater.from(myParentActivity);
-        View v = inflator.inflate(R.layout.app_bar, null);
-        myToolbar = (Toolbar)v.findViewById(R.id.app_bar_generic);
-        final DrawerLayout aDrawerrLayout = (DrawerLayout) ((ViewGroup) myParentActivity.findViewById(android.R.id.content)).getChildAt(0); //  Top layout should be DrawerLayout
-        final LinearLayout aLinearLayout = (LinearLayout) ((ViewGroup) aDrawerrLayout.getChildAt(0));   //  Its child should be linear layout.
 
-
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        myToolbar.setLayoutParams(lp);
-
-        aLinearLayout.addView(myToolbar, 0);
+        myToolbar = (Toolbar) myParentActivity.findViewById(R.id.app_bar);
 
         myParentActivity.setSupportActionBar(myToolbar);
         myParentActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
         myParentActivity.getSupportActionBar().setDisplayShowHomeEnabled(true);
-        myParentActivity.getSupportActionBar().setTitle("eenam" + " - " + myMode);
+        myParentActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void setupFAB()
@@ -136,7 +107,7 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
             iconView.setImageResource(aFilter.myResId);
 
             SubActionButton buttonFilter = itemBuilder.setContentView(iconView).build();
-            buttonFilter.setTag(aFilter.getTag());
+            buttonFilter.setTag(aFilter.myName);
             buttonFilter.setOnClickListener(this);
 
             aBuilder.addSubActionView(buttonFilter);
@@ -145,6 +116,20 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
         aBuilder.setRadius(myParentActivity.getResources().getDimensionPixelSize(R.dimen.action_menu_radius_more));
         myFABMenu = aBuilder.build();
 
+    }
+
+    private void slidePalette(String aPaletteName_in)
+    {
+
+        ColorPalette aPalette = myPaletteFactory.getPalette(aPaletteName_in);
+        FragmentTransaction transaction = myParentActivity.getFragmentManager().beginTransaction();
+        transaction.replace(R.id.palette_holder, aPalette);
+
+
+        transaction.commit();
+
+        myParentActivity.getSupportActionBar().setTitle("eenam" + " - " + aPalette.getDescription());
+        myCurrentPaletteName = aPaletteName_in;
     }
     @Override
     public void onSlide(float slideOffset)
@@ -155,31 +140,7 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
     @Override
     public void onClick(String aTag_in)
     {
-        if (!aTag_in.equals(""))
-        {
-            List<String> aTokens = Arrays.asList(aTag_in.split("#"));
-
-            Class<?> c = null;
-            try
-            {
-                c = Class.forName(getClass().getPackage().getName() + "." + aTokens.get(0) );
-
-            } catch (ClassNotFoundException e)
-            {
-                e.printStackTrace();
-            }
-            if(c != null)
-            {
-                myParentActivity.finish();
-                Intent aIntent = new Intent(myParentActivity, c);
-                aIntent.putExtra("BackGroundColor", aTokens.get(1));
-                myParentActivity.startActivity(aIntent);
-            }
-            else
-            {
-                Toast.makeText(myParentActivity.getApplicationContext(), "No activity is configured :(", Toast.LENGTH_SHORT).show();
-            }
-        }
+        slidePalette(aTag_in);
     }
 
     @Override

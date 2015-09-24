@@ -10,19 +10,14 @@ public class FilterItem
     public String myName;
     public int myResId;
     public int myBGColor;
-    public String myClassName;
+    public String myDescription;
 
-    FilterItem(String aName_in, int aResId_in, int aColor_in, String aClassName_in)
+    FilterItem(String aName_in, int aResId_in, int aColor_in, String aDesciption_in)
     {
         myName = aName_in;
         myResId = aResId_in;
         myBGColor = aColor_in;
-        myClassName = aClassName_in;
+        myDescription = aDesciption_in;
     }
 
-    public String getTag()
-    {
-        //return myClassName + "#" + Long.toString(myBGColor & 0xFFFFFFFFL);
-        return myClassName + "#" + Integer.toString(myBGColor);
-    }
 }

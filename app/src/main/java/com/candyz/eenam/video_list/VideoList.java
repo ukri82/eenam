@@ -1,10 +1,9 @@
-package com.candyz.eenam.videoList;
+package com.candyz.eenam.video_list;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,14 +24,12 @@ import jp.wasabeef.recyclerview.animators.LandingAnimator;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link VideoList.OnFragmentInteractionListener} interface
- * to handle interaction events.
+ *
  * Use the {@link VideoList#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoadedListener, VideoItemSelectedListener
 {
-    private OnFragmentInteractionListener mListener;
 
     RecyclerView myVideoListView;
     private VideoListViewAdapter myVideoAdapter;
@@ -70,34 +67,18 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
         return inflater.inflate(R.layout.fragment_video_list, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri)
-    {
-        if (mListener != null)
-        {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
-        try
-        {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e)
-        {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+
     }
 
     @Override
     public void onDetach()
     {
         super.onDetach();
-        mListener = null;
     }
 
 
@@ -105,32 +86,14 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
     {
         myVideoFragment = aFragment_in;
         myQuery = aQuery_in;
+
+        new TaskLoadVideos(this, myQuery, 0, 10).execute();
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener
-    {
-        public void onFragmentInteraction(Uri uri);
-        public void onFragmentCreation(Fragment aFragment_in);
-    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
-
-        if (mListener != null)
-        {
-            mListener.onFragmentCreation(this);
-        }
 
         myVideoListView = (RecyclerView)view.findViewById(R.id.video_list);
 
@@ -158,7 +121,7 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
 
 
 
-        new TaskLoadVideos(this, myQuery, 0, 10).execute();
+        //new TaskLoadVideos(this, myQuery, 0, 10).execute();
 
         //enableItemAnimation();
     }

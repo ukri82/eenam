@@ -15,7 +15,7 @@
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:background="@color/primary"
+                    android:background="@color/primary_dark"
                     android:layout_height="match_parent">
 
         <!--<com.pkmmte.view.CircularImageView
@@ -79,7 +79,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="https://www.facebook.com/eenam"
+                android:text="https://www.facebook.com/Eenam.malayalam"
                 android:textColor="@android:color/white"
                 android:gravity="right"
                 style="@style/TextAppearance.AppCompat.Small" />
