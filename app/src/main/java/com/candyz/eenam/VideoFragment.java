@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -22,11 +23,12 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
 {
 
     private YouTubePlayer player;
-    private String videoId;
+    private String myVideoId;
 
     WebView myWebView;
 
-    public static VideoFragment newInstance() {
+    public static VideoFragment newInstance()
+    {
         return new VideoFragment();
     }
 
@@ -35,10 +37,10 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     {
         super.onCreate(savedInstanceState);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
         {
             initialize("AIzaSyCPr3jFeOIvjURMtVdclayyx2COd_pzlBg", this);
-        }
+        }*/
     }
 
     @Override
@@ -46,7 +48,10 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     {
         super.onStart();
 
-        initializeWebView();
+        //if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+        {
+            initializeWebView();
+        }
     }
 
     private void initializeWebView()
@@ -61,7 +66,7 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
 
         myWebView.getSettings().setJavaScriptEnabled(true);
         myWebView.setWebChromeClient(new WebChromeClient());
-
+        myWebView.addJavascriptInterface(this, "VideoFragment");
         myWebView.setBackgroundColor(Color.BLACK);
     }
 
@@ -81,24 +86,35 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
 
     public void setVideoId(String videoId)
     {
-        if (videoId != null && !videoId.equals(this.videoId))
+        if (videoId != null && !videoId.equals(this.myVideoId))
         {
-            this.videoId = videoId;
+            this.myVideoId = videoId;
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+            if (player != null)
             {
-                loadVideo();
+                player.loadVideo(videoId);
+                player.play();
             }
             else
             {
-                if (player != null)
-                {
-                    player.loadVideo(videoId);
-                    player.play();
-                }
+                loadVideo();
             }
         }
     }
+
+    @JavascriptInterface
+    public String getVideoId()
+    {
+        return myVideoId;
+    }
+
+    /** Show a toast from the web page */
+    @JavascriptInterface
+    public void videoLoaded()
+    {
+        emulateClick(myWebView);    //  Workaround to start autoplay
+    }
+
 
     public void pause()
     {
@@ -160,12 +176,10 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
         delay += 100;
         webview.postDelayed(tapup, delay);
     }
+    
     public void loadVideo()
     {
-        String aWebPage = "<iframe id=\"ytplayer\" type=\"text/html\" width=\"300\" height=\"200\" src=\"http://www.youtube.com/embed/" + this.videoId + "?autoplay=1\" frameborder=\"0\"/>";
-        Log.d("Youtube video URL is : ", " " + aWebPage);
-
-        myWebView.loadData(aWebPage, "text/html", null);
-        emulateClick(myWebView);
+        myWebView.loadUrl("file:///android_asset/html/youtubeplayer.html");
     }
+
 }
