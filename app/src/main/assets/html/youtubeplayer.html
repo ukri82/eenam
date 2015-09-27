@@ -6,8 +6,10 @@
 
     // create youtube player
     var player;
-    function onYouTubePlayerAPIReady() {
-        player = new YT.Player('player', {
+    function onYouTubePlayerAPIReady()
+    {
+        player = new YT.Player('player',
+        {
           height: '200',
           width: '300',
           videoId: VideoFragment.getVideoId(),
@@ -23,7 +25,7 @@
     // error handling
     function onError(error)
     {
-
+        VideoFragment.videoEnded(1);
     }
 
     // autoplay video
@@ -38,12 +40,12 @@
         if (event.data == -1) //    unstarted
         {
             //alert('loaded');
-            VideoFragment.videoLoaded()
+            VideoFragment.videoLoaded();
         }
         if(event.data === YT.PlayerState.ENDED)
         {
             //alert('done');
-            VideoFragment.videoEnded()
+            VideoFragment.videoEnded(0);
         }
     }
 

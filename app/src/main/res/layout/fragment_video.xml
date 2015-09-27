@@ -1,7 +1,8 @@
 <fragment
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    class="com.candyz.eenam.VideoFragment"
+    class="com.candyz.eenam.player_area.VideoFragment"
     android:id="@+id/video_fragment_container"
     android:layout_width="match_parent"
-    android:layout_height="220dp"/>
+    android:layout_height="fill_parent"
+    android:layout_weight="8"
+    />

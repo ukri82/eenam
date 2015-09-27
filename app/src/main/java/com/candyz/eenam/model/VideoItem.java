@@ -1,4 +1,4 @@
-package com.candyz.eenam.video_list;
+package com.candyz.eenam.model;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

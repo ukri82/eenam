@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,44 +15,43 @@ import android.widget.TextView;
 import com.andexert.library.RippleView;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.candyz.eenam.drawer.DrawerEntries;
 import com.candyz.eenam.misc.AnimationUtils;
 import com.candyz.eenam.R;
 import com.candyz.eenam.misc.VolleySingleton;
+import com.candyz.eenam.model.VideoItem;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by u on 09.06.2015.
  */
-public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdapter.VideoItemViewHolder>{
-
-
-    private List<VideoItem> myVideoList;
-    private List<VideoItem> myBackupVideoList;
+public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdapter.VideoItemViewHolder>
+{
+    private List<VideoItem> myVideoList = new ArrayList<>();
 
     private LayoutInflater myInflator;
     private Context myContext;
 
-    private VideoItemSelectedListener myVideoItemSelectionListener;
+    private VideoItemsListener myVideoItemsListener;
 
     private VolleySingleton myVolleySingleton;
     private ImageLoader myImageLoader;
 
     private int myPreviousPosition = 0;
 
-    //private String myCurrentFilter = DrawerEntries.NO_FILTER;
+    boolean myScrollingExtendedList = false;
+
+    int myInitialVideoListSize = 0;
 
 
-    public VideoListViewAdapter(Context context, List<VideoItem> data, VideoItemSelectedListener aVideoItemSelectedListener_in){
+    public VideoListViewAdapter(Context context, int anInitialVideoList_in, VideoItemsListener aVideoItemsListener_in)
+    {
         this.myContext = context;
         this.myInflator = LayoutInflater.from(myContext);
-        this.myVideoList = data;
-        myBackupVideoList = new ArrayList<VideoItem>();
+        this.myInitialVideoListSize = anInitialVideoList_in;
 
-        myVideoItemSelectionListener = aVideoItemSelectedListener_in;
+        myVideoItemsListener = aVideoItemsListener_in;
 
         myVolleySingleton = VolleySingleton.getInstance(null);
         myImageLoader = myVolleySingleton.getImageLoader();
@@ -73,15 +71,15 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
         RippleView myRippleView;
 
         private Context myContext;
-        public VideoItemSelectedListener myListener;
+        public VideoItemsListener myListener;
         View myItemView;
 
-        VideoItemViewHolder(View itemView, VideoItemSelectedListener aClickListener_in, Context aContext_in)
+        VideoItemViewHolder(View itemView, VideoItemsListener aListener_in, Context aContext_in)
         {
             super(itemView);
             myContext = aContext_in;
             myItemView = itemView;
-            myListener = aClickListener_in;
+            myListener = aListener_in;
             myCard = (CardView)itemView.findViewById(R.id.video_card);
             myTitleView = (TextView)itemView.findViewById(R.id.video_header);
             myDescView = (TextView)itemView.findViewById(R.id.video_details);
@@ -98,7 +96,8 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
         }
 
         @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
 
             if(myListener != null)
             {
@@ -108,16 +107,21 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
     }
 
 
-    private void loadImages(String urlThumbnail, final VideoItemViewHolder holder) {
-        if (!urlThumbnail.equals("N.A") && !urlThumbnail.equals("")) {
-            myImageLoader.get(urlThumbnail, new ImageLoader.ImageListener() {
+    private void loadImages(String urlThumbnail, final VideoItemViewHolder holder)
+    {
+        if (!urlThumbnail.equals("N.A") && !urlThumbnail.equals(""))
+        {
+            myImageLoader.get(urlThumbnail, new ImageLoader.ImageListener()
+            {
                 @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate)
+                {
                     holder.myPhotoView.setImageBitmap(response.getBitmap());
                 }
 
                 @Override
-                public void onErrorResponse(VolleyError error) {
+                public void onErrorResponse(VolleyError error)
+                {
 
                 }
             });
@@ -125,15 +129,16 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
     }
 
     @Override
-    public VideoItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public VideoItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
         View view = this.myInflator.inflate(R.layout.video_card, parent, false);
-        VideoItemViewHolder holder=new VideoItemViewHolder(view, myVideoItemSelectionListener, myContext);
+        VideoItemViewHolder holder=new VideoItemViewHolder(view, myVideoItemsListener, myContext);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(VideoItemViewHolder holder, int position) {
-
+    public void onBindViewHolder(VideoItemViewHolder holder, int position)
+    {
         if(position >= myVideoList.size())
         {
             return;
@@ -143,21 +148,19 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
         holder.myTitleView.setText(current.getStart());
         holder.myDescView.setText(current.getUTubeTitle());
 
-
-
-        //holder.myPhotoView.setImageResource(R.drawable.rainbow_splash);
-
         String urlThumnail = current.getUTubeThumbImageURL();
-        //Log.d("onBindViewHolder", "urlThumnail = " + urlThumnail);
         loadImages(urlThumnail, holder);
 
-        if(Build.VERSION.SDK_INT >= 11)
+        if (position > myPreviousPosition)
         {
-            if (position > myPreviousPosition)
+            if(Build.VERSION.SDK_INT >= 11)
             {
                 AnimationUtils.animateSunblind(holder, true);
             }
-            else
+        }
+        else
+        {
+            if(Build.VERSION.SDK_INT >= 11)
             {
                 AnimationUtils.animateSunblind(holder, false);
             }
@@ -166,73 +169,29 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
      }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return myVideoList.size();
     }
 
 
     public void appendVideoList(List<VideoItem> data)
     {
-        int aNumItems = 0;
+        int aNumItems = myVideoList.size();
+        myVideoList.addAll(data);
 
-        //if(myCurrentFilter.equals(DrawerEntries.NO_FILTER))
+        if(myVideoList.size() > myInitialVideoListSize)
         {
-            aNumItems = myVideoList.size();
-            myVideoList.addAll(data);
+            myScrollingExtendedList = true;
         }
-        /*else
-        {
-            for (VideoItem aVideoItem : data)
-            {
-                //if (aVideoItem.getCategory().equals(myCurrentFilter))
-                {
-                    myVideoList.add(aVideoItem);
-                    aNumItems++;
-                }
-            }
-            myBackupVideoList.addAll(data);
-        }*/
+
         notifyItemRangeInserted(aNumItems, data.size());
     }
 
-
-    public String getVideoURL(int anItemIndex_in)
+    public VideoItem getVideoItem(int anItemIndex_in)
     {
-        return myVideoList.get(anItemIndex_in).getUTubeURL();
+        return myVideoList.get(anItemIndex_in);//.getUTubeID();
     }
 
-    public String getVideoID(int anItemIndex_in)
-    {
-        return myVideoList.get(anItemIndex_in).getUTubeID();
-    }
 
-    /*
-    public void filterVideoList(String aCategory_in)
-    {
-        myCurrentFilter = aCategory_in;
-        if(aCategory_in.equals(DrawerEntries.NO_FILTER))
-        {
-            myVideoList.clear();
-            myVideoList.addAll(myBackupVideoList);
-            myBackupVideoList.clear();
-        }
-        else
-        {
-            if(myBackupVideoList.size() == 0)
-            {
-                myBackupVideoList.addAll(myVideoList);
-            }
-            myVideoList.clear();
-            for (VideoItem aVideoItem : myBackupVideoList)
-            {
-                //if (aVideoItem.getCategory().equals(aCategory_in))
-                {
-                    myVideoList.add(aVideoItem);
-                }
-            }
-        }
-        notifyDataSetChanged();
-
-    }
-    */
 }

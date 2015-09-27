@@ -1,4 +1,4 @@
-package com.candyz.eenam.json;
+package com.candyz.eenam.model;
 
 /**
  * Created by Windows on 02-03-2015.

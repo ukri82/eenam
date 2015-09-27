@@ -3,7 +3,8 @@ package com.candyz.eenam.video_list;
 import android.os.AsyncTask;
 
 import com.android.volley.RequestQueue;
-import com.candyz.eenam.json.VideoQuery;
+import com.candyz.eenam.model.VideoItem;
+import com.candyz.eenam.model.VideoQuery;
 import com.candyz.eenam.misc.VolleySingleton;
 
 import java.util.ArrayList;
@@ -13,7 +14,8 @@ import java.util.ArrayList;
  */
 public class TaskLoadVideos extends AsyncTask<Void, Void, ArrayList<VideoItem>>
 {
-    public interface VideoItemsLoadedListener {
+    public interface VideoItemsLoadedListener
+    {
         public void onVideoItemsLoaded(ArrayList<VideoItem> listVideo);
     }
 

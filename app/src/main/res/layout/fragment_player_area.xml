@@ -1,0 +1,37 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="fill_parent"
+              android:id="@+id/player_area"
+              android:gravity="bottom"
+              android:orientation="vertical">
+
+    <!--<com.twotoasters.jazzylistview.JazzyListView
+        android:id="@+id/play_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="11"/>-->
+
+    <com.candyz.eenam.player_area.PlayListView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:dslv="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/play_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="15"
+        dslv:drag_start_mode = "onLongPress"
+        dslv:float_background_color="@android:color/background_light"/>
+
+
+    <include
+        layout="@layout/fragment_video"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/slider"
+        android:id="@+id/dragView"
+        android:layout_weight="1">
+    </LinearLayout>
+
+</LinearLayout>

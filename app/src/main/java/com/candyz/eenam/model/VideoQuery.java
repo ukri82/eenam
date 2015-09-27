@@ -1,4 +1,4 @@
-package com.candyz.eenam.json;
+package com.candyz.eenam.model;
 
 import java.util.HashMap;
 

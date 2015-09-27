@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.candyz.eenam.R;
-import com.candyz.eenam.VideoFragment;
 import com.candyz.eenam.palette_framework.ColorPalette;
 
 /**
@@ -30,8 +29,7 @@ public class NostalgicHitsPalette extends ColorPalette
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
-        VideoFragment aVideoFragment = (VideoFragment) getActivity().getFragmentManager().findFragmentById(R.id.video_fragment_container);
-        super.initialize(R.id.fragment_video_list_nostalgic_hits, aVideoFragment, "get_nostalgic_hit_songs");
+        super.initializeSuper(R.id.fragment_video_list_nostalgic_hits, "get_nostalgic_hit_songs");
     }
 
     @Override

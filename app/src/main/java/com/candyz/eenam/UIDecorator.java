@@ -6,16 +6,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 
 import com.candyz.eenam.drawer.DrawerEntries;
 import com.candyz.eenam.drawer.FilterItem;
 import com.candyz.eenam.drawer.FragmentDrawer;
+import com.candyz.eenam.model.VideoItem;
 import com.candyz.eenam.palette_framework.ColorPalette;
 import com.candyz.eenam.palette_concrete.PaletteFactory;
+import com.candyz.eenam.player_area.PlayList;
+import com.candyz.eenam.player_area.VideoFragment;
+import com.candyz.eenam.video_list.VideoListListener;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 
 import java.util.List;
@@ -23,7 +29,7 @@ import java.util.List;
 /**
  * Created by u on 20.09.2015.
  */
-public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.OnClickListener
+public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.OnClickListener, VideoListListener
 {
     private FloatingActionButton myFAB;
     private FloatingActionMenu myFABMenu;
@@ -36,10 +42,22 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
 
     PaletteFactory myPaletteFactory;
 
+    SlidingUpPanelLayout myPlayerPanel;
+
+    VideoFragment myPlayer;
+
+    View myDummyView;
+
+    PlayList myPlayList;
+
+    private float myAnchorHeight = 0.4f;
+
     public void create(AppCompatActivity parentActivity_in, PaletteFactory aPaletteFactory_in)
     {
         myParentActivity = parentActivity_in;
         myPaletteFactory = aPaletteFactory_in;
+
+        myPlayer = (VideoFragment) parentActivity_in.getFragmentManager().findFragmentById(R.id.video_fragment_container);
 
         setUpActionBar();
 
@@ -47,8 +65,63 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
 
         setupFAB();
 
+        positionPlayer();
+
+        myPlayList = new PlayList();
+        myPlayList.create(myParentActivity, myPlayer);
 
         slidePalette(myPaletteFactory.getDefaultPaletteName());
+    }
+
+
+    private void positionPlayer()
+    {
+        myPlayerPanel = (SlidingUpPanelLayout) myParentActivity.findViewById(R.id.palyer_sliding_panel);
+        myPlayerPanel.setAnchorPoint(myAnchorHeight);
+        myPlayerPanel.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+
+        myDummyView = (View) myParentActivity.findViewById(R.id.dummy_place_holder_behind_anchored_slidepanel);
+        myPlayerPanel.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener()
+        {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset)
+            {
+                resizeScrollView(slideOffset);
+            }
+
+            @Override
+            public void onPanelExpanded(View panel)
+            {
+                resizeScrollView(1.0f);
+            }
+
+            @Override
+            public void onPanelCollapsed(View panel)
+            {
+                resizeScrollView(0.0f);
+            }
+
+            @Override
+            public void onPanelAnchored(View panel)
+            {
+                resizeScrollView(myAnchorHeight);
+            }
+
+            @Override
+            public void onPanelHidden(View view)
+            {
+
+            }
+
+            private void resizeScrollView(float slideOffset)
+            {
+                if (slideOffset < myAnchorHeight)
+                {
+                    final int scrollViewHeight = (int) (myPlayerPanel.getLayoutParams().height * slideOffset);
+                    myDummyView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, scrollViewHeight));
+                }
+            }
+        });
     }
 
     private void setupDrawer()
@@ -120,8 +193,8 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
 
     private void slidePalette(String aPaletteName_in)
     {
-
         ColorPalette aPalette = myPaletteFactory.getPalette(aPaletteName_in);
+        aPalette.initialize(this);
         FragmentTransaction transaction = myParentActivity.getFragmentManager().beginTransaction();
         transaction.replace(R.id.palette_holder, aPalette);
 
@@ -147,6 +220,27 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
     public void onClick(View v)
     {
         onClick(v.getTag().toString());
+    }
+
+    @Override
+    public void onVideoItemSelected(VideoItem aVideoItem_in)
+    {
+        if(myPlayList != null)
+        {
+            myPlayList.addVideoItem(aVideoItem_in);
+        }
+    }
+
+    @Override
+    public void onHide()
+    {
+        myPlayerPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+    }
+
+    @Override
+    public void onShow()
+    {
+        myPlayerPanel.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
     }
 
 }

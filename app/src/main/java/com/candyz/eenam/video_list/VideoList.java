@@ -6,17 +6,15 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.candyz.eenam.R;
-import com.candyz.eenam.VideoFragment;
-import com.candyz.eenam.json.VideoQuery;
+import com.candyz.eenam.model.VideoItem;
+import com.candyz.eenam.model.VideoQuery;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.LandingAnimator;
 
@@ -28,7 +26,7 @@ import jp.wasabeef.recyclerview.animators.LandingAnimator;
  * Use the {@link VideoList#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoadedListener, VideoItemSelectedListener
+public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoadedListener, VideoItemsListener
 {
 
     RecyclerView myVideoListView;
@@ -38,9 +36,11 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
 
     private String YoutTubeKey = "AIzaSyBXf7ZTTBYL9c36PLaCxa6ssp2FOBDYZkY";
 
-    VideoFragment myVideoFragment;
+    VideoListListener myListener;
 
     VideoQuery myQuery;
+
+    LinearLayoutManager myLayoutManager;
 
     public static VideoList newInstance()
     {
@@ -82,9 +82,9 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
     }
 
 
-    public void initialize(VideoFragment aFragment_in, VideoQuery aQuery_in)
+    public void initialize(VideoListListener aListener_in, VideoQuery aQuery_in)
     {
-        myVideoFragment = aFragment_in;
+        myListener = aListener_in;
         myQuery = aQuery_in;
 
         new TaskLoadVideos(this, myQuery, 0, 10).execute();
@@ -97,18 +97,17 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
 
         myVideoListView = (RecyclerView)view.findViewById(R.id.video_list);
 
-        List<VideoItem> aVideoList = new ArrayList<>();
-        myVideoAdapter = new VideoListViewAdapter(getActivity(), aVideoList, this);
+        myVideoAdapter = new VideoListViewAdapter(getActivity(), 10, this);
         myVideoListView.setAdapter(myVideoAdapter);
 
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        myVideoListView.setLayoutManager(llm);
+        myLayoutManager = new LinearLayoutManager(getActivity());
+        myVideoListView.setLayoutManager(myLayoutManager);
 
 
 
         final TaskLoadVideos.VideoItemsLoadedListener aListener = this;
 
-        myVideoListView.setOnScrollListener(new EndlessRecyclerOnScrollListener(llm)
+        myVideoListView.setOnScrollListener(new EndlessRecyclerOnScrollListener(myLayoutManager)
         {
             @Override
             public void onLoadMore(int current_page)
@@ -117,6 +116,14 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
             }
 
 
+            public void onHide()
+            {
+                myListener.onHide();
+            }
+            public void onShow()
+            {
+                myListener.onShow();
+            }
         });
 
 
@@ -142,17 +149,11 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
     @Override
     public void onVideoItemSelected(View v)
     {
-        int itemPosition = myVideoListView.getChildPosition(v);
-
-        final String aUTubeId = myVideoAdapter.getVideoID(itemPosition);
-        try
+        if(myListener != null)
         {
-            myVideoFragment.setVideoId(aUTubeId);
+            int itemPosition = myVideoListView.getChildPosition(v);
 
-        }
-        catch (Exception ex)
-        {
-            Log.e("Youtube Exception:", ex.toString());
+            myListener.onVideoItemSelected(myVideoAdapter.getVideoItem(itemPosition));
         }
 
     }

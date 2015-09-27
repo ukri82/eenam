@@ -2,7 +2,6 @@ package com.candyz.eenam;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 
@@ -10,49 +9,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import android.view.View;
-
-import android.widget.ImageView;
-
-import android.os.Handler;
-
 import com.candyz.eenam.misc.VolleySingleton;
 import com.candyz.eenam.palette_concrete.PaletteFactory;
-import com.candyz.eenam.video_list.VideoList;
+
 
 
 public class MainActivity extends AppCompatActivity
 {
-
-    private static final int STOPSPLASH = 0;
-    //time in milliseconds
-    private static final long SPLASHTIME = 2;
-
-    private ImageView splash;
-
-    private VideoList myVideoList;
-    VideoFragment myVideoFragment;
-    PaletteFactory myPaletteFactory = new PaletteFactory();
+   PaletteFactory myPaletteFactory = new PaletteFactory();
 
     UIDecorator myDecorator;
-
-    //handler for splash screen
-    private Handler splashHandler = new Handler() {
-        /* (non-Javadoc)
-         * @see android.os.Handler#handleMessage(android.os.Message)
-         */
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case STOPSPLASH:
-                    //remove SplashScreen from view
-                    splash.setVisibility(View.GONE);
-                    break;
-            }
-            super.handleMessage(msg);
-        }
-    };
-
 
 
     @Override
@@ -63,20 +29,8 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-
-        /*splash = (ImageView) findViewById(R.id.splashscreen);
-        if(splash != null)
-        {
-            Message msg = new Message();
-            msg.what = STOPSPLASH;
-            splashHandler.sendMessageDelayed(msg, SPLASHTIME);
-        }*/
-
         myDecorator = new UIDecorator();
         myDecorator.create(this, myPaletteFactory);
-
-
-
     }
 
     @Override

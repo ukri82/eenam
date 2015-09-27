@@ -7,44 +7,8 @@
     tools:context=".MainActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:id="@+id/linear_layout"
-                  android:orientation="vertical">
-
-        <include
-            android:id="@+id/app_bar"
-            layout="@layout/app_bar"></include>
-
-        <include
-            layout="@layout/fragment_video"></include>
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:id="@+id/palette_holder"
-                  android:orientation="vertical">
-    </RelativeLayout>
-
-    </LinearLayout>
-        <!--<ImageView android:id="@+id/splashscreen" android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:src="@drawable/rainbow"
-                   android:layout_gravity="center"/>-->
-
-     <!--   <include
-            layout="@layout/fragment_video"></include>
-
-
-        <fragment
-            android:id="@+id/fragment_video_list"
-            android:name="com.candyz.eenam.videoList.VideoList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout="@layout/fragment_video_list"/>-->
-
+    <include
+        layout="@layout/fragment_content_area"></include>
 
     <fragment
         android:id="@+id/fragment_navigation_drawer_id"

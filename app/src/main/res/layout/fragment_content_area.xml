@@ -1,0 +1,32 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:id="@+id/content_area_layout"
+              android:orientation="vertical">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar"></include>
+
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/palyer_sliding_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top"
+        sothree:umanoClipPanel = "true"
+        sothree:umanoFadeColor = "@android:color/transparent"
+        sothree:umanoDragView = "@+id/dragView"
+        sothree:umanoPanelHeight="38dp"
+        sothree:umanoShadowHeight="4dp">
+
+        <include
+            layout="@layout/fragment_palette_area"></include>
+
+        <include
+            layout="@layout/fragment_player_area"></include>
+
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+</LinearLayout>

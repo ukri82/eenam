@@ -1,20 +1,17 @@
-package com.candyz.eenam;
+package com.candyz.eenam.player_area;
 
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.candyz.eenam.R;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
@@ -26,6 +23,7 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     private String myVideoId;
 
     WebView myWebView;
+    VideoFragmentListener myVideoListener;
 
     public static VideoFragment newInstance()
     {
@@ -54,6 +52,11 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
         }
     }
 
+    public void attachVideoListener(VideoFragmentListener aListener_in)
+    {
+        myVideoListener = aListener_in;
+    }
+
     private void initializeWebView()
     {
         myWebView = (WebView) getActivity().findViewById(R.id.youtube_webview);
@@ -67,6 +70,8 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
         myWebView.getSettings().setJavaScriptEnabled(true);
         myWebView.setWebChromeClient(new WebChromeClient());
         myWebView.addJavascriptInterface(this, "VideoFragment");
+        myWebView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+        myWebView.getSettings().setAllowFileAccess(true);
         myWebView.setBackgroundColor(Color.BLACK);
     }
 
@@ -105,6 +110,7 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     @JavascriptInterface
     public String getVideoId()
     {
+        Log.i("", "in getVideoId");
         return myVideoId;
     }
 
@@ -112,7 +118,31 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     @JavascriptInterface
     public void videoLoaded()
     {
+        Log.i("", "in videoLoaded");
         emulateClick(myWebView);    //  Workaround to start autoplay
+    }
+
+    @JavascriptInterface
+    public void videoEnded(int anErroCode_in)   //  0 = no error
+    {
+        Log.i("", "in videoEnded");
+        int aDelay = 20;
+        if(anErroCode_in != 0)
+        {
+            aDelay = 2000;
+        }
+        if(myVideoListener != null)
+        {
+            myWebView.postDelayed(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    myVideoListener.onVideoFinished(myVideoId);
+                }
+            }, aDelay);
+
+        }
     }
 
 
@@ -176,7 +206,7 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
         delay += 100;
         webview.postDelayed(tapup, delay);
     }
-    
+
     public void loadVideo()
     {
         myWebView.loadUrl("file:///android_asset/html/youtubeplayer.html");

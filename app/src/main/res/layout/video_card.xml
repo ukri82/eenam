@@ -38,8 +38,6 @@
                     android:layout_centerInParent="true"
                     />
 
-
-
                 <TextView
                     android:id="@+id/video_header"
                     android:layout_width="wrap_content"
@@ -49,7 +47,6 @@
                     android:layout_marginTop="8dp"
                     android:textSize="12sp"
                     />
-
 
                 <TextView
                     android:id="@+id/video_details"

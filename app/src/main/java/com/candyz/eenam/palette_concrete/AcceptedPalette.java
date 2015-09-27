@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.candyz.eenam.R;
-import com.candyz.eenam.VideoFragment;
 import com.candyz.eenam.palette_framework.ColorPalette;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,13 +29,11 @@ public class AcceptedPalette extends ColorPalette
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
-        VideoFragment aVideoFragment = (VideoFragment) getActivity().getFragmentManager().findFragmentById(R.id.video_fragment_container);
-        super.initialize(R.id.fragment_video_list_accepted, aVideoFragment, "get_accepted_songs");
+        super.initializeSuper(R.id.fragment_video_list_accepted, "get_accepted_songs");
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_accepted_palette, container, false);

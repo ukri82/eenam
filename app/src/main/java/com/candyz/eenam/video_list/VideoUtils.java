@@ -1,10 +1,11 @@
 package com.candyz.eenam.video_list;
 
 import com.android.volley.RequestQueue;
-import com.candyz.eenam.json.Endpoints;
-import com.candyz.eenam.json.Parser;
-import com.candyz.eenam.json.Requestor;
-import com.candyz.eenam.json.VideoQuery;
+import com.candyz.eenam.model.Endpoints;
+import com.candyz.eenam.model.Parser;
+import com.candyz.eenam.model.Requestor;
+import com.candyz.eenam.model.VideoItem;
+import com.candyz.eenam.model.VideoQuery;
 
 import org.json.JSONObject;
 
