@@ -3,9 +3,11 @@ package com.candyz.eenam.player_area;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -26,13 +28,16 @@ class PlayListViewAdapter extends ArrayAdapter<VideoItem>
 
     static List<VideoItem> myItems = new ArrayList<>();
 
-    public PlayListViewAdapter(Context context, int itemLayoutRes)
+    PlayListListener myListener;
+
+    public PlayListViewAdapter(Context context, int itemLayoutRes, PlayListListener aListener_in)
     {
-        super(context, itemLayoutRes, R.id.text, myItems);
+        super(context, itemLayoutRes, R.id.play_list_card, myItems);
         myContext = context;
         inflater = LayoutInflater.from(context);
         res = context.getResources();
         this.itemLayoutRes = itemLayoutRes;
+        myListener = aListener_in;
     }
 
 
@@ -44,15 +49,17 @@ class PlayListViewAdapter extends ArrayAdapter<VideoItem>
         if (convertView == null)
         {
             convertView = inflater.inflate(itemLayoutRes, null);
-            holder = new ViewHolder(convertView, myContext);
+            holder = new ViewHolder(convertView, myContext, myListener);
             convertView.setTag(holder);
-        } else
+        }
+        else
         {
             holder = (ViewHolder) convertView.getTag();
         }
 
         holder.text.setBackgroundColor(res.getColor(getBackgroundColorRes(position, itemLayoutRes)));
         holder.text.setText(myItems.get(position).getStart());
+        holder.text.setTag(myItems.get(position).getUTubeID());
 
         return convertView;
     }
@@ -119,16 +126,39 @@ class PlayListViewAdapter extends ArrayAdapter<VideoItem>
     {
         return myItems.get(anIndex_in).getUTubeID();
     }
-    static class ViewHolder
+
+    public String getYoutubeTitle(String aYoutubeId_in)
+    {
+        int anIndex = getIndexOf(aYoutubeId_in);
+        if(anIndex != -1)
+        {
+            return myItems.get(anIndex).getStart();
+        }
+        return "";
+    }
+
+    static class ViewHolder  implements View.OnClickListener
     {
         final TextView text;
+        PlayListListener myListener;
 
-        ViewHolder(View view, Context aContext_in)
+        ViewHolder(View view, Context aContext_in, PlayListListener aListener_in)
         {
             text = (TextView) view.findViewById(R.id.text);
             Typeface myTypeface = Typeface.createFromAsset(aContext_in.getAssets(), "fonts/AnjaliOldLipi.ttf");
             text.setTypeface(myTypeface);
+            text.setOnClickListener(this);
+            myListener = aListener_in;
+        }
 
+        @Override
+        public void onClick(View v)
+        {
+            Log.i("", "inonItemClick");
+            if(myListener != null)
+            {
+                myListener.onItemSelected((String)v.getTag());
+            }
         }
 
     }

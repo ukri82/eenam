@@ -9,6 +9,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.candyz.eenam.R;
@@ -24,6 +25,8 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
 
     WebView myWebView;
     VideoFragmentListener myVideoListener;
+
+
 
     public static VideoFragment newInstance()
     {
@@ -50,6 +53,7 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
         {
             initializeWebView();
         }
+
     }
 
     public void attachVideoListener(VideoFragmentListener aListener_in)
@@ -104,6 +108,7 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
             {
                 loadVideo();
             }
+
         }
     }
 

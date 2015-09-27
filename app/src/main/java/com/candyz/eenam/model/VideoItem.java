@@ -32,7 +32,7 @@ public class VideoItem
 
     public String getStart()
     {
-        return myStart;
+        return myStart  + "...";
     }
 
     public String getUTubeURL()

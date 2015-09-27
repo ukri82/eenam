@@ -19,6 +19,6 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
-    <color name="even">#FFFFFF</color>
-    <color name="odd">#eeeeee</color>
+    <color name="even">#141466</color>
+    <color name="odd">#1F1F99</color>
 </resources>
