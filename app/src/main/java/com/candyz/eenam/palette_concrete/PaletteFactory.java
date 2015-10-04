@@ -24,6 +24,9 @@ public class PaletteFactory
         myPaletteList.add(new ContraversialPalette());
         myPaletteList.add(new NewGenPalette());
 
+        SearchPalette aPalette = new SearchPalette();
+        aPalette.setDisplayAlways(false);
+        myPaletteList.add(aPalette);
     }
 
     public static List<ColorPalette> getPaletteList()

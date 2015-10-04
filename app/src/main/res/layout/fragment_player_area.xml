@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="15"
-        dslv:drag_start_mode = "onLongPress"
+        dslv:drag_start_mode = "onDown"
         dslv:drag_handle_id="@id/drag_handle_layout"
         dslv:float_background_color="@color/primary_dark"/>
 

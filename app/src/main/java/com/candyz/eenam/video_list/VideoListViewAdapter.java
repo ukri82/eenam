@@ -58,6 +58,12 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
 
     }
 
+    void clear()
+    {
+        myVideoList.clear();
+        notifyDataSetChanged();
+    }
+
 
 
     public static class VideoItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener

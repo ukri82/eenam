@@ -19,7 +19,10 @@ public class DrawerEntries
 
         for (ColorPalette aPalette : PaletteFactory.getPaletteList())
         {
-            aFilterList.add(new FilterItem(aPalette.getName(), aPalette.getIconResourceId(), aPalette.getBackgroundColor(), aPalette.getDescription()));
+            if(aPalette.shouldDisplayAlways())
+            {
+                aFilterList.add(new FilterItem(aPalette.getName(), aPalette.getIconResourceId(), aPalette.getBackgroundColor(), aPalette.getDescription()));
+            }
         }
         return aFilterList;
     }

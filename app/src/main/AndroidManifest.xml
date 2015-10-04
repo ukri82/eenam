@@ -17,35 +17,26 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:noHistory="true" >
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.SEARCH" />
+
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".SearchActivity"
-            android:label="@string/title_activity_search"
-            android:noHistory="true" >
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
 
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
         </activity>
 
-        <meta-data
-            android:name="android.app.default_searchable"
-            android:value=".SearchActivity" />
-
-        <activity
-            android:name=".AcceptedActivity"
-            android:label="@string/title_activity_accepted"
-            android:noHistory="true">
-        </activity>
+        <!--<provider
+            android:name="AutoCompleteSuggestionProvider"
+            android:authorities="com.candyz.eenam.AutocompleteSuggestion"
+            android:exported="false" />-->
 
     </application>
 

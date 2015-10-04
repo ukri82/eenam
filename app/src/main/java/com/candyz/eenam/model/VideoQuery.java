@@ -9,10 +9,25 @@ public class VideoQuery
 {
     public String myQuery = new String();
 
-    public HashMap<String, String> myParams = new HashMap<>();
+    private HashMap<String, String> myParams = new HashMap<>();
 
     public VideoQuery(String aQuery_in)
     {
         myQuery = aQuery_in;
+    }
+
+    void addParam(String key, String val)
+    {
+        myParams.put(key, val);
+    }
+
+    public void setParams(HashMap<String, String> aParams_in)
+    {
+        myParams = aParams_in;
+    }
+
+    public HashMap<String, String> getParams()
+    {
+        return myParams;
     }
 }

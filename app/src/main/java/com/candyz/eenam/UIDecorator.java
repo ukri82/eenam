@@ -2,8 +2,10 @@ package com.candyz.eenam;
 
 import android.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,6 +15,7 @@ import com.candyz.eenam.drawer.DrawerEntries;
 import com.candyz.eenam.drawer.FilterItem;
 import com.candyz.eenam.drawer.FragmentDrawer;
 import com.candyz.eenam.model.VideoItem;
+import com.candyz.eenam.palette_concrete.SearchPalette;
 import com.candyz.eenam.palette_framework.ColorPalette;
 import com.candyz.eenam.palette_concrete.PaletteFactory;
 import com.candyz.eenam.player_area.PlayList;
@@ -24,6 +27,7 @@ import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -51,6 +55,9 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
     PlayList myPlayList;
 
     private float myAnchorHeight = 0.4f;
+
+    FragmentDrawer myDrawerFragment;
+
 
     public void create(AppCompatActivity parentActivity_in, PaletteFactory aPaletteFactory_in)
     {
@@ -126,7 +133,7 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
 
     private void setupDrawer()
     {
-        FragmentDrawer myDrawerFragment = (FragmentDrawer)myParentActivity.getFragmentManager().findFragmentById(R.id.fragment_navigation_drawer_id);
+        myDrawerFragment = (FragmentDrawer)myParentActivity.getFragmentManager().findFragmentById(R.id.fragment_navigation_drawer_id);
         myDrawerFragment.setUp(R.id.fragment_navigation_drawer_id, (DrawerLayout) myParentActivity.findViewById(R.id.drawer_layout), myToolbar, this);
     }
 
@@ -194,16 +201,36 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
     private void slidePalette(String aPaletteName_in)
     {
         ColorPalette aPalette = myPaletteFactory.getPalette(aPaletteName_in);
+
         aPalette.initialize(this);
+        slidePalette(aPalette);
+    }
+
+    private void slidePalette(ColorPalette aPalette_in)
+    {
         FragmentTransaction transaction = myParentActivity.getFragmentManager().beginTransaction();
-        transaction.replace(R.id.palette_holder, aPalette);
-
-
+        transaction.replace(R.id.palette_holder, aPalette_in);
         transaction.commit();
 
-        myParentActivity.getSupportActionBar().setTitle("eenam" + " - " + aPalette.getDescription());
-        myCurrentPaletteName = aPaletteName_in;
+        myParentActivity.getSupportActionBar().setTitle("eenam" + " - " + aPalette_in.getDescription());
+        myCurrentPaletteName = aPalette_in.getName();
     }
+
+    public void displaySearch(String aSearchQuery_in)
+    {
+        SearchPalette aSearchPalette = (SearchPalette)myPaletteFactory.getPalette(SearchPalette.PaletteName);
+        if(aSearchPalette.isViewInitialized() == false)
+        {
+            aSearchPalette.initialize(this);
+            aSearchPalette.setSearchQuery(aSearchQuery_in, false);
+            slidePalette(aSearchPalette);
+        }
+        else
+        {
+            aSearchPalette.setSearchQuery(aSearchQuery_in, true);
+        }
+    }
+
     @Override
     public void onSlide(float slideOffset)
     {

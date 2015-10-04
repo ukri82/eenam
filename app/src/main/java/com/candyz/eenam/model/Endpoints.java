@@ -10,14 +10,15 @@ public class Endpoints
     {
         //get_songs
         String aQueryString = "http://" + myServerIp + "/" + aQuery_in.myQuery + "?";
-        for(String key : aQuery_in.myParams.keySet())
+        for(String key : aQuery_in.getParams().keySet())
         {
-            aQueryString += key + "=" + aQuery_in.myParams.get(key);
+            aQueryString += key + "=" + aQuery_in.getParams().get(key);
         }
-        if(aQuery_in.myParams.size() > 0)
+        if(aQuery_in.getParams().size() > 0)
             aQueryString += "&";
 
         aQueryString += "Offset=" + aStart_in + "&Count=" + limit;
         return aQueryString;
     }
+
 }

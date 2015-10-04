@@ -8,6 +8,8 @@ import com.candyz.eenam.model.VideoQuery;
 import com.candyz.eenam.video_list.VideoList;
 import com.candyz.eenam.video_list.VideoListListener;
 
+import java.util.HashMap;
+
 /**
  * Created by u on 24.09.2015.
  */
@@ -18,6 +20,11 @@ public class ColorPalette extends Fragment
     protected String myName;
     protected int myIconResourceId;
     protected String myDescription;
+    private String myQueryName;
+
+    private boolean myDislpayAlways = true;
+
+    protected HashMap<String, String> myParams = new HashMap<>();
 
     private VideoListListener myListener;
 
@@ -46,18 +53,44 @@ public class ColorPalette extends Fragment
         return myDescription;
     }
 
+    public void setDisplayAlways(boolean anAlways_in)
+    {
+        myDislpayAlways = anAlways_in;
+    }
+
+    public boolean shouldDisplayAlways()
+    {
+        return myDislpayAlways;
+    }
+
+    public boolean isViewInitialized()
+    {
+        return myVideoList != null;
+    }
 
     public void initializeSuper(int aVideoListId_in, String aQueryName_in)
     {
         myVideoList = (VideoList)getActivity().getFragmentManager().findFragmentById(aVideoListId_in);
-        myVideoList.initialize(myListener, new VideoQuery(aQueryName_in));
+        myQueryName = aQueryName_in;
+
         myVideoList.getView().setBackgroundColor(getActivity().getResources().getColor(myBackgroundColor));
 
+        update();
     }
 
     public void initialize(VideoListListener aVideoListListener_in)
     {
         myListener = aVideoListListener_in;
+    }
+
+    public void update()
+    {
+        VideoQuery aQuery = new VideoQuery(myQueryName);
+        if(myParams != null)
+        {
+            aQuery.setParams(myParams);
+        }
+        myVideoList.initialize(myListener, aQuery);
     }
 
     @Override

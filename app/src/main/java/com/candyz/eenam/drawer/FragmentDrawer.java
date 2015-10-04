@@ -18,6 +18,7 @@ import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,8 +79,6 @@ public class FragmentDrawer extends Fragment
         getView().setLayoutParams(lp);
     }
 
-
-
     //public void setUp()
     public void setUp(int fragmentId, DrawerLayout drawerLayout, final Toolbar toolbar, DrawerEventsListener aListener_in)
     {
@@ -93,7 +92,7 @@ public class FragmentDrawer extends Fragment
         //myContainer = getActivity().findViewById(myFragmentId);
         //myContainer = getView();
 
-        myDrawerToggle = new ActionBarDrawerToggle(getActivity(), myDrawerLayout, myToolBar, R.string.drawer_open, R.string.drawer_close) {
+        myDrawerToggle = new ActionBarDrawerToggle(getActivity(), myDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -123,12 +122,16 @@ public class FragmentDrawer extends Fragment
                 }
             }
         };
+
         myDrawerLayout.setDrawerListener(myDrawerToggle);
-        myDrawerLayout.post(new Runnable() {
+        myDrawerLayout.post(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 myDrawerToggle.syncState();
-                if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
+                if (!mUserLearnedDrawer && !mFromSavedInstanceState)
+                {
                     myDrawerLayout.openDrawer(myContainer);
                 }
             }
@@ -137,9 +140,9 @@ public class FragmentDrawer extends Fragment
 
     }
 
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         mUserLearnedDrawer = UBApplication.readFromPreferences(getActivity(), KEY_USER_LEARNED_DRAWER, false);
         mFromSavedInstanceState = savedInstanceState != null ? true : false;

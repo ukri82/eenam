@@ -87,6 +87,8 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
         myListener = aListener_in;
         myQuery = aQuery_in;
 
+        myVideoAdapter.clear();
+
         new TaskLoadVideos(this, myQuery, 0, 10).execute();
     }
 
