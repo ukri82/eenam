@@ -81,6 +81,14 @@ public class PlayList implements VideoFragmentListener, PlayListListener
         }
     }
 
+    public void playVideoItem(VideoItem aVideoItem_in)
+    {
+        if(myPlayer != null)
+        {
+            changeVideo(aVideoItem_in.getUTubeID());
+        }
+    }
+
     @Override
     public void onVideoFinished(String aYoutubeId_in)
     {

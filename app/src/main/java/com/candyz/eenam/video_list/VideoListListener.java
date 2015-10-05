@@ -9,6 +9,7 @@ import com.candyz.eenam.model.VideoItem;
 public interface VideoListListener
 {
     public void onVideoItemSelected(VideoItem aVideoItem_in);
+    public void onPlayListSelected(VideoItem aVideoItem_in);
 
     public void onHide();
     public void onShow();

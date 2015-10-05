@@ -8,5 +8,6 @@ import android.view.View;
 public interface VideoItemsListener
 {
     public void onVideoItemSelected(View v);
+    public void onPlayListSelected(View v);
 }
 

@@ -2,6 +2,7 @@ package com.candyz.eenam.video_list;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListener
 {
@@ -53,18 +54,41 @@ public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScr
         onScrolledExtended(recyclerView, dx, dy);
     }
 
-    private static final int HIDE_THRESHOLD = 20;
+    private static final int HIDE_THRESHOLD = 200;
     private int scrolledDistance = 0;
-    private boolean controlsVisible = true;
+    boolean controlsVisible = true;
+
+    public void setControlsVisible(boolean aVal_in)
+    {
+        controlsVisible = aVal_in;
+    }
 
     public void onScrolledExtended(RecyclerView recyclerView, int dx, int dy)
     {
+        /*Log.d("", "scrolledDistance : " + scrolledDistance);
+        if (scrolledDistance == 0  && scrolledDistance + dx >= 0)
+        {
+            Log.d("", "in down");
+            onHide();
+        }
+        else if (scrolledDistance >= 0 && scrolledDistance - dx <= 0)
+        {
+            Log.d("", "in up");
+            onShow();
+            scrolledDistance = 0;
+        }
+        else
+        {
+            Log.d("", "in increase");
+            scrolledDistance += dy;
+        }*/
         if (scrolledDistance > HIDE_THRESHOLD && controlsVisible)
         {
             onHide();
             controlsVisible = false;
             scrolledDistance = 0;
-        } else if (scrolledDistance < -HIDE_THRESHOLD && !controlsVisible)
+        }
+        else if (scrolledDistance < -HIDE_THRESHOLD && !controlsVisible)
         {
             onShow();
             controlsVisible = true;

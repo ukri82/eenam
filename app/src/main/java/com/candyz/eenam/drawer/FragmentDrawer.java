@@ -87,28 +87,19 @@ public class FragmentDrawer extends Fragment
         myToolBar = toolbar;
         myDrawerEventsListener = aListener_in;
 
-        //resize();
-
-        //myContainer = getActivity().findViewById(myFragmentId);
-        //myContainer = getView();
-
-        myDrawerToggle = new ActionBarDrawerToggle(getActivity(), myDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
+        myDrawerToggle = new ActionBarDrawerToggle(getActivity(), myDrawerLayout, myToolBar, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                Log.d("VIVZ", "onDrawerOpened");
                 if (!mUserLearnedDrawer) {
                     mUserLearnedDrawer = true;
                     UBApplication.saveToPreferences(getActivity(), KEY_USER_LEARNED_DRAWER, mUserLearnedDrawer);
                 }
-                //getActivity().supportInvalidateOptionsMenu();
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                Log.d("VIVZ", "onDrawerClosed");
-                //getActivity().supportInvalidateOptionsMenu();
             }
 
             @Override
@@ -169,7 +160,6 @@ public class FragmentDrawer extends Fragment
             @Override
             public void onClick(View view, int position) {
                 myDrawerLayout.closeDrawer(GravityCompat.START);
-                //((MainActivity) getActivity()).onClick(myAdapter.getTag(position - 1));
                 if(myDrawerEventsListener != null)
                     myDrawerEventsListener.onClick(myAdapter.getTag(position - 1));
             }

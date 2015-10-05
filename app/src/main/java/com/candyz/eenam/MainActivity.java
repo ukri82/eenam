@@ -46,14 +46,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        if (!mySearchView.isIconified())
-        {
-            mySearchView.setIconified(true);
-        }
-        else
-        {
-            super.onBackPressed();
-        }
+        MainActivity.this.finish();
+        System.exit(0);
     }
 
     @Override

@@ -254,6 +254,15 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
     {
         if(myPlayList != null)
         {
+            myPlayList.playVideoItem(aVideoItem_in);
+        }
+    }
+
+    @Override
+    public void onPlayListSelected(VideoItem aVideoItem_in)
+    {
+        if(myPlayList != null)
+        {
             myPlayList.addVideoItem(aVideoItem_in);
         }
     }

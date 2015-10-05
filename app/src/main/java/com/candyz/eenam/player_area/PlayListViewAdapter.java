@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
@@ -60,6 +62,9 @@ class PlayListViewAdapter extends ArrayAdapter<VideoItem>
         holder.text.setBackgroundColor(res.getColor(getBackgroundColorRes(position, itemLayoutRes)));
         holder.text.setText(myItems.get(position).getStart());
         holder.text.setTag(myItems.get(position).getUTubeID());
+
+        Animation animation = AnimationUtils.loadAnimation(myContext, R.anim.bottom_up);
+        convertView.startAnimation(animation);
 
         return convertView;
     }
@@ -154,7 +159,6 @@ class PlayListViewAdapter extends ArrayAdapter<VideoItem>
         @Override
         public void onClick(View v)
         {
-            Log.i("", "inonItemClick");
             if(myListener != null)
             {
                 myListener.onItemSelected((String)v.getTag());

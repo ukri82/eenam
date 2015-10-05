@@ -75,6 +75,8 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
         TextView myDateView;
         ImageView myPhotoView;
         RippleView myRippleView;
+        ImageView myPlayListView;
+        ImageView myRateView;
 
         private Context myContext;
         public VideoItemsListener myListener;
@@ -92,6 +94,8 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
 
             myPhotoView = (ImageView)itemView.findViewById(R.id.video_photo);
             myRippleView = (RippleView)itemView.findViewById(R.id.ripple_view);
+            myPlayListView = (ImageView)itemView.findViewById(R.id.add_to_play_list_icon);
+            myRateView = (ImageView)itemView.findViewById(R.id.rating_icon);
 
             Typeface myTypeface = Typeface.createFromAsset(myContext.getAssets(), "fonts/AnjaliOldLipi.ttf");
             myTitleView.setTypeface(myTypeface);
@@ -99,15 +103,23 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
             myTitleView.setOnClickListener(this);
             myDescView.setOnClickListener(this);
             myPhotoView.setOnClickListener(this);
+            myPlayListView.setOnClickListener(this);
+            myRateView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v)
         {
-
             if(myListener != null)
             {
-                myListener.onVideoItemSelected(myItemView);
+                if(v == myPlayListView)
+                {
+                    myListener.onPlayListSelected(myItemView);
+                }
+                else
+                {
+                    myListener.onVideoItemSelected(myItemView);
+                }
             }
         }
     }

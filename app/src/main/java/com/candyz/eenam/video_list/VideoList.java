@@ -161,6 +161,17 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
     }
 
     @Override
+    public void onPlayListSelected(View v)
+    {
+        if(myListener != null)
+        {
+            int itemPosition = myVideoListView.getChildPosition(v);
+
+            myListener.onPlayListSelected(myVideoAdapter.getVideoItem(itemPosition));
+        }
+    }
+
+    @Override
     public void onVideoItemsLoaded(ArrayList<VideoItem> listVideos)
     {
         myVideoAdapter.appendVideoList(listVideos);
