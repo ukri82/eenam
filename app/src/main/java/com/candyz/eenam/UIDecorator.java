@@ -59,8 +59,10 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
     FragmentDrawer myDrawerFragment;
 
 
+
     public void create(AppCompatActivity parentActivity_in, PaletteFactory aPaletteFactory_in)
     {
+
         myParentActivity = parentActivity_in;
         myPaletteFactory = aPaletteFactory_in;
 
@@ -78,6 +80,7 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
         myPlayList.create(myParentActivity, myPlayer);
 
         slidePalette(myPaletteFactory.getDefaultPaletteName());
+
     }
 
 

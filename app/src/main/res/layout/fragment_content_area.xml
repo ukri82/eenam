@@ -17,7 +17,7 @@
         android:gravity="top"
         sothree:umanoClipPanel = "true"
         sothree:umanoFadeColor = "@android:color/transparent"
-        sothree:umanoDragView = "@+id/dragView"
+        sothree:umanoDragView = "@+id/fragment_player_area"
         sothree:umanoPanelHeight="38dp"
         sothree:umanoShadowHeight="4dp">
 

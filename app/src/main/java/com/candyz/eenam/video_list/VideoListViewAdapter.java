@@ -1,6 +1,9 @@
 package com.candyz.eenam.video_list;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v7.widget.CardView;
@@ -15,10 +18,16 @@ import android.widget.TextView;
 import com.andexert.library.RippleView;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.candyz.eenam.drawer.DrawerEntries;
+import com.candyz.eenam.drawer.FilterItem;
 import com.candyz.eenam.misc.AnimationUtils;
 import com.candyz.eenam.R;
 import com.candyz.eenam.misc.VolleySingleton;
 import com.candyz.eenam.model.VideoItem;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +40,7 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
     private List<VideoItem> myVideoList = new ArrayList<>();
 
     private LayoutInflater myInflator;
-    private Context myContext;
+    private Activity myActivity;
 
     private VideoItemsListener myVideoItemsListener;
 
@@ -45,10 +54,10 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
     int myInitialVideoListSize = 0;
 
 
-    public VideoListViewAdapter(Context context, int anInitialVideoList_in, VideoItemsListener aVideoItemsListener_in)
+    public VideoListViewAdapter(Activity anActivity_in, int anInitialVideoList_in, VideoItemsListener aVideoItemsListener_in)
     {
-        this.myContext = context;
-        this.myInflator = LayoutInflater.from(myContext);
+        this.myActivity = anActivity_in;
+        this.myInflator = LayoutInflater.from(myActivity);
         this.myInitialVideoListSize = anInitialVideoList_in;
 
         myVideoItemsListener = aVideoItemsListener_in;
@@ -78,14 +87,14 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
         ImageView myPlayListView;
         ImageView myRateView;
 
-        private Context myContext;
+        private Activity myActivity;
         public VideoItemsListener myListener;
         View myItemView;
 
-        VideoItemViewHolder(View itemView, VideoItemsListener aListener_in, Context aContext_in)
+        VideoItemViewHolder(View itemView, VideoItemsListener aListener_in, Activity anActivity_in)
         {
             super(itemView);
-            myContext = aContext_in;
+            myActivity = anActivity_in;
             myItemView = itemView;
             myListener = aListener_in;
             myCard = (CardView)itemView.findViewById(R.id.video_card);
@@ -95,16 +104,17 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
             myPhotoView = (ImageView)itemView.findViewById(R.id.video_photo);
             myRippleView = (RippleView)itemView.findViewById(R.id.ripple_view);
             myPlayListView = (ImageView)itemView.findViewById(R.id.add_to_play_list_icon);
-            myRateView = (ImageView)itemView.findViewById(R.id.rating_icon);
+            //myRateView = (ImageView)itemView.findViewById(R.id.rating_icon);
 
-            Typeface myTypeface = Typeface.createFromAsset(myContext.getAssets(), "fonts/AnjaliOldLipi.ttf");
+            Typeface myTypeface = Typeface.createFromAsset(myActivity.getAssets(), "fonts/AnjaliOldLipi.ttf");
             myTitleView.setTypeface(myTypeface);
 
             myTitleView.setOnClickListener(this);
             myDescView.setOnClickListener(this);
             myPhotoView.setOnClickListener(this);
             myPlayListView.setOnClickListener(this);
-            myRateView.setOnClickListener(this);
+            //myRateView.setOnClickListener(this);
+
         }
 
         @Override
@@ -122,6 +132,7 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
                 }
             }
         }
+
     }
 
 
@@ -150,7 +161,7 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
     public VideoItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View view = this.myInflator.inflate(R.layout.video_card, parent, false);
-        VideoItemViewHolder holder=new VideoItemViewHolder(view, myVideoItemsListener, myContext);
+        VideoItemViewHolder holder=new VideoItemViewHolder(view, myVideoItemsListener, myActivity);
         return holder;
     }
 

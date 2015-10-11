@@ -150,7 +150,6 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
         }
     }
 
-
     public void pause()
     {
         if (player != null)
@@ -159,7 +158,15 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
         }
         else if(myWebView != null)
         {
-            myWebView.onPause();
+            //myWebView.onPause();
+        }
+    }
+
+    public void resume()
+    {
+        if(myWebView != null)
+        {
+            myWebView.onResume();
         }
     }
 

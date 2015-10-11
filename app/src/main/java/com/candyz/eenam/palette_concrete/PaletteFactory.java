@@ -11,22 +11,27 @@ import java.util.List;
  */
 public class PaletteFactory
 {
-    static List<ColorPalette> myPaletteList = new ArrayList<>();
+    static List<ColorPalette> myPaletteList;
 
     public PaletteFactory()
     {
-        myPaletteList.add(new DaysSpecialPalette());
-        myPaletteList.add(new MomsNostalgiaPalette());
-        myPaletteList.add(new NostalgicHitsPalette());
-        myPaletteList.add(new NostalgicEverGreenPalette());
-        myPaletteList.add(new ClassicalPalette());
-        myPaletteList.add(new AcceptedPalette());
-        myPaletteList.add(new ContraversialPalette());
-        myPaletteList.add(new NewGenPalette());
+        if(myPaletteList == null)
+        {
+            myPaletteList = new ArrayList<>();
 
-        SearchPalette aPalette = new SearchPalette();
-        aPalette.setDisplayAlways(false);
-        myPaletteList.add(aPalette);
+            myPaletteList.add(new DaysSpecialPalette());
+            myPaletteList.add(new MomsNostalgiaPalette());
+            myPaletteList.add(new NostalgicHitsPalette());
+            myPaletteList.add(new NostalgicEverGreenPalette());
+            myPaletteList.add(new ClassicalPalette());
+            myPaletteList.add(new AcceptedPalette());
+            myPaletteList.add(new ContraversialPalette());
+            myPaletteList.add(new NewGenPalette());
+
+            SearchPalette aPalette = new SearchPalette();
+            aPalette.setDisplayAlways(false);
+            myPaletteList.add(aPalette);
+        }
     }
 
     public static List<ColorPalette> getPaletteList()

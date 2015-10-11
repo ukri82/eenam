@@ -6,19 +6,13 @@
               android:background="@color/primary_light"
               android:orientation="vertical">
 
-    <!--<com.twotoasters.jazzylistview.JazzyListView
-        android:id="@+id/play_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="11"/>-->
-
     <com.candyz.eenam.player_area.PlayListView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:dslv="http://schemas.android.com/apk/res-auto"
         android:id="@+id/play_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="15"
+        android:layout_weight="12"
         dslv:drag_start_mode = "onDown"
         dslv:drag_handle_id="@id/drag_handle_layout"
         dslv:float_background_color="@color/primary_dark"/>
@@ -37,8 +31,8 @@
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                   android:id="@+id/player_area_ticker"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
+                  android:layout_width="match_parent"
+                  android:layout_height="20dp"
                   android:gravity="center_vertical"
                   android:minHeight="20dp"
                   android:textColor="@android:color/primary_text_dark"

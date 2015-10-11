@@ -1,0 +1,16 @@
+<RelativeLayout
+    android:id="@+id/rating_fragment_container"
+    class="com.candyz.eenam.video_list.RatingFragment"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
+
+    <ImageView
+        android:id="@+id/rating_icon"
+        android:layout_width="36dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/rating"
+        android:layout_alignParentRight="true"
+        />
+</RelativeLayout>
