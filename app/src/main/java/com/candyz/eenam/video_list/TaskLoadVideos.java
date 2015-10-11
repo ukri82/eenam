@@ -46,7 +46,7 @@ public class TaskLoadVideos extends AsyncTask<Void, Void, ArrayList<VideoItem>>
         ArrayList<VideoItem> listVideo = null;
         if(!myQuery.myQuery.isEmpty())
         {
-            listVideo = VideoUtils.loadVideoItems(requestQueue, myQuery, myStart, myCount);
+            listVideo = VideoRequester.loadVideoItems(requestQueue, myQuery, myStart, myCount);
         }
         return listVideo;
     }

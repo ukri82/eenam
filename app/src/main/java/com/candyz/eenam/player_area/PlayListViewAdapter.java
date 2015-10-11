@@ -124,6 +124,10 @@ class PlayListViewAdapter extends ArrayAdapter<VideoItem>
         {
             aCurrentIndex = 0;
         }
+        
+        if(aCurrentIndex < 0 || aCurrentIndex >= myItems.size())
+            return null;
+
         return myItems.get(aCurrentIndex).getUTubeID();
     }
 

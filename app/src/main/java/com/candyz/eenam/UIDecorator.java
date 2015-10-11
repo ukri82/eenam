@@ -1,11 +1,8 @@
 package com.candyz.eenam;
 
-import android.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,9 +12,8 @@ import com.candyz.eenam.drawer.DrawerEntries;
 import com.candyz.eenam.drawer.FilterItem;
 import com.candyz.eenam.drawer.FragmentDrawer;
 import com.candyz.eenam.model.VideoItem;
-import com.candyz.eenam.palette_concrete.SearchPalette;
-import com.candyz.eenam.palette_framework.ColorPalette;
-import com.candyz.eenam.palette_concrete.PaletteFactory;
+import com.candyz.eenam.palette_concrete.ConcretePaletteFactory;
+import com.candyz.eenam.palette_framework.PaletteStack;
 import com.candyz.eenam.player_area.PlayList;
 import com.candyz.eenam.player_area.VideoFragment;
 import com.candyz.eenam.video_list.VideoListListener;
@@ -27,7 +23,6 @@ import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -42,9 +37,7 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
 
     AppCompatActivity myParentActivity;
 
-    String myCurrentPaletteName = "";
-
-    PaletteFactory myPaletteFactory;
+    PaletteStack myPaletteStack;
 
     SlidingUpPanelLayout myPlayerPanel;
 
@@ -59,12 +52,9 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
     FragmentDrawer myDrawerFragment;
 
 
-
-    public void create(AppCompatActivity parentActivity_in, PaletteFactory aPaletteFactory_in)
+    public void create(AppCompatActivity parentActivity_in)
     {
-
         myParentActivity = parentActivity_in;
-        myPaletteFactory = aPaletteFactory_in;
 
         myPlayer = (VideoFragment) parentActivity_in.getFragmentManager().findFragmentById(R.id.video_fragment_container);
 
@@ -79,8 +69,8 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
         myPlayList = new PlayList();
         myPlayList.create(myParentActivity, myPlayer);
 
-        slidePalette(myPaletteFactory.getDefaultPaletteName());
-
+        //slidePalette(myConcretePaletteFactory.getDefaultPaletteName());
+        myPaletteStack = new PaletteStack(this, myParentActivity);
     }
 
 
@@ -201,37 +191,11 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
 
     }
 
-    private void slidePalette(String aPaletteName_in)
-    {
-        ColorPalette aPalette = myPaletteFactory.getPalette(aPaletteName_in);
 
-        aPalette.initialize(this);
-        slidePalette(aPalette);
-    }
-
-    private void slidePalette(ColorPalette aPalette_in)
-    {
-        FragmentTransaction transaction = myParentActivity.getFragmentManager().beginTransaction();
-        transaction.replace(R.id.palette_holder, aPalette_in);
-        transaction.commit();
-
-        myParentActivity.getSupportActionBar().setTitle("eenam" + " - " + aPalette_in.getDescription());
-        myCurrentPaletteName = aPalette_in.getName();
-    }
 
     public void displaySearch(String aSearchQuery_in)
     {
-        SearchPalette aSearchPalette = (SearchPalette)myPaletteFactory.getPalette(SearchPalette.PaletteName);
-        if(aSearchPalette.isViewInitialized() == false)
-        {
-            aSearchPalette.initialize(this);
-            aSearchPalette.setSearchQuery(aSearchQuery_in, false);
-            slidePalette(aSearchPalette);
-        }
-        else
-        {
-            aSearchPalette.setSearchQuery(aSearchQuery_in, true);
-        }
+        myPaletteStack.slideDynamicPalette("SearchPalette", aSearchQuery_in);
     }
 
     @Override
@@ -243,7 +207,7 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
     @Override
     public void onClick(String aTag_in)
     {
-        slidePalette(aTag_in);
+        myPaletteStack.slidePalette(aTag_in);
     }
 
     @Override
@@ -271,6 +235,18 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
     }
 
     @Override
+    public void onRaagamSelected(String aRaagamId_in)
+    {
+        myPaletteStack.slideDynamicPalette("RaagamPalette", aRaagamId_in);
+    }
+
+    @Override
+    public void onMovieSelected(String aMovieId_in)
+    {
+        myPaletteStack.slideDynamicPalette("MoviePalette", aMovieId_in);
+    }
+
+    @Override
     public void onHide()
     {
         myPlayerPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
@@ -281,5 +257,7 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
     {
         myPlayerPanel.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
     }
+
+
 
 }

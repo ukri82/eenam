@@ -1,23 +1,18 @@
 package com.candyz.eenam.video_list;
 
 
-import android.app.Activity;
 import android.content.Context;
-import android.media.Image;
-import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.candyz.eenam.R;
 
@@ -27,23 +22,23 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RatingFragment extends RelativeLayout implements View.OnClickListener
+public class StarRater extends RelativeLayout implements View.OnClickListener
 {
 
     LayoutInflater mInflater;
     ImageView myStarView;
 
-    public RatingFragment(Context context)
+    public StarRater(Context context)
     {
         super(context);
         init(context);
     }
-    public RatingFragment(Context context, AttributeSet attrs, int defStyle)
+    public StarRater(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
         init(context);
     }
-    public RatingFragment(Context context, AttributeSet attrs)
+    public StarRater(Context context, AttributeSet attrs)
     {
         super(context, attrs);
         init(context);
@@ -73,7 +68,7 @@ public class RatingFragment extends RelativeLayout implements View.OnClickListen
         }
         anim.setDuration((myNumStars - i) * 100);
         anim.setFillAfter(true);
-        final RatingFragment theFragment = this;
+        final StarRater theFragment = this;
         anim.setAnimationListener(new TranslateAnimation.AnimationListener()
         {
 

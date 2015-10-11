@@ -3,7 +3,8 @@ package com.candyz.eenam.drawer;
 import android.app.Activity;
 
 import com.candyz.eenam.palette_framework.ColorPalette;
-import com.candyz.eenam.palette_concrete.PaletteFactory;
+import com.candyz.eenam.palette_concrete.ConcretePaletteFactory;
+import com.candyz.eenam.palette_framework.PaletteFrameWork;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class DrawerEntries
     {
         List<FilterItem> aFilterList = new java.util.ArrayList<>();
 
-        for (ColorPalette aPalette : PaletteFactory.getPaletteList())
+        for (ColorPalette aPalette : PaletteFrameWork.getFactory().getPaletteList())
         {
             if(aPalette.shouldDisplayAlways())
             {

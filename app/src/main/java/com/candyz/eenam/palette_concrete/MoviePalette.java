@@ -10,27 +10,24 @@ import android.view.ViewGroup;
 import com.candyz.eenam.R;
 import com.candyz.eenam.palette_framework.ColorPalette;
 import com.candyz.eenam.palette_framework.DynamicPalette;
-import com.candyz.eenam.video_list.VideoListListener;
-
-import java.util.HashMap;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchPalette extends DynamicPalette
+public class MoviePalette extends DynamicPalette
 {
-    public SearchPalette()
+    public MoviePalette()
     {
-        super.myDescription = "Search";
-        super.mySearchQuery = "Input";
+        super.myDescription = "Movie";
+        super.mySearchQuery = "MovieId";
         super.myName = this.getClass().getSimpleName();
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
-        super.initializeSuper(R.id.fragment_video_list_search, "get_search_results");
+        super.initializeSuper(R.id.fragment_video_list_movie, "get_songs_of_movie");
     }
 
     @Override
@@ -38,7 +35,7 @@ public class SearchPalette extends DynamicPalette
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_palette, container, false);
+        return inflater.inflate(R.layout.fragment_movie_palette, container, false);
     }
 
 

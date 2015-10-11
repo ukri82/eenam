@@ -1,0 +1,23 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.candyz.eenam.palette_concrete.RaagamPalette">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:id="@+id/content_area_layout"
+                  android:orientation="vertical">
+
+        <fragment
+            android:id="@+id/fragment_video_list_raagam"
+            android:name="com.candyz.eenam.video_list.VideoList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_video_list"/>
+
+    </LinearLayout>
+
+
+</FrameLayout>

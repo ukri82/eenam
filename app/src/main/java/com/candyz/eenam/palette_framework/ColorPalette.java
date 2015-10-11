@@ -22,7 +22,8 @@ public class ColorPalette extends Fragment
     protected String myDescription;
     private String myQueryName;
 
-    private boolean myDislpayAlways = true;
+    protected boolean myDislpayAlways = true;
+    private boolean myCurrentlyDisplayed = false;
 
     protected HashMap<String, String> myParams = new HashMap<>();
 
@@ -63,9 +64,18 @@ public class ColorPalette extends Fragment
         return myDislpayAlways;
     }
 
-    public boolean isViewInitialized()
+    public boolean isShown()
     {
-        return myVideoList != null;
+        return myCurrentlyDisplayed;
+    }
+
+    public void onHide()
+    {
+        myCurrentlyDisplayed = false;
+    }
+    public void onShow()
+    {
+        myCurrentlyDisplayed = true;
     }
 
     public void initializeSuper(int aVideoListId_in, String aQueryName_in)
@@ -91,6 +101,7 @@ public class ColorPalette extends Fragment
             aQuery.setParams(myParams);
         }
         myVideoList.initialize(myListener, aQuery);
+        onShow();
     }
 
     @Override
@@ -103,6 +114,7 @@ public class ColorPalette extends Fragment
             {
                 fm.beginTransaction().remove(myVideoList).commit();
             }
+            myCurrentlyDisplayed = false;
        }
         catch (IllegalStateException e)
         {

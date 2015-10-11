@@ -93,7 +93,7 @@ public class PlayList implements VideoFragmentListener, PlayListListener
     public void onVideoFinished(String aYoutubeId_in)
     {
         String aNextVideoId = myAdapter.getNext(aYoutubeId_in);
-        if(myPlayer != null)
+        if(myPlayer != null && aNextVideoId != null)
         {
             changeVideo(aNextVideoId);
         }

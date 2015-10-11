@@ -80,12 +80,12 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
         CardView myCard;
         TextView myTitleView;
         TextView myDescView;
-        TextView mySourceView;
-        TextView myDateView;
+        TextView myMovieView;
+        TextView myRaagamView;
         ImageView myPhotoView;
         RippleView myRippleView;
         ImageView myPlayListView;
-        ImageView myRateView;
+        StarRater myRater;
 
         private Activity myActivity;
         public VideoItemsListener myListener;
@@ -100,11 +100,13 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
             myCard = (CardView)itemView.findViewById(R.id.video_card);
             myTitleView = (TextView)itemView.findViewById(R.id.video_header);
             myDescView = (TextView)itemView.findViewById(R.id.video_details);
+            myMovieView = (TextView)itemView.findViewById(R.id.video_movie_name);
+            myRaagamView = (TextView)itemView.findViewById(R.id.video_raagam_name);
 
             myPhotoView = (ImageView)itemView.findViewById(R.id.video_photo);
             myRippleView = (RippleView)itemView.findViewById(R.id.ripple_view);
             myPlayListView = (ImageView)itemView.findViewById(R.id.add_to_play_list_icon);
-            //myRateView = (ImageView)itemView.findViewById(R.id.rating_icon);
+            myRater = (StarRater)itemView.findViewById(R.id.five_star_rater);
 
             Typeface myTypeface = Typeface.createFromAsset(myActivity.getAssets(), "fonts/AnjaliOldLipi.ttf");
             myTitleView.setTypeface(myTypeface);
@@ -113,7 +115,8 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
             myDescView.setOnClickListener(this);
             myPhotoView.setOnClickListener(this);
             myPlayListView.setOnClickListener(this);
-            //myRateView.setOnClickListener(this);
+            myMovieView.setOnClickListener(this);
+            myRaagamView.setOnClickListener(this);
 
         }
 
@@ -125,6 +128,14 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
                 if(v == myPlayListView)
                 {
                     myListener.onPlayListSelected(myItemView);
+                }
+                else if(v == myRaagamView)
+                {
+                    myListener.onRaagamSelected((String)myRaagamView.getTag());
+                }
+                else if(v == myMovieView)
+                {
+                    myListener.onMovieSelected((String) myMovieView.getTag());
                 }
                 else
                 {
@@ -176,6 +187,18 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
         VideoItem current = myVideoList.get(position);
         holder.myTitleView.setText(current.getStart());
         holder.myDescView.setText(current.getUTubeTitle());
+        holder.myMovieView.setText(current.getMovieName());
+        holder.myMovieView.setTag(current.getMovieId());
+        if(current.getRaagamName() != "N.A")
+        {
+            holder.myRaagamView.setText(current.getRaagamName());
+            holder.myRaagamView.setTag(current.getRaagamId());
+            holder.myRaagamView.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            holder.myRaagamView.setVisibility(View.INVISIBLE);
+        }
 
         String urlThumnail = current.getUTubeThumbImageURL();
         loadImages(urlThumnail, holder);
@@ -219,7 +242,7 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
 
     public VideoItem getVideoItem(int anItemIndex_in)
     {
-        return myVideoList.get(anItemIndex_in);//.getUTubeID();
+        return myVideoList.get(anItemIndex_in);
     }
 
 

@@ -9,7 +9,8 @@ import java.util.ArrayList;
 /**
  * Created by Windows on 02-03-2015.
  */
-public class Parser {
+public class VideoResultParser
+{
     
     private static final String NA = "N.A";
     private static final String KEY_START = "start";
@@ -34,6 +35,10 @@ public class Parser {
                     String utube_title = NA;
                     String utube_url = NA;
                     String utube_likes = NA;
+                    String movie_name = NA;
+                    String movie_id = NA;
+                    String raagam_name = NA;
+                    String raagam_id = NA;
 
 
                     JSONObject currentVideoItem = arrayVideoItems.getJSONObject(i);
@@ -64,7 +69,33 @@ public class Parser {
                         utube_likes = currentVideoItem.getJSONObject("song_rating").getString(KEY_UTUBE_LIKES);
                     }
 
-                    VideoItem aVideoItem = new VideoItem(start, start_english, utube_title, utube_url, Integer.parseInt(utube_likes));
+                    if (Utils.contains(currentVideoItem, "movie"))
+                    {
+                        if (Utils.contains(currentVideoItem.getJSONObject("movie"), "name"))
+                        {
+                            movie_name = currentVideoItem.getJSONObject("movie").getString("name");
+                        }
+
+                        if (Utils.contains(currentVideoItem.getJSONObject("movie"), "id"))
+                        {
+                            movie_id = currentVideoItem.getJSONObject("movie").getString("id");
+                        }
+                    }
+
+                    if (Utils.contains(currentVideoItem, "raagam"))
+                    {
+                        if (Utils.contains(currentVideoItem.getJSONObject("raagam"), "name"))
+                        {
+                            raagam_name = currentVideoItem.getJSONObject("raagam").getString("name");
+                        }
+
+                        if (Utils.contains(currentVideoItem.getJSONObject("raagam"), "id"))
+                        {
+                            raagam_id = currentVideoItem.getJSONObject("raagam").getString("id");
+                        }
+                    }
+
+                    VideoItem aVideoItem = new VideoItem(start, start_english, utube_title, utube_url, Integer.parseInt(utube_likes), movie_name, movie_id, raagam_name, raagam_id);
 
                     listVideo.add(aVideoItem);
                 }

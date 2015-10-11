@@ -59,6 +59,45 @@
                     android:textSize="8sp"
                     />
 
+                <Button
+                    android:id="@+id/video_movie_name"
+                    style="@android:style/Widget.TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="Your Text"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="4dp"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:textColor="#ffffff"
+                    android:textSize="9sp"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/video_details"
+                    android:layout_toRightOf="@+id/video_photo"
+                    android:background="@xml/but_bg" />
+
+                <Button
+                    android:id="@+id/video_raagam_name"
+                    style="@android:style/Widget.TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="Your Text"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="4dp"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:textColor="#ffffff"
+                    android:textSize="9sp"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/video_details"
+                    android:layout_toRightOf="@+id/video_movie_name"
+                    android:background="@xml/but_bg" />
 
                 <ImageView
                     android:id="@+id/add_to_play_list_icon"
@@ -69,26 +108,14 @@
                     android:background="@drawable/playlist"
                     />
 
-                <com.candyz.eenam.video_list.RatingFragment
+                <com.candyz.eenam.video_list.StarRater
+                    android:id="@+id/five_star_rater"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/add_to_play_list_icon">
 
-                </com.candyz.eenam.video_list.RatingFragment>
-
-
-
-                <!--<ImageView
-                    android:id="@+id/rating_icon"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/add_to_play_list_icon"
-                    android:layout_marginLeft="4dp"
-                    android:background="@drawable/rating"
-                    />-->
-
+                </com.candyz.eenam.video_list.StarRater>
 
             </com.andexert.library.RippleView>
 

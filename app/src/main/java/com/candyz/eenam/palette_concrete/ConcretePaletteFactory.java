@@ -2,6 +2,8 @@ package com.candyz.eenam.palette_concrete;
 
 import com.candyz.eenam.palette_concrete.DaysSpecialPalette;
 import com.candyz.eenam.palette_framework.ColorPalette;
+import com.candyz.eenam.palette_framework.PaletteFactory;
+import com.candyz.eenam.palette_framework.PaletteFrameWork;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +11,13 @@ import java.util.List;
 /**
  * Created by u on 24.09.2015.
  */
-public class PaletteFactory
+public class ConcretePaletteFactory implements PaletteFactory
 {
     static List<ColorPalette> myPaletteList;
 
-    public PaletteFactory()
+    public ConcretePaletteFactory()
     {
+        PaletteFrameWork.setFactory(this);
         if(myPaletteList == null)
         {
             myPaletteList = new ArrayList<>();
@@ -28,13 +31,13 @@ public class PaletteFactory
             myPaletteList.add(new ContraversialPalette());
             myPaletteList.add(new NewGenPalette());
 
-            SearchPalette aPalette = new SearchPalette();
-            aPalette.setDisplayAlways(false);
-            myPaletteList.add(aPalette);
+            myPaletteList.add(new SearchPalette());
+            myPaletteList.add(new RaagamPalette());
+            myPaletteList.add(new MoviePalette());
         }
     }
 
-    public static List<ColorPalette> getPaletteList()
+    public List<ColorPalette> getPaletteList()
     {
         return myPaletteList;
     }
@@ -48,7 +51,7 @@ public class PaletteFactory
     {
         for (ColorPalette aPalette : myPaletteList)
         {
-            if (aPalette.getName() == aName_in)
+            if (aPalette.getName().equals(aName_in))
             {
                 return aPalette;
             }

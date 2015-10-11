@@ -9,5 +9,7 @@ public interface VideoItemsListener
 {
     public void onVideoItemSelected(View v);
     public void onPlayListSelected(View v);
+    public void onRaagamSelected(String aRaagamId_in);
+    public void onMovieSelected(String aMovieId_in);
 }
 

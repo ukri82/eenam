@@ -16,15 +16,27 @@ public class VideoItem
     String myUTubeId;
     String myUTubeThumbImageURL;
 
+    String myMovieName;
+    String myMovieId;
+    String myRaagamName;
+    String myRaagamId;
+
     double myRating;
 
-    public VideoItem(String aStart_in, String aStartEnglish_in, String aUTubeTitle_in, String aUTubeURL_in, double aRating_in)
+    public VideoItem(String aStart_in, String aStartEnglish_in,
+                     String aUTubeTitle_in, String aUTubeURL_in, double aRating_in,
+                     String aMovieName_in, String aMovieID_in,
+                     String aRaagamName_in, String aRaagamId_in)
     {
         myStart = aStart_in;
         myStartEnglish = aStartEnglish_in;
         myUYubeTitle = aUTubeTitle_in;
         myUTubeURL = aUTubeURL_in;
         myRating = aRating_in;
+        myMovieName = aMovieName_in;
+        myMovieId = aMovieID_in;
+        myRaagamId = aRaagamId_in;
+        myRaagamName = aRaagamName_in;
 
         myUTubeId = extractYoutubeId(myUTubeURL);
         myUTubeThumbImageURL = "http://img.youtube.com/vi/" + myUTubeId + "/1.jpg";
@@ -58,6 +70,26 @@ public class VideoItem
     public String getUTubeTitle()
     {
         return myUYubeTitle;
+    }
+
+    public String getMovieName()
+    {
+        return myMovieName;
+    }
+
+    public String getMovieId()
+    {
+        return myMovieId;
+    }
+
+    public String getRaagamName()
+    {
+        return myRaagamName;
+    }
+
+    public String getRaagamId()
+    {
+        return myRaagamId;
     }
 
     public double getRating()
