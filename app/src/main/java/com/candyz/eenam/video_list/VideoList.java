@@ -172,20 +172,20 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
     }
 
     @Override
-    public void onRaagamSelected(String aRaagamId_in)
+    public void onRaagamSelected(String aRaagamId_in, String aRaagamName_in)
     {
         if(myListener != null)
         {
-            myListener.onRaagamSelected(aRaagamId_in);
+            myListener.onRaagamSelected(aRaagamId_in, aRaagamName_in);
         }
     }
 
     @Override
-    public void onMovieSelected(String aMovieId_in)
+    public void onMovieSelected(String aMovieId_in, String aMovieName_in)
     {
         if(myListener != null)
         {
-            myListener.onMovieSelected(aMovieId_in);
+            myListener.onMovieSelected(aMovieId_in, aMovieName_in);
         }
     }
 

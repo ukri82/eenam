@@ -20,25 +20,26 @@ public class PaletteStack
     {
         myVideoListListener = aVideoListListener_in;
         myParentActivity = anActivity_in;
-        slidePalette(PaletteFrameWork.getFactory().getDefaultPaletteName());
+        slide(PaletteFrameWork.getFactory().getDefaultPaletteName());
     }
 
-    public void slideDynamicPalette(String aPaletteName_in, String aParameter_in)
+    public void slideDynamic(String aPaletteName_in, String aParameter_in, String aParamDesc_in)
     {
         DynamicPalette aPalette = (DynamicPalette)PaletteFrameWork.getFactory().getPalette(aPaletteName_in);
         if(aPalette.isShown() == false)
         {
             aPalette.initialize(myVideoListListener);
-            aPalette.setSearchParams(aParameter_in, false);
-            slidePalette(aPalette);
+            aPalette.setSearchParams(aParameter_in, aParamDesc_in, false);
+            slide(aPalette);
         }
         else
         {
-            aPalette.setSearchParams(aParameter_in, true);
+            aPalette.setSearchParams(aParameter_in, aParamDesc_in, true);
+            myParentActivity.getSupportActionBar().setTitle("eenam" + " - " + aPalette.getDescription());
         }
     }
 
-    public void slidePalette(String aPaletteName_in)
+    public void slide(String aPaletteName_in)
     {
         ColorPalette aCurrentPalette = PaletteFrameWork.getFactory().getPalette(myCurrentPaletteName);
         if(aCurrentPalette != null)
@@ -47,10 +48,10 @@ public class PaletteStack
         ColorPalette aPalette = PaletteFrameWork.getFactory().getPalette(aPaletteName_in);
 
         aPalette.initialize(myVideoListListener);
-        slidePalette(aPalette);
+        slide(aPalette);
     }
 
-    private void slidePalette(ColorPalette aPalette_in)
+    private void slide(ColorPalette aPalette_in)
     {
         FragmentTransaction transaction = myParentActivity.getFragmentManager().beginTransaction();
         transaction.replace(R.id.palette_holder, aPalette_in);

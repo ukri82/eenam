@@ -35,10 +35,6 @@ public class PlayList implements VideoFragmentListener, PlayListListener
         myPlayer = aPlayer_in;
         myPlayer.attachVideoListener(this);
 
-        /*JazzyListView aPlayList = (JazzyListView) myParentActivity.findViewById(R.id.play_list_view);
-        aPlayList.setTransitionEffect(new TwirlEffect());
-        aPlayList.setAdapter(new PlayListViewAdapter(myParentActivity, R.layout.play_list_item));*/
-
         myPlayListView = (PlayListView) myParentActivity.findViewById(R.id.play_list_view);
         myAdapter = new PlayListViewAdapter(myParentActivity, R.layout.play_list_item, this);
         myPlayListView.setAdapter(myAdapter);

@@ -1,9 +1,6 @@
 package com.candyz.eenam.video_list;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v7.widget.CardView;
@@ -18,15 +15,10 @@ import android.widget.TextView;
 import com.andexert.library.RippleView;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.candyz.eenam.drawer.DrawerEntries;
-import com.candyz.eenam.drawer.FilterItem;
 import com.candyz.eenam.misc.AnimationUtils;
 import com.candyz.eenam.R;
 import com.candyz.eenam.misc.VolleySingleton;
 import com.candyz.eenam.model.VideoItem;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
-import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 
 import java.util.ArrayList;
@@ -110,6 +102,8 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
 
             Typeface myTypeface = Typeface.createFromAsset(myActivity.getAssets(), "fonts/AnjaliOldLipi.ttf");
             myTitleView.setTypeface(myTypeface);
+            myMovieView.setTypeface(myTypeface);
+            myRaagamView.setTypeface(myTypeface);
 
             myTitleView.setOnClickListener(this);
             myDescView.setOnClickListener(this);
@@ -131,11 +125,11 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
                 }
                 else if(v == myRaagamView)
                 {
-                    myListener.onRaagamSelected((String)myRaagamView.getTag());
+                    myListener.onRaagamSelected((String)myRaagamView.getTag(), (String)myRaagamView.getText());
                 }
                 else if(v == myMovieView)
                 {
-                    myListener.onMovieSelected((String) myMovieView.getTag());
+                    myListener.onMovieSelected((String) myMovieView.getTag(), (String)myMovieView.getText());
                 }
                 else
                 {

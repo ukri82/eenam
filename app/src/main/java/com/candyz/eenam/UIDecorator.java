@@ -1,20 +1,36 @@
 package com.candyz.eenam;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 
 import com.candyz.eenam.drawer.DrawerEntries;
 import com.candyz.eenam.drawer.FilterItem;
 import com.candyz.eenam.drawer.FragmentDrawer;
 import com.candyz.eenam.model.VideoItem;
-import com.candyz.eenam.palette_concrete.ConcretePaletteFactory;
 import com.candyz.eenam.palette_framework.PaletteStack;
 import com.candyz.eenam.player_area.PlayList;
+import com.candyz.eenam.player_area.PlayListView;
 import com.candyz.eenam.player_area.VideoFragment;
 import com.candyz.eenam.video_list.VideoListListener;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
@@ -69,7 +85,6 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
         myPlayList = new PlayList();
         myPlayList.create(myParentActivity, myPlayer);
 
-        //slidePalette(myConcretePaletteFactory.getDefaultPaletteName());
         myPaletteStack = new PaletteStack(this, myParentActivity);
     }
 
@@ -191,11 +206,9 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
 
     }
 
-
-
     public void displaySearch(String aSearchQuery_in)
     {
-        myPaletteStack.slideDynamicPalette("SearchPalette", aSearchQuery_in);
+        myPaletteStack.slideDynamic("SearchPalette", aSearchQuery_in, aSearchQuery_in);
     }
 
     @Override
@@ -207,7 +220,7 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
     @Override
     public void onClick(String aTag_in)
     {
-        myPaletteStack.slidePalette(aTag_in);
+        myPaletteStack.slide(aTag_in);
     }
 
     @Override
@@ -225,25 +238,66 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
         }
     }
 
+    public void play(AppCompatActivity activity, ViewGroup ottParent)
+    {
+
+        Bitmap bitmap = BitmapFactory.decodeResource(activity.getResources(), R.drawable.card_view_snap_shot);
+
+        float aScalingFactor = ottParent.getWidth() / bitmap.getWidth();
+
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * 1), (int) (bitmap.getHeight() * 1), false);
+
+        final OverTheTopLayer layer = new OverTheTopLayer();
+
+        int startingPoints[] = new int[2];
+
+        startingPoints[0] = 400;
+        startingPoints[1] = 600;
+
+        FrameLayout ottLayout = layer.with(activity)
+                .scale(1)
+                .attachTo(ottParent)
+                .setBitmap(scaledBitmap, startingPoints)
+                .create();
+
+        ObjectAnimator animY = ObjectAnimator.ofFloat(layer.getImageView(), "translationY", -startingPoints[1]);
+        ObjectAnimator rotX = ObjectAnimator.ofFloat(layer.getImageView(), "rotationX", 0f, 360f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(layer.getImageView(), "scaleY", 0.2f);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(layer.getImageView(), "scaleX", 0.2f);
+        scaleX.addListener(new AnimatorListenerAdapter()
+        {
+            public void onAnimationEnd(Animator animation)
+            {
+                layer.destroy();
+            }
+        });
+
+        AnimatorSet animSetXY = new AnimatorSet();
+        animSetXY.playTogether(animY, rotX, scaleX, scaleY);
+        animSetXY.setDuration(1000);
+        animSetXY.start();
+    }
+
     @Override
     public void onPlayListSelected(VideoItem aVideoItem_in)
     {
         if(myPlayList != null)
         {
             myPlayList.addVideoItem(aVideoItem_in);
+            play(myParentActivity, (ViewGroup) myParentActivity.findViewById(android.R.id.content));
         }
     }
 
     @Override
-    public void onRaagamSelected(String aRaagamId_in)
+    public void onRaagamSelected(String aRaagamId_in, String aRaagamName_in)
     {
-        myPaletteStack.slideDynamicPalette("RaagamPalette", aRaagamId_in);
+        myPaletteStack.slideDynamic("RaagamPalette", aRaagamId_in, aRaagamName_in);
     }
 
     @Override
-    public void onMovieSelected(String aMovieId_in)
+    public void onMovieSelected(String aMovieId_in, String aMovieName_in)
     {
-        myPaletteStack.slideDynamicPalette("MoviePalette", aMovieId_in);
+        myPaletteStack.slideDynamic("MoviePalette", aMovieId_in, aMovieName_in);
     }
 
     @Override

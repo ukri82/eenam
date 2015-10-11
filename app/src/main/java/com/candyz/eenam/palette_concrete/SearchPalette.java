@@ -8,12 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.candyz.eenam.R;
-import com.candyz.eenam.palette_framework.ColorPalette;
 import com.candyz.eenam.palette_framework.DynamicPalette;
-import com.candyz.eenam.video_list.VideoListListener;
-
-import java.util.HashMap;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,7 +17,7 @@ public class SearchPalette extends DynamicPalette
 {
     public SearchPalette()
     {
-        super.myDescription = "Search";
+        super.myDescription = "found";
         super.mySearchQuery = "Input";
         super.myName = this.getClass().getSimpleName();
     }

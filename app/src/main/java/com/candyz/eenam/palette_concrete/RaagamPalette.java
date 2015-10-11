@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.candyz.eenam.R;
-import com.candyz.eenam.palette_framework.ColorPalette;
 import com.candyz.eenam.palette_framework.DynamicPalette;
 
 
@@ -19,7 +18,7 @@ public class RaagamPalette extends DynamicPalette
 {
     public RaagamPalette()
     {
-        super.myDescription = "Raagam";
+        super.myDescription = "raagam";
         super.mySearchQuery = "RaagamId";
         super.myName = this.getClass().getSimpleName();
     }

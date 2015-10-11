@@ -10,8 +10,8 @@ public interface VideoListListener
 {
     public void onVideoItemSelected(VideoItem aVideoItem_in);
     public void onPlayListSelected(VideoItem aVideoItem_in);
-    public void onRaagamSelected(String aRaagamId_in);
-    public void onMovieSelected(String aMovieId_in);
+    public void onRaagamSelected(String aRaagamId_in, String aRaagamName_in);
+    public void onMovieSelected(String aMovieId_in, String aMovieName_in);
 
     public void onHide();
     public void onShow();

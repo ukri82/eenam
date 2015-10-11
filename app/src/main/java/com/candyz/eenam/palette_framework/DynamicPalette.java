@@ -1,14 +1,6 @@
 package com.candyz.eenam.palette_framework;
 
-
-import android.os.Bundle;
-import android.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.candyz.eenam.R;
-import com.candyz.eenam.palette_framework.ColorPalette;
 
 
 public class DynamicPalette extends ColorPalette
@@ -23,17 +15,22 @@ public class DynamicPalette extends ColorPalette
         super.myDislpayAlways = false;
     }
 
-    public void setSearchParams(String aSearchParams_in, boolean anUpdate_in)
+    public void setSearchParams(String aSearchParams_in, String aSearchDescription_in, boolean anUpdate_in)
     {
         mySearchValue = aSearchParams_in;
+        int anIndex = super.myDescription.indexOf(" - ");
+        if(anIndex >= 0)
+            super.myDescription = super.myDescription.substring(0, anIndex);
+
+        super.myDescription = super.myDescription + " - " + aSearchDescription_in;
         super.myParams.put(mySearchQuery, aSearchParams_in);
         if(anUpdate_in)
             super.update();
     }
 
-    public void update(String anInputText_in)
+    public void update(String aSearchParams_in, String aSearchDescription_in)
     {
-        setSearchParams(anInputText_in, true);
+        setSearchParams(aSearchParams_in, aSearchDescription_in, true);
     }
 
 }
