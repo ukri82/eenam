@@ -1,33 +1,67 @@
 package com.candyz.eenam.player_area;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.os.Handler;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 
+import android.text.InputType;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.candyz.eenam.OverTheTopLayer;
 import com.candyz.eenam.R;
+import com.candyz.eenam.misc.VolleySingleton;
+import com.candyz.eenam.model.Endpoints;
+import com.candyz.eenam.model.Requestor;
 import com.candyz.eenam.model.VideoItem;
 import com.mobeta.android.dslv.DragSortListView;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 
 /**
  * Created by u on 27.09.2015.
  */
-public class PlayList implements VideoFragmentListener, PlayListListener
+public class PlayList implements VideoFragmentListener, PlayListListener, PlayListControlListener
 {
     AppCompatActivity myParentActivity;
     VideoFragment myPlayer;
     PlayListViewAdapter myAdapter;
-    TextView myPlayerAreaTicker;
     PlayListView myPlayListView;
+
+    private String myPlayListSaveName = "";
+    private String myIdentity;
+
+    private String myCurrentPlayListId;
+
+
+    private PlayListControl myPlayListControl;
 
     public void create(AppCompatActivity parentActivity_in, VideoFragment aPlayer_in)
     {
@@ -39,10 +73,7 @@ public class PlayList implements VideoFragmentListener, PlayListListener
         myAdapter = new PlayListViewAdapter(myParentActivity, R.layout.play_list_item, this);
         myPlayListView.setAdapter(myAdapter);
         myPlayListView.setTransitionEffect(JazzyHelper.TWIRL);
-        myPlayerAreaTicker = (TextView) parentActivity_in.findViewById(R.id.player_area_ticker);
-        Typeface myTypeface = Typeface.createFromAsset(myParentActivity.getAssets(), "fonts/AnjaliOldLipi.ttf");
-        myPlayerAreaTicker.setTypeface(myTypeface);
-        //aPlayList.setTransitionEffect(JazzyHelper.WAVE);
+
 
         myPlayListView.setDropListener(new DragSortListView.DropListener()
         {
@@ -53,35 +84,89 @@ public class PlayList implements VideoFragmentListener, PlayListListener
             }
         });
 
+        initializeIdentity();
+
+        myPlayListControl = (PlayListControl) myParentActivity.getFragmentManager().findFragmentById(R.id.play_list_control_view);
+        myPlayListControl.initialize(this, myIdentity);
+
 
         myPlayListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                Log.i("", "inonItemClick" );
-                myPlayer.setVideoId(myAdapter.getYoutubeId(position));
+                changeVideo(myAdapter.getYoutubeId(position), "");
             }
         });
+
+    }
+
+    private void initializeIdentity()
+    {
+        String androidId = Settings.Secure.getString(myPlayListView.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        UUID deviceUuid = new UUID(androidId.hashCode(), ((long)androidId.hashCode() << 32) | androidId.hashCode());
+        myIdentity = deviceUuid.toString();
     }
 
     public void addVideoItem(VideoItem aVideoItem_in)
     {
         myAdapter.add(aVideoItem_in);
+        triggerAnimation(myParentActivity, (ViewGroup) myParentActivity.findViewById(android.R.id.content));
+
         if(myAdapter.getNumVideos() == 1)
         {
             if(myPlayer != null)
             {
-                changeVideo(aVideoItem_in.getUTubeID());
+                changeVideo(aVideoItem_in.getUTubeID(), aVideoItem_in.getStart());
             }
         }
+    }
+
+    public void triggerAnimation(AppCompatActivity activity, ViewGroup ottParent)
+    {
+
+        Bitmap bitmap = BitmapFactory.decodeResource(activity.getResources(), R.drawable.card_view_snap_shot);
+
+        float aScalingFactor = ottParent.getWidth() / bitmap.getWidth();
+
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * 1), (int) (bitmap.getHeight() * 1), false);
+
+        final OverTheTopLayer layer = new OverTheTopLayer();
+
+        int startingPoints[] = new int[2];
+
+        startingPoints[0] = 400;
+        startingPoints[1] = 600;
+
+        FrameLayout ottLayout = layer.with(activity)
+                .scale(1)
+                .attachTo(ottParent)
+                .setBitmap(scaledBitmap, startingPoints)
+                .create();
+
+        ObjectAnimator animY = ObjectAnimator.ofFloat(layer.getImageView(), "translationY", -startingPoints[1]);
+        ObjectAnimator rotX = ObjectAnimator.ofFloat(layer.getImageView(), "rotationX", 0f, 360f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(layer.getImageView(), "scaleY", 0.2f);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(layer.getImageView(), "scaleX", 0.2f);
+        scaleX.addListener(new AnimatorListenerAdapter()
+        {
+            public void onAnimationEnd(Animator animation)
+            {
+                layer.destroy();
+            }
+        });
+
+        AnimatorSet animSetXY = new AnimatorSet();
+        animSetXY.playTogether(animY, rotX, scaleX, scaleY);
+        animSetXY.setDuration(1000);
+        animSetXY.start();
     }
 
     public void playVideoItem(VideoItem aVideoItem_in)
     {
         if(myPlayer != null)
         {
-            changeVideo(aVideoItem_in.getUTubeID());
+            changeVideo(aVideoItem_in.getUTubeID(), aVideoItem_in.getStart());
         }
     }
 
@@ -91,61 +176,115 @@ public class PlayList implements VideoFragmentListener, PlayListListener
         String aNextVideoId = myAdapter.getNext(aYoutubeId_in);
         if(myPlayer != null && aNextVideoId != null)
         {
-            changeVideo(aNextVideoId);
+            changeVideo(aNextVideoId, "");
         }
     }
 
     @Override
     public void onItemSelected(String aYoutubeId_in)
     {
-        changeVideo(aYoutubeId_in);
+        changeVideo(aYoutubeId_in, "");
     }
 
-    private void changeVideo(String aYoutubeId_in)
+    private void changeVideo(String aYoutubeId_in, String aTitle_in)
     {
         myPlayer.setVideoId(aYoutubeId_in);
-        setTicker(myAdapter.getYoutubeTitle(aYoutubeId_in));
-    }
-
-    public  void setTicker(String text)
-    {
-        if (text != "")
+        if(aTitle_in == "")
         {
-            myPlayerAreaTicker.setText(text);
-
-            Context context = myPlayerAreaTicker.getContext(); // gets the context of the view
-
-            // measures the unconstrained size of the view
-            // before it is drawn in the layout
-            myPlayerAreaTicker.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-
-            // takes the unconstrained width of the view
-            float width = myPlayerAreaTicker.getMeasuredWidth();
-            float height = myPlayerAreaTicker.getMeasuredHeight();
-
-            // gets the screen width
-            float screenWidth = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
-
-            myPlayerAreaTicker.setLayoutParams(new LinearLayout.LayoutParams((int) width, (int) height, 1f));
-
-            // performs the calculation
-            float toXDelta = width - (screenWidth - 0);
-
-            // sets toXDelta to -300 if the text width is smaller that the
-            // screen size
-            if (toXDelta < 0)
-            {
-                toXDelta = 0 - screenWidth;// -300;
-            } else
-            {
-                toXDelta = 0 - screenWidth - toXDelta;// -300 - toXDelta;
-            }
-            // Animation parameters
-            Animation mAnimation = new TranslateAnimation(screenWidth, toXDelta, 0, 0);
-            mAnimation.setDuration(15000);
-            mAnimation.setRepeatMode(Animation.RESTART);
-            mAnimation.setRepeatCount(Animation.INFINITE);
-            myPlayerAreaTicker.setAnimation(mAnimation);
+            aTitle_in = myAdapter.getYoutubeTitle(aYoutubeId_in);
         }
+        myPlayListControl.setCurrentSong(aTitle_in);
+
+        new TaskAddPlayRecord(myIdentity, myCurrentPlayListId, myAdapter.getSongId(aYoutubeId_in)).execute();
     }
+
+
+    @Override
+    public void onPrevious()
+    {
+        onItemSelected(myAdapter.getPrevious(myPlayer.getVideoId()));
+    }
+
+    @Override
+    public void onNext()
+    {
+        onItemSelected(myAdapter.getNext(myPlayer.getVideoId()));
+    }
+
+    @Override
+    public void onPause()
+    {
+        myPlayer.pauseVideo();
+    }
+
+    @Override
+    public void onResume()
+    {
+        myPlayer.resumeVideo();
+    }
+
+    private void getPlayListNameFromUserAndSave()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(myPlayListView.getContext());
+        builder.setTitle("Please enter name of playlist");
+
+        final EditText input = new EditText(myPlayListView.getContext());
+
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                myPlayListSaveName = input.getText().toString();
+                if (myPlayListSaveName != "")
+                {
+                    new TaskSavePlayList(new TaskSavePlayList.PlayListCreationListener()
+                    {
+                        @Override
+                        public void onPlayListCreated(String aName_in)
+                        {
+                            Toast.makeText(myPlayListView.getContext(), "Playlist " + aName_in + " saved", Toast.LENGTH_SHORT);
+                        }
+                    },myIdentity, myPlayListSaveName, myAdapter.getAllSongs()).execute();
+
+                    myPlayListSaveName = "";
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    @Override
+    public void onSavePlayList()
+    {
+        getPlayListNameFromUserAndSave();
+    }
+
+    @Override
+    public void onPlayListSelected(String aPlayListId_in)
+    {
+        myCurrentPlayListId = aPlayListId_in;
+        new TaskGetAllSongsOfPlayList(new TaskGetAllSongsOfPlayList.GetAllPlayListSongsQueryListener()
+        {
+            @Override
+            public void onPlayListsAvailable(ArrayList<VideoItem> aPlayList_in)
+            {
+                myAdapter.set(aPlayList_in);
+                changeVideo(myAdapter.getYoutubeId(0), "");
+            }
+        }, myCurrentPlayListId).execute();
+    }
+
 }

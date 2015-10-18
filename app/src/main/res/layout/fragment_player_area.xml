@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="fill_parent"
               android:id="@+id/player_area"
@@ -22,21 +23,37 @@
         layout="@layout/fragment_video"></include>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/primary_dark"
         android:id="@+id/dragView"
-        android:layout_weight="1">
+        android:gravity="center"
+        android:background="@color/primary_medium"
+        >
 
-        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+        <!--<TextView xmlns:android="http://schemas.android.com/apk/res/android"
                   android:id="@+id/player_area_ticker"
                   android:layout_width="match_parent"
                   android:layout_height="20dp"
                   android:gravity="center_vertical"
                   android:minHeight="20dp"
                   android:textColor="@android:color/primary_text_dark"
-                  android:paddingLeft="15dip"/>
+                  android:paddingLeft="15dip"/>-->
+
+
+        <fragment
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="com.candyz.eenam.player_area.PlayListControl"
+            android:id="@+id/play_list_control_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/fragment_play_list_control" />
+
+
+
+
     </LinearLayout>
 
 </LinearLayout>

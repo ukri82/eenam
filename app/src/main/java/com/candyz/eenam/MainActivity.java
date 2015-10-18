@@ -2,6 +2,8 @@ package com.candyz.eenam;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.widget.MediaController;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 
@@ -10,9 +12,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.candyz.eenam.misc.VolleySingleton;
 import com.candyz.eenam.palette_concrete.ConcretePaletteFactory;
+
 
 
 public class MainActivity extends AppCompatActivity
@@ -23,6 +27,7 @@ public class MainActivity extends AppCompatActivity
 
 
     SearchView mySearchView;
+
 
 
     @Override
@@ -37,15 +42,32 @@ public class MainActivity extends AppCompatActivity
         myDecorator = new UIDecorator();
         myDecorator.create(this);
 
+
+
     }
 
 
-    /*@Override
+    boolean myBackPressed = false;
+    @Override
     public void onBackPressed()
     {
-        MainActivity.this.finish();
-        System.exit(0);
-    }*/
+        if(myBackPressed)
+        {
+            MainActivity.this.finish();
+        }
+        else
+        {
+            Toast.makeText(this.getApplicationContext(), "Press again to exit", Toast.LENGTH_SHORT);
+            myBackPressed = true;
+            new Handler().postDelayed(new Runnable()
+            {
+                public void run()
+                {
+                    myBackPressed = false;
+                }
+            }, 5000);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu)

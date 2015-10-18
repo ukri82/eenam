@@ -95,7 +95,7 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
         myPlayerPanel.setAnchorPoint(myAnchorHeight);
         myPlayerPanel.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
 
-        myDummyView = (View) myParentActivity.findViewById(R.id.dummy_place_holder_behind_anchored_slidepanel);
+        myDummyView = myParentActivity.findViewById(R.id.dummy_place_holder_behind_anchored_slidepanel);
         myPlayerPanel.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener()
         {
             @Override
@@ -238,45 +238,7 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
         }
     }
 
-    public void play(AppCompatActivity activity, ViewGroup ottParent)
-    {
 
-        Bitmap bitmap = BitmapFactory.decodeResource(activity.getResources(), R.drawable.card_view_snap_shot);
-
-        float aScalingFactor = ottParent.getWidth() / bitmap.getWidth();
-
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * 1), (int) (bitmap.getHeight() * 1), false);
-
-        final OverTheTopLayer layer = new OverTheTopLayer();
-
-        int startingPoints[] = new int[2];
-
-        startingPoints[0] = 400;
-        startingPoints[1] = 600;
-
-        FrameLayout ottLayout = layer.with(activity)
-                .scale(1)
-                .attachTo(ottParent)
-                .setBitmap(scaledBitmap, startingPoints)
-                .create();
-
-        ObjectAnimator animY = ObjectAnimator.ofFloat(layer.getImageView(), "translationY", -startingPoints[1]);
-        ObjectAnimator rotX = ObjectAnimator.ofFloat(layer.getImageView(), "rotationX", 0f, 360f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(layer.getImageView(), "scaleY", 0.2f);
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(layer.getImageView(), "scaleX", 0.2f);
-        scaleX.addListener(new AnimatorListenerAdapter()
-        {
-            public void onAnimationEnd(Animator animation)
-            {
-                layer.destroy();
-            }
-        });
-
-        AnimatorSet animSetXY = new AnimatorSet();
-        animSetXY.playTogether(animY, rotX, scaleX, scaleY);
-        animSetXY.setDuration(1000);
-        animSetXY.start();
-    }
 
     @Override
     public void onPlayListSelected(VideoItem aVideoItem_in)
@@ -284,7 +246,6 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
         if(myPlayList != null)
         {
             myPlayList.addVideoItem(aVideoItem_in);
-            play(myParentActivity, (ViewGroup) myParentActivity.findViewById(android.R.id.content));
         }
     }
 

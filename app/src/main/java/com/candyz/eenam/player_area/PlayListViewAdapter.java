@@ -113,6 +113,14 @@ class PlayListViewAdapter extends ArrayAdapter<VideoItem>
         }
     }
 
+    public void set(ArrayList<VideoItem> aList_in)
+    {
+        myItems.clear();
+        myItems.addAll(aList_in);
+        notifyDataSetChanged();
+    }
+
+
     public String getNext(String aYoutubeId_in)
     {
         int aCurrentIndex = getIndexOf(aYoutubeId_in);
@@ -124,16 +132,41 @@ class PlayListViewAdapter extends ArrayAdapter<VideoItem>
         {
             aCurrentIndex = 0;
         }
-        
-        if(aCurrentIndex < 0 || aCurrentIndex >= myItems.size())
-            return null;
 
-        return myItems.get(aCurrentIndex).getUTubeID();
+        return getYoutubeId(aCurrentIndex);
+    }
+
+    public String getPrevious(String aYoutubeId_in)
+    {
+        int aCurrentIndex = getIndexOf(aYoutubeId_in);
+        if(aCurrentIndex > 0)
+        {
+            aCurrentIndex--;
+        }
+        else
+        {
+            aCurrentIndex = myItems.size() - 1;
+        }
+
+        return getYoutubeId(aCurrentIndex);
     }
 
     public String getYoutubeId(int anIndex_in)
     {
+        if(anIndex_in < 0 || anIndex_in >= myItems.size())
+            return null;
+
         return myItems.get(anIndex_in).getUTubeID();
+    }
+
+    public String getSongId(String aYoutubeId_in)
+    {
+        int aCurrentIndex = getIndexOf(aYoutubeId_in);
+
+        if(aCurrentIndex < 0 || aCurrentIndex >= myItems.size())
+            return "";
+
+        return myItems.get(aCurrentIndex).getId();
     }
 
     public String getYoutubeTitle(String aYoutubeId_in)
@@ -144,6 +177,16 @@ class PlayListViewAdapter extends ArrayAdapter<VideoItem>
             return myItems.get(anIndex).getStart();
         }
         return "";
+    }
+
+    public ArrayList<String> getAllSongs()
+    {
+        ArrayList<String> aList = new ArrayList<>();
+        for(VideoItem anItem : myItems)
+        {
+            aList.add(anItem.getId());
+        }
+        return aList;
     }
 
     static class ViewHolder  implements View.OnClickListener

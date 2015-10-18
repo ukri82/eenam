@@ -18,7 +18,7 @@ import java.util.concurrent.TimeoutException;
 public class Requestor
 {
 
-    public static JSONObject requestVideosJSON(RequestQueue requestQueue, String url)
+    public static JSONObject request(RequestQueue requestQueue, String url)
     {
         JSONObject response = null;
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();

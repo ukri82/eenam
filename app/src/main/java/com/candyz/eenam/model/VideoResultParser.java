@@ -13,13 +13,14 @@ public class VideoResultParser
 {
     
     private static final String NA = "N.A";
+    private static final String KEY_ID = "id";
     private static final String KEY_START = "start";
     private static final String KEY_START_ENGLISH = "start_english";
     private static final String KEY_UTUBE_TITLE = "youtube_title";
     private static final String KEY_UTUBE_URL = "youtube_url";
     private static final String KEY_UTUBE_LIKES = "youtube_likes";
 
-    public static ArrayList<VideoItem> parseVideosJSON(JSONObject response)
+    public static ArrayList<VideoItem> parse(JSONObject response)
     {
         ArrayList<VideoItem> listVideo = new ArrayList<>();
         if (response != null && response.length() > 0)
@@ -29,7 +30,7 @@ public class VideoResultParser
                 JSONArray arrayVideoItems = response.getJSONArray("SongData");
                 for (int i = 0; i < arrayVideoItems.length(); i++)
                 {
-                    //long id = -1;
+                    String id = NA;
                     String start = NA;
                     String start_english = NA;
                     String utube_title = NA;
@@ -43,6 +44,11 @@ public class VideoResultParser
 
                     JSONObject currentVideoItem = arrayVideoItems.getJSONObject(i);
 
+
+                    if (Utils.contains(currentVideoItem.getJSONObject("song"), KEY_ID))
+                    {
+                        id = currentVideoItem.getJSONObject("song").getString(KEY_ID);
+                    }
 
                     if (Utils.contains(currentVideoItem.getJSONObject("song"), KEY_START))
                     {
@@ -95,7 +101,7 @@ public class VideoResultParser
                         }
                     }
 
-                    VideoItem aVideoItem = new VideoItem(start, start_english, utube_title, utube_url, Integer.parseInt(utube_likes), movie_name, movie_id, raagam_name, raagam_id);
+                    VideoItem aVideoItem = new VideoItem(id, start, start_english, utube_title, utube_url, Integer.parseInt(utube_likes), movie_name, movie_id, raagam_name, raagam_id);
 
                     listVideo.add(aVideoItem);
                 }

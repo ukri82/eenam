@@ -107,7 +107,7 @@ public class ColorPalette extends Fragment
     @Override
     public void onDestroyView()
     {
-        try
+        /*try
         {
             FragmentManager fm = getFragmentManager();
             if (myVideoList != null)
@@ -119,7 +119,7 @@ public class ColorPalette extends Fragment
         catch (IllegalStateException e)
         {
 
-        }
+        }*/
         super.onDestroyView();
     }
 

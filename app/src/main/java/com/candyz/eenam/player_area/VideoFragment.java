@@ -26,6 +26,8 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     WebView myWebView;
     VideoFragmentListener myVideoListener;
 
+    boolean myIsPlaying = false;
+
 
 
     public static VideoFragment newInstance()
@@ -88,8 +90,10 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
         }
         else if(myWebView != null)
         {
-            myWebView.destroy();
+            //myWebView.destroy();
+            myWebView.onPause();
         }
+        myIsPlaying = false;
         super.onDestroy();
     }
 
@@ -125,12 +129,14 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     {
         Log.i("", "in videoLoaded");
         emulateClick(myWebView);    //  Workaround to start autoplay
+        myIsPlaying = true;
     }
 
     @JavascriptInterface
     public void videoEnded(int anErroCode_in)   //  0 = no error
     {
         Log.i("", "in videoEnded");
+        myIsPlaying = false;
         int aDelay = 20;
         if(anErroCode_in != 0)
         {
@@ -168,6 +174,28 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
         {
             myWebView.onResume();
         }
+    }
+
+    public void pauseVideo()
+    {
+        if(myWebView != null)
+        {
+            myIsPlaying = false;
+            myWebView.onPause();
+        }
+    }
+    public void resumeVideo()
+    {
+        if(myWebView != null)
+        {
+            myIsPlaying = true;
+            myWebView.onResume();
+        }
+    }
+
+    boolean isPlaying()
+    {
+        return myIsPlaying;
     }
 
     @Override

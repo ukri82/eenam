@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 public class VideoItem
 {
 
+    String myId;
     String myStart;
     String myStartEnglish;
     String myUYubeTitle;
@@ -23,11 +24,12 @@ public class VideoItem
 
     double myRating;
 
-    public VideoItem(String aStart_in, String aStartEnglish_in,
+    public VideoItem(String anId_in, String aStart_in, String aStartEnglish_in,
                      String aUTubeTitle_in, String aUTubeURL_in, double aRating_in,
                      String aMovieName_in, String aMovieID_in,
                      String aRaagamName_in, String aRaagamId_in)
     {
+        myId = anId_in;
         myStart = aStart_in;
         myStartEnglish = aStartEnglish_in;
         myUYubeTitle = aUTubeTitle_in;
@@ -45,6 +47,11 @@ public class VideoItem
     public String getStart()
     {
         return myStart  + "...";
+    }
+
+    public String getId()
+    {
+        return myId;
     }
 
     public String getUTubeURL()

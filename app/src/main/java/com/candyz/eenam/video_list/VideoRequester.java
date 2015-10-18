@@ -19,7 +19,7 @@ public class VideoRequester
 {
     public static ArrayList<VideoItem> loadVideoItems(RequestQueue requestQueue, VideoQuery aQuery_in, int aStart_in, int limit)
     {
-        JSONObject response = Requestor.requestVideosJSON(requestQueue, Endpoints.getRequestUrlNextVideoChunk(aQuery_in, aStart_in, limit));
-        return VideoResultParser.parseVideosJSON(response);
+        JSONObject response = Requestor.request(requestQueue, Endpoints.getRequestUrlNextVideoChunk(aQuery_in, aStart_in, limit));
+        return VideoResultParser.parse(response);
     }
 }
