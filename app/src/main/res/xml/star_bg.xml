@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <layer-list  xmlns:android="http://schemas.android.com/apk/res/android"
+                     android:alpha="0.5">
+            <item>
+                <bitmap android:gravity="center" android:src="@drawable/rating" />
+            </item>
+            <item>
+                <shape>
+                    <gradient
+                        android:centerColor="#c1c1c1"
+                        android:endColor="#4f4f4f"
+                        android:gradientRadius="40"
+                        android:startColor="#c1c1c1"
+                        android:type="radial"
+                        android:alpha="0.5"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+</selector>

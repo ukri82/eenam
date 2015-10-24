@@ -3,21 +3,19 @@ package com.candyz.eenam.player_area;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.candyz.eenam.R;
 import com.candyz.eenam.model.VideoItem;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 class PlayListViewAdapter extends ArrayAdapter<VideoItem>
@@ -59,9 +57,10 @@ class PlayListViewAdapter extends ArrayAdapter<VideoItem>
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.text.setBackgroundColor(res.getColor(getBackgroundColorRes(position, itemLayoutRes)));
-        holder.text.setText(myItems.get(position).getStart());
-        holder.text.setTag(myItems.get(position).getUTubeID());
+        holder.myVideoTitle.setBackgroundColor(res.getColor(getBackgroundColorRes(position, itemLayoutRes)));
+        holder.myVideoTitle.setText(myItems.get(position).getStart());
+        holder.myVideoTitle.setTag(myItems.get(position).getUTubeID());
+        holder.myDeleteButton.setTag(myItems.get(position).getUTubeID());
 
         Animation animation = AnimationUtils.loadAnimation(myContext, R.anim.bottom_up);
         convertView.startAnimation(animation);
@@ -82,6 +81,13 @@ class PlayListViewAdapter extends ArrayAdapter<VideoItem>
         VideoItem anItem = myItems.get(from);
         myItems.remove(from);
         myItems.add(to, anItem);
+        notifyDataSetChanged();
+    }
+
+    public void remove(String aYoutubeId_in)
+    {
+        int anItemIndex = getIndexOf(aYoutubeId_in);
+        myItems.remove(anItemIndex);
         notifyDataSetChanged();
     }
 
@@ -191,15 +197,19 @@ class PlayListViewAdapter extends ArrayAdapter<VideoItem>
 
     static class ViewHolder  implements View.OnClickListener
     {
-        final TextView text;
+        final TextView myVideoTitle;
         PlayListListener myListener;
+        ImageView myDeleteButton;
+
 
         ViewHolder(View view, Context aContext_in, PlayListListener aListener_in)
         {
-            text = (TextView) view.findViewById(R.id.text);
+            myVideoTitle = (TextView) view.findViewById(R.id.video_title);
+            myDeleteButton = (ImageView) view.findViewById(R.id.delete_button);
             Typeface myTypeface = Typeface.createFromAsset(aContext_in.getAssets(), "fonts/AnjaliOldLipi.ttf");
-            text.setTypeface(myTypeface);
-            text.setOnClickListener(this);
+            myVideoTitle.setTypeface(myTypeface);
+            myVideoTitle.setOnClickListener(this);
+            myDeleteButton.setOnClickListener(this);
             myListener = aListener_in;
         }
 
@@ -208,7 +218,16 @@ class PlayListViewAdapter extends ArrayAdapter<VideoItem>
         {
             if(myListener != null)
             {
-                myListener.onItemSelected((String)v.getTag());
+                String aUTubeTitle = (String) v.getTag();
+
+                if(myVideoTitle == v)
+                {
+                    myListener.onItemSelected(aUTubeTitle);
+                }
+                if(myDeleteButton == v)
+                {
+                    myListener.onItemDeleted(aUTubeTitle);
+                }
             }
         }
 

@@ -11,5 +11,6 @@ public interface VideoItemsListener
     public void onPlayListSelected(View v);
     public void onRaagamSelected(String aRaagamId_in, String aRaagamName_in);
     public void onMovieSelected(String aMovieId_in, String aMovieName_in);
+    public void onVideoRated(View v, int aRating_in);
 }
 

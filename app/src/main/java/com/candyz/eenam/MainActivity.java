@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.candyz.eenam.misc.VolleySingleton;
+import com.candyz.eenam.model.DeviceIdentity;
 import com.candyz.eenam.palette_concrete.ConcretePaletteFactory;
 
 
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         VolleySingleton.getInstance(this);  //  Just initialize the singleton
+        DeviceIdentity.initialize(this);
 
         setContentView(R.layout.activity_main);
 

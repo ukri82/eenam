@@ -19,6 +19,7 @@ public class VideoResultParser
     private static final String KEY_UTUBE_TITLE = "youtube_title";
     private static final String KEY_UTUBE_URL = "youtube_url";
     private static final String KEY_UTUBE_LIKES = "youtube_likes";
+    private static final String KEY_USER_SONG_RATING = "user_rating";
 
     public static ArrayList<VideoItem> parse(JSONObject response)
     {
@@ -40,6 +41,7 @@ public class VideoResultParser
                     String movie_id = NA;
                     String raagam_name = NA;
                     String raagam_id = NA;
+                    double rating = 0;
 
 
                     JSONObject currentVideoItem = arrayVideoItems.getJSONObject(i);
@@ -73,7 +75,9 @@ public class VideoResultParser
                     if (Utils.contains(currentVideoItem.getJSONObject("song_rating"), KEY_UTUBE_LIKES))
                     {
                         utube_likes = currentVideoItem.getJSONObject("song_rating").getString(KEY_UTUBE_LIKES);
+                        rating = Double.parseDouble(currentVideoItem.getJSONObject("song_rating").getString(KEY_USER_SONG_RATING));
                     }
+
 
                     if (Utils.contains(currentVideoItem, "movie"))
                     {
@@ -101,7 +105,7 @@ public class VideoResultParser
                         }
                     }
 
-                    VideoItem aVideoItem = new VideoItem(id, start, start_english, utube_title, utube_url, Integer.parseInt(utube_likes), movie_name, movie_id, raagam_name, raagam_id);
+                    VideoItem aVideoItem = new VideoItem(id, start, start_english, utube_title, utube_url, rating, movie_name, movie_id, raagam_name, raagam_id);
 
                     listVideo.add(aVideoItem);
                 }

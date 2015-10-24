@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.candyz.eenam.R;
+import com.candyz.eenam.model.DeviceIdentity;
 import com.candyz.eenam.model.VideoItem;
 import com.candyz.eenam.model.VideoQuery;
 
@@ -146,6 +147,14 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
 
 
         }
+    }
+
+    @Override
+    public void onVideoRated(View v, int aRating_in)
+    {
+        int itemPosition = myVideoListView.getChildPosition(v);
+        VideoItem anItem = myVideoAdapter.getVideoItem(itemPosition);
+        new TaskAddSongRating(DeviceIdentity.get(), anItem.getId(), aRating_in).execute();
     }
 
     @Override

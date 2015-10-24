@@ -56,4 +56,11 @@ public class Endpoints
         aQueryString += "PlayListId=" + aPlayListId_in + "&UserId=" + aUserId_in + "&SongId=" + aSongId_in;
         return aQueryString;
     }
+
+    public static String getRequestUrlAddSongRating(String aUserId_in, String aSongId_in, int aRating_in)
+    {
+        String aQueryString = "http://" + myServerIp + "/add_song_rating?";
+        aQueryString += "Rating=" + aRating_in + "&UserId=" + aUserId_in + "&SongId=" + aSongId_in;
+        return aQueryString;
+    }
 }

@@ -8,4 +8,5 @@ import android.view.View;
 public interface PlayListListener
 {
     public void onItemSelected(String aYoutubeId_in);
+    public void onItemDeleted(String aYoutubeId_in);
 }

@@ -26,9 +26,6 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     WebView myWebView;
     VideoFragmentListener myVideoListener;
 
-    boolean myIsPlaying = false;
-
-
 
     public static VideoFragment newInstance()
     {
@@ -93,7 +90,6 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
             //myWebView.destroy();
             myWebView.onPause();
         }
-        myIsPlaying = false;
         super.onDestroy();
     }
 
@@ -129,14 +125,12 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     {
         Log.i("", "in videoLoaded");
         emulateClick(myWebView);    //  Workaround to start autoplay
-        myIsPlaying = true;
     }
 
     @JavascriptInterface
     public void videoEnded(int anErroCode_in)   //  0 = no error
     {
         Log.i("", "in videoEnded");
-        myIsPlaying = false;
         int aDelay = 20;
         if(anErroCode_in != 0)
         {
@@ -178,24 +172,19 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
 
     public void pauseVideo()
     {
-        if(myWebView != null)
+        /*if(myWebView != null)
         {
-            myIsPlaying = false;
             myWebView.onPause();
-        }
+        }*/
+        myWebView.loadUrl("javascript:pauseVideo()");
     }
     public void resumeVideo()
     {
-        if(myWebView != null)
+        /*if(myWebView != null)
         {
-            myIsPlaying = true;
             myWebView.onResume();
-        }
-    }
-
-    boolean isPlaying()
-    {
-        return myIsPlaying;
+        }*/
+        myWebView.loadUrl("javascript:playVideo()");
     }
 
     @Override
@@ -222,19 +211,25 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
         final MotionEvent motionEvent = MotionEvent.obtain( downTime, downTime + delta, MotionEvent.ACTION_DOWN, x, y, 0 );
         final MotionEvent motionEvent2 = MotionEvent.obtain( downTime + delta + 1, downTime + delta * 2, MotionEvent.ACTION_UP, x, y, 0 );
 
-        Runnable tapdown = new Runnable() {
+        Runnable tapdown = new Runnable()
+        {
             @Override
-            public void run() {
-                if (webview != null) {
+            public void run()
+            {
+                if (webview != null)
+                {
                     webview.dispatchTouchEvent(motionEvent);
                 }
             }
         };
 
-        Runnable tapup = new Runnable() {
+        Runnable tapup = new Runnable()
+        {
             @Override
-            public void run() {
-                if (webview != null) {
+            public void run()
+            {
+                if (webview != null)
+                {
                     webview.dispatchTouchEvent(motionEvent2);
                 }
             }

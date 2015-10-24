@@ -34,6 +34,7 @@ import com.android.volley.RequestQueue;
 import com.candyz.eenam.OverTheTopLayer;
 import com.candyz.eenam.R;
 import com.candyz.eenam.misc.VolleySingleton;
+import com.candyz.eenam.model.DeviceIdentity;
 import com.candyz.eenam.model.Endpoints;
 import com.candyz.eenam.model.Requestor;
 import com.candyz.eenam.model.VideoItem;
@@ -56,7 +57,6 @@ public class PlayList implements VideoFragmentListener, PlayListListener, PlayLi
     PlayListView myPlayListView;
 
     private String myPlayListSaveName = "";
-    private String myIdentity;
 
     private String myCurrentPlayListId;
 
@@ -84,10 +84,8 @@ public class PlayList implements VideoFragmentListener, PlayListListener, PlayLi
             }
         });
 
-        initializeIdentity();
-
         myPlayListControl = (PlayListControl) myParentActivity.getFragmentManager().findFragmentById(R.id.play_list_control_view);
-        myPlayListControl.initialize(this, myIdentity);
+        myPlayListControl.initialize(this, DeviceIdentity.get());
 
 
         myPlayListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -95,18 +93,13 @@ public class PlayList implements VideoFragmentListener, PlayListListener, PlayLi
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                changeVideo(myAdapter.getYoutubeId(position), "");
+                changeVideo(myAdapter.getYoutubeId(position), "", "");
             }
         });
 
     }
 
-    private void initializeIdentity()
-    {
-        String androidId = Settings.Secure.getString(myPlayListView.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        UUID deviceUuid = new UUID(androidId.hashCode(), ((long)androidId.hashCode() << 32) | androidId.hashCode());
-        myIdentity = deviceUuid.toString();
-    }
+
 
     public void addVideoItem(VideoItem aVideoItem_in)
     {
@@ -117,7 +110,7 @@ public class PlayList implements VideoFragmentListener, PlayListListener, PlayLi
         {
             if(myPlayer != null)
             {
-                changeVideo(aVideoItem_in.getUTubeID(), aVideoItem_in.getStart());
+                changeVideo(aVideoItem_in.getUTubeID(), aVideoItem_in.getStart(), aVideoItem_in.getId());
             }
         }
     }
@@ -166,7 +159,7 @@ public class PlayList implements VideoFragmentListener, PlayListListener, PlayLi
     {
         if(myPlayer != null)
         {
-            changeVideo(aVideoItem_in.getUTubeID(), aVideoItem_in.getStart());
+            changeVideo(aVideoItem_in.getUTubeID(), aVideoItem_in.getStart(), aVideoItem_in.getId());
         }
     }
 
@@ -176,26 +169,36 @@ public class PlayList implements VideoFragmentListener, PlayListListener, PlayLi
         String aNextVideoId = myAdapter.getNext(aYoutubeId_in);
         if(myPlayer != null && aNextVideoId != null)
         {
-            changeVideo(aNextVideoId, "");
+            changeVideo(aNextVideoId, "", "");
         }
     }
 
     @Override
     public void onItemSelected(String aYoutubeId_in)
     {
-        changeVideo(aYoutubeId_in, "");
+        changeVideo(aYoutubeId_in, "", "");
     }
 
-    private void changeVideo(String aYoutubeId_in, String aTitle_in)
+    @Override
+    public void onItemDeleted(String aYoutubeId_in)
+    {
+        myAdapter.remove(aYoutubeId_in);
+    }
+
+    private void changeVideo(String aYoutubeId_in, String aTitle_in, String aVideoId_in)
     {
         myPlayer.setVideoId(aYoutubeId_in);
         if(aTitle_in == "")
         {
             aTitle_in = myAdapter.getYoutubeTitle(aYoutubeId_in);
         }
+        if(aVideoId_in == "")
+        {
+            aVideoId_in =  myAdapter.getSongId(aYoutubeId_in);
+        }
         myPlayListControl.setCurrentSong(aTitle_in);
 
-        new TaskAddPlayRecord(myIdentity, myCurrentPlayListId, myAdapter.getSongId(aYoutubeId_in)).execute();
+        new TaskAddPlayRecord(DeviceIdentity.get(), myCurrentPlayListId, aVideoId_in).execute();
     }
 
 
@@ -248,7 +251,7 @@ public class PlayList implements VideoFragmentListener, PlayListListener, PlayLi
                         {
                             Toast.makeText(myPlayListView.getContext(), "Playlist " + aName_in + " saved", Toast.LENGTH_SHORT);
                         }
-                    },myIdentity, myPlayListSaveName, myAdapter.getAllSongs()).execute();
+                    },DeviceIdentity.get(), myPlayListSaveName, myAdapter.getAllSongs()).execute();
 
                     myPlayListSaveName = "";
                 }
@@ -282,7 +285,7 @@ public class PlayList implements VideoFragmentListener, PlayListListener, PlayLi
             public void onPlayListsAvailable(ArrayList<VideoItem> aPlayList_in)
             {
                 myAdapter.set(aPlayList_in);
-                changeVideo(myAdapter.getYoutubeId(0), "");
+                changeVideo(myAdapter.getYoutubeId(0), "", "");
             }
         }, myCurrentPlayListId).execute();
     }

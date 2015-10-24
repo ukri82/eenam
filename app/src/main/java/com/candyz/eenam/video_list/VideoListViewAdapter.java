@@ -67,7 +67,7 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
 
 
 
-    public static class VideoItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    public static class VideoItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, StarRaterListener
     {
         CardView myCard;
         TextView myTitleView;
@@ -111,6 +111,7 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
             myPlayListView.setOnClickListener(this);
             myMovieView.setOnClickListener(this);
             myRaagamView.setOnClickListener(this);
+            myRater.setListener(this);
 
         }
 
@@ -135,6 +136,15 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
                 {
                     myListener.onVideoItemSelected(myItemView);
                 }
+            }
+        }
+
+        @Override
+        public void onRated(int aRating_in)
+        {
+            if(myListener != null)
+            {
+                myListener.onVideoRated(myItemView, aRating_in);
             }
         }
 
@@ -183,6 +193,7 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
         holder.myDescView.setText(current.getUTubeTitle());
         holder.myMovieView.setText(current.getMovieName());
         holder.myMovieView.setTag(current.getMovieId());
+        holder.myRater.setRating(current.getRating());
         if(current.getRaagamName() != "N.A")
         {
             holder.myRaagamView.setText(current.getRaagamName());

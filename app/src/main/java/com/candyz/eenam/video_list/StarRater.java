@@ -13,8 +13,10 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.candyz.eenam.R;
+import com.candyz.eenam.player_area.TaskAddPlayRecord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,9 @@ public class StarRater extends RelativeLayout implements View.OnClickListener
 {
 
     LayoutInflater mInflater;
-    ImageView myStarView;
+    TextView myStarView;
+    double myRating = 0;
+    StarRaterListener myListener;
 
     public StarRater(Context context)
     {
@@ -48,8 +52,22 @@ public class StarRater extends RelativeLayout implements View.OnClickListener
     {
         mInflater = LayoutInflater.from(context);
         View v = mInflater.inflate(R.layout.fragment_rating, this, true);
-        myStarView = (ImageView) v.findViewById(R.id.rating_icon);
+        myStarView = (TextView) v.findViewById(R.id.rating_icon);
         myStarView.setOnClickListener(this);
+    }
+
+    public void setListener(StarRaterListener aListener_in)
+    {
+        myListener = aListener_in;
+    }
+
+    public void setRating(double aRating_in)
+    {
+        myRating = aRating_in;
+        if(myStarView != null && myRating > 0)
+        {
+            myStarView.setText(myRating + "");
+        }
     }
 
     void animateStars(int i, final ImageView imageView, final boolean anAdd_in)
@@ -165,6 +183,19 @@ public class StarRater extends RelativeLayout implements View.OnClickListener
             aParams.height = theHeightInDip;
 
             imageView.setTag(5000 + i);
+            final int aRating = i + 1;
+            imageView.setOnClickListener(new OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    setRating(aRating);
+                    if(myListener != null)
+                    {
+                        myListener.onRated(aRating);
+                    }
+                }
+            });
 
             if(aPrevView != -1)
                 aParams.addRule(RelativeLayout.RIGHT_OF, aPrevView);

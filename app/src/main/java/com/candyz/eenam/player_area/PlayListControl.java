@@ -55,7 +55,7 @@ public class PlayListControl extends Fragment implements View.OnClickListener, A
     TextView myCurrentSong;
     View mySave;
     Spinner myLoad;
-    boolean myCurrentStatePlaying = false;
+    boolean myCurrentStatePlaying = true;
     String myIdentity;
 
     ArrayList<PlayListItem> myPlayLists = new ArrayList<>();
@@ -96,7 +96,7 @@ public class PlayListControl extends Fragment implements View.OnClickListener, A
             public void onPlayListsAvailable(ArrayList<PlayListItem> aPlayList_in)
             {
                 myPlayLists = aPlayList_in;
-                Collections.sort(myPlayLists);
+                //Collections.sort(myPlayLists);
                 ArrayAdapter<PlayListItem> adapter = new ArrayAdapter<PlayListItem>(myLoad.getContext(), android.R.layout.simple_spinner_item, myPlayLists);
                 myLoad.setAdapter(adapter);
 
