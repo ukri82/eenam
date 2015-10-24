@@ -20,7 +20,7 @@ public class MomsNostalgiaPalette extends ColorPalette
     public MomsNostalgiaPalette()
     {
         super.myIconResourceId = R.drawable.button_action_fg_mothers;
-        super.myBackgroundColor = R.color.violet;
+        //super.myBackgroundColor = R.color.violet;
         super.myName = this.getClass().getSimpleName();
         super.myDescription = "Mom's Nostalgia";
     }

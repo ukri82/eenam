@@ -15,7 +15,7 @@
         card_view:cardCornerRadius="4dp"
         card_view:cardUseCompatPadding="true"
         card_view:cardElevation="4dp"
-        card_view:cardBackgroundColor="@color/primary_light"
+        card_view:cardBackgroundColor="@color/primary_medium"
         >
 
         <RelativeLayout

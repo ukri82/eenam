@@ -3,6 +3,7 @@ package com.candyz.eenam.palette_framework;
 import android.app.Fragment;
 import android.app.FragmentManager;
 
+import com.candyz.eenam.R;
 import com.candyz.eenam.model.VideoQuery;
 
 import com.candyz.eenam.video_list.VideoList;
@@ -25,13 +26,15 @@ public class ColorPalette extends Fragment
     protected boolean myDislpayAlways = true;
     private boolean myCurrentlyDisplayed = false;
 
+    boolean myAboutToHide = false;
+
     protected HashMap<String, String> myParams = new HashMap<>();
 
     private VideoListListener myListener;
 
     public ColorPalette()
     {
-        // Required empty public constructor
+        myBackgroundColor = R.color.primary_light;
     }
 
     public int getBackgroundColor()
@@ -71,12 +74,15 @@ public class ColorPalette extends Fragment
 
     public void onHide()
     {
+        myAboutToHide = true;
         myCurrentlyDisplayed = false;
     }
     public void onShow()
     {
         myCurrentlyDisplayed = true;
     }
+
+
 
     public void initializeSuper(int aVideoListId_in, String aQueryName_in)
     {
@@ -107,19 +113,25 @@ public class ColorPalette extends Fragment
     @Override
     public void onDestroyView()
     {
-        /*try
+        if(myAboutToHide)
         {
-            FragmentManager fm = getFragmentManager();
-            if (myVideoList != null)
+            try
             {
-                fm.beginTransaction().remove(myVideoList).commit();
-            }
-            myCurrentlyDisplayed = false;
-       }
-        catch (IllegalStateException e)
-        {
+                FragmentManager fm = getFragmentManager();
+                if (myVideoList != null)
+                {
+                    fm.beginTransaction().remove(myVideoList).commit();
+                }
+                myCurrentlyDisplayed = false;
+            } catch (IllegalStateException e)
+            {
 
-        }*/
+            } catch (Exception e)
+            {
+
+            }
+            myAboutToHide = false;
+        }
         super.onDestroyView();
     }
 

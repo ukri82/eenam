@@ -21,7 +21,7 @@ public class AcceptedPalette extends ColorPalette
     public AcceptedPalette()
     {
         super.myIconResourceId = R.drawable.button_action_fg_accepted;
-        super.myBackgroundColor = R.color.yellow;
+        //super.myBackgroundColor = R.color.yellow;
         super.myName = this.getClass().getSimpleName();
         super.myDescription = "Widely Accepted";
     }

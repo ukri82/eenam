@@ -25,23 +25,11 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:id="@+id/dragView"
         android:gravity="center"
-        android:background="@color/primary_medium"
+        android:background="@color/primary_high_medium"
         >
-
-
-
-        <!--<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:id="@+id/player_area_ticker"
-                  android:layout_width="match_parent"
-                  android:layout_height="20dp"
-                  android:gravity="center_vertical"
-                  android:minHeight="20dp"
-                  android:textColor="@android:color/primary_text_dark"
-                  android:paddingLeft="15dip"/>-->
-
 
         <fragment
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -52,7 +40,13 @@
             tools:layout="@layout/fragment_play_list_control" />
 
 
-
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+            android:background="@mipmap/horizontal_drag_handle"
+            android:layout_alignParentBottom="true"
+            android:elevation="3dp"
+            />
 
     </LinearLayout>
 

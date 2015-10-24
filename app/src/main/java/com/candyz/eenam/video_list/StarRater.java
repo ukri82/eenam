@@ -173,8 +173,12 @@ public class StarRater extends RelativeLayout implements View.OnClickListener
         for(int i = 0; i < myNumStars; i++)
         {
             final ImageView imageView = new ImageView(getContext());
-            imageView.setImageResource(R.drawable.rating);
-            imageView.setId((i + 1 )*1000);
+            if(i < myRating)
+                imageView.setImageResource(R.drawable.ic_star);
+            else
+                imageView.setImageResource(R.drawable.ic_star_outline);
+
+            imageView.setId((i + 1) * 1000);
 
             RelativeLayout.LayoutParams aParams = new RelativeLayout.LayoutParams(
                     LayoutParams.MATCH_PARENT,
@@ -183,38 +187,53 @@ public class StarRater extends RelativeLayout implements View.OnClickListener
             aParams.height = theHeightInDip;
 
             imageView.setTag(5000 + i);
+
+
+            if(aPrevView!=-1)
+                    aParams.addRule(RelativeLayout.RIGHT_OF, aPrevView);
+
+            imageView.setVisibility(View.GONE);
+            this.addView(imageView, aParams);
+            myStars.add(imageView);
+
             final int aRating = i + 1;
             imageView.setOnClickListener(new OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
+                    for (int j = 0; j < myStars.size(); j++)
+                    {
+                        final ImageView imageView = myStars.get(j);
+                        if (j < aRating)
+                            imageView.setImageResource(R.drawable.ic_star);
+                        else
+                            imageView.setImageResource(R.drawable.ic_star_outline);
+                    }
                     setRating(aRating);
-                    if(myListener != null)
+                    if (myListener != null)
                     {
                         myListener.onRated(aRating);
                     }
                 }
             });
 
-            if(aPrevView != -1)
-                aParams.addRule(RelativeLayout.RIGHT_OF, aPrevView);
-
-            imageView.setVisibility(View.GONE);
-            this.addView(imageView, aParams);
-
             final int aViewIndex = i;
             final Handler aHandler = new Handler();
-            aHandler.postDelayed(new Runnable()
+            aHandler.postDelayed(new
+
+            Runnable()
             {
-                public void run()
+                public void run ()
                 {
                     animateStars(aViewIndex, imageView, true);
                 }
-            }, 1);
+            }
 
-            aPrevView = imageView.getId();
-            myStars.add(imageView);
+            ,1);
+
+            aPrevView=imageView.getId();
+
         }
     }
 

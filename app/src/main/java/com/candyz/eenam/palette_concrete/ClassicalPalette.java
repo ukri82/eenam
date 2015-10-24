@@ -20,7 +20,7 @@ public class ClassicalPalette extends ColorPalette
     public ClassicalPalette()
     {
         super.myIconResourceId = R.drawable.button_action_fg_classical;
-        super.myBackgroundColor = R.color.green;
+        //super.myBackgroundColor = R.color.green;
         super.myName = this.getClass().getSimpleName();
         super.myDescription = "Classical";
     }

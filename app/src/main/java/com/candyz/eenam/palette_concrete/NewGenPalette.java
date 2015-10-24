@@ -20,7 +20,7 @@ public class NewGenPalette extends ColorPalette
     public NewGenPalette()
     {
         super.myIconResourceId = R.drawable.button_action_fg_new_gen;
-        super.myBackgroundColor = R.color.red;
+        //super.myBackgroundColor = R.color.red;
         super.myName = this.getClass().getSimpleName();
         super.myDescription = "New Gen";
     }

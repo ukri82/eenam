@@ -69,4 +69,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/enclosing_layout_media_ctrl"/>
     </com.andexert.library.RippleView>
+
+
 </RelativeLayout>

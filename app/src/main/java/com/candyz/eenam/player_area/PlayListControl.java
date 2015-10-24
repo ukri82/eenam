@@ -88,7 +88,7 @@ public class PlayListControl extends Fragment implements View.OnClickListener, A
         myCurrentSong.setText(aSongTitle_in);
     }
 
-    private void loadPlayLists()
+    public void loadPlayLists()
     {
         new TaskGetAllPlayLists(new TaskGetAllPlayLists.GetAllPlayListsQueryListener()
         {

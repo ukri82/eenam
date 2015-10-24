@@ -20,7 +20,7 @@ public class ContraversialPalette extends ColorPalette
     public ContraversialPalette()
     {
         super.myIconResourceId = R.drawable.button_action_fg_contra;
-        super.myBackgroundColor = R.color.orange;
+        //super.myBackgroundColor = R.color.orange;
         super.myName = this.getClass().getSimpleName();
         super.myDescription = "Widely Discussed";
     }

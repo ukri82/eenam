@@ -15,7 +15,6 @@ public class DaysSpecialPalette extends ColorPalette
     public DaysSpecialPalette()
     {
         super.myIconResourceId = R.drawable.button_action_fg_filter_cross;
-        super.myBackgroundColor = R.color.white;
         super.myName = this.getClass().getSimpleName();
         super.myDescription = "Today's special";
     }

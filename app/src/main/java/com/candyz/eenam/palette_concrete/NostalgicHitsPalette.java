@@ -20,7 +20,7 @@ public class NostalgicHitsPalette extends ColorPalette
     public NostalgicHitsPalette()
     {
         super.myIconResourceId = R.drawable.button_action_fg_nostalgic_numbers;
-        super.myBackgroundColor = R.color.indgio;
+        //super.myBackgroundColor = R.color.indgio;
         super.myName = this.getClass().getSimpleName();
         super.myDescription = "Nostalgic Hits";
     }

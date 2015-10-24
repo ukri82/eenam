@@ -42,6 +42,8 @@ import com.mobeta.android.dslv.DragSortListView;
 
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -241,7 +243,14 @@ public class PlayList implements VideoFragmentListener, PlayListListener, PlayLi
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                myPlayListSaveName = input.getText().toString();
+                try
+                {
+                    myPlayListSaveName = URLEncoder.encode(input.getText().toString(), "UTF-8");
+                }
+                catch (UnsupportedEncodingException e)
+                {
+                    e.printStackTrace();
+                }
                 if (myPlayListSaveName != "")
                 {
                     new TaskSavePlayList(new TaskSavePlayList.PlayListCreationListener()
@@ -254,6 +263,7 @@ public class PlayList implements VideoFragmentListener, PlayListListener, PlayLi
                     },DeviceIdentity.get(), myPlayListSaveName, myAdapter.getAllSongs()).execute();
 
                     myPlayListSaveName = "";
+                    myPlayListControl.loadPlayLists();
                 }
             }
         });

@@ -20,7 +20,7 @@ public class NostalgicEverGreenPalette extends ColorPalette
     public NostalgicEverGreenPalette()
     {
         super.myIconResourceId = R.drawable.button_action_fg_nostalgic;
-        super.myBackgroundColor = R.color.blue;
+        //super.myBackgroundColor = R.color.blue;
         super.myName = this.getClass().getSimpleName();
         super.myDescription = "Nostalgic Ever Green";
     }
