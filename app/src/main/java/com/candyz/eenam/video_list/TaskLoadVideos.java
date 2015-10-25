@@ -3,9 +3,17 @@ package com.candyz.eenam.video_list;
 import android.os.AsyncTask;
 
 import com.android.volley.RequestQueue;
+import com.candyz.eenam.model.Endpoints;
+import com.candyz.eenam.model.Requestor;
+import com.candyz.eenam.model.Utils;
 import com.candyz.eenam.model.VideoItem;
 import com.candyz.eenam.model.VideoQuery;
 import com.candyz.eenam.misc.VolleySingleton;
+import com.candyz.eenam.model.VideoResultParser;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -46,7 +54,7 @@ public class TaskLoadVideos extends AsyncTask<Void, Void, ArrayList<VideoItem>>
         ArrayList<VideoItem> listVideo = null;
         if(!myQuery.myQuery.isEmpty())
         {
-            listVideo = VideoRequester.loadVideoItems(requestQueue, myQuery, myStart, myCount);
+            listVideo = load(requestQueue, myQuery, myStart, myCount);
         }
         return listVideo;
     }
@@ -60,5 +68,10 @@ public class TaskLoadVideos extends AsyncTask<Void, Void, ArrayList<VideoItem>>
         }
     }
 
+    public static ArrayList<VideoItem> load(RequestQueue requestQueue, VideoQuery aQuery_in, int aStart_in, int limit)
+    {
+        JSONObject response = Requestor.request(requestQueue, Endpoints.getRequestUrlNextVideoChunk(aQuery_in, aStart_in, limit));
+        return VideoResultParser.parse(response);
+    }
 
 }

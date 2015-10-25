@@ -41,10 +41,6 @@ public class PaletteStack
 
     public void slide(String aPaletteName_in)
     {
-        ColorPalette aCurrentPalette = PaletteFrameWork.getFactory().getPalette(myCurrentPaletteName);
-        if(aCurrentPalette != null)
-            aCurrentPalette.onHide();
-
         ColorPalette aPalette = PaletteFrameWork.getFactory().getPalette(aPaletteName_in);
 
         aPalette.initialize(myVideoListListener);
@@ -53,6 +49,10 @@ public class PaletteStack
 
     private void slide(ColorPalette aPalette_in)
     {
+        ColorPalette aCurrentPalette = PaletteFrameWork.getFactory().getPalette(myCurrentPaletteName);
+        if(aCurrentPalette != null)
+            aCurrentPalette.onHide();
+
         FragmentTransaction transaction = myParentActivity.getFragmentManager().beginTransaction();
         transaction.replace(R.id.palette_holder, aPalette_in);
         transaction.commit();

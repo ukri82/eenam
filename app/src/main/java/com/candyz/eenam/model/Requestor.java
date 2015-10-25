@@ -1,5 +1,7 @@
 package com.candyz.eenam.model;
 
+import android.util.Log;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -23,6 +25,7 @@ public class Requestor
         JSONObject response = null;
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
 
+        Log.d("Requestor", "URL requested is :" + url);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, (String)null, requestFuture, requestFuture);
 
         requestQueue.add(request);

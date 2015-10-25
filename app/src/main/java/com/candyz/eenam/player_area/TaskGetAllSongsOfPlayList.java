@@ -25,7 +25,6 @@ public class TaskGetAllSongsOfPlayList extends AsyncTask<Void, Void, ArrayList<V
         public void onPlayListsAvailable(ArrayList<VideoItem> aPlayList_in);
     }
 
-
     private GetAllPlayListSongsQueryListener myListener;
     private VolleySingleton volleySingleton;
     private RequestQueue requestQueue;

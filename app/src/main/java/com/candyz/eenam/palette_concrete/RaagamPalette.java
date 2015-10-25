@@ -19,7 +19,7 @@ public class RaagamPalette extends DynamicPalette
     public RaagamPalette()
     {
         super.myDescription = "raagam";
-        super.mySearchQuery = "RaagamId";
+        super.mySearchQuery = "RaagamNameEnglish";
         super.myName = this.getClass().getSimpleName();
     }
 

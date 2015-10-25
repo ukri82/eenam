@@ -1,5 +1,6 @@
 package com.candyz.eenam.model;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -12,6 +13,16 @@ public class Utils
     public static boolean contains(JSONObject jsonObject, String key)
     {
         return jsonObject != null && jsonObject.has(key) && !jsonObject.isNull(key) ? true : false;
+    }
+
+    public static String get(JSONObject jsonObject, String key) throws JSONException
+    {
+        if (contains(jsonObject, key))
+        {
+            return jsonObject.getString(key);
+        }
+
+        return "N.A";
     }
 
     private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);

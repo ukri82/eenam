@@ -250,9 +250,9 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
     }
 
     @Override
-    public void onRaagamSelected(String aRaagamId_in, String aRaagamName_in)
+    public void onRaagamSelected(String aRaagamNameEnglish_in, String aRaagamName_in)
     {
-        myPaletteStack.slideDynamic("RaagamPalette", aRaagamId_in, aRaagamName_in);
+        myPaletteStack.slideDynamic("RaagamPalette", aRaagamNameEnglish_in, aRaagamName_in);
     }
 
     @Override

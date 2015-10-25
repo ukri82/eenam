@@ -197,7 +197,7 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
         if(current.getRaagamName() != "N.A")
         {
             holder.myRaagamView.setText(current.getRaagamName());
-            holder.myRaagamView.setTag(current.getRaagamId());
+            holder.myRaagamView.setTag(current.getRaagamNameEnglish());
             holder.myRaagamView.setVisibility(View.VISIBLE);
         }
         else

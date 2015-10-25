@@ -8,7 +8,6 @@ import com.candyz.eenam.model.Endpoints;
 import com.candyz.eenam.model.PlayListItem;
 import com.candyz.eenam.model.PlayListResultParser;
 import com.candyz.eenam.model.Requestor;
-import com.candyz.eenam.video_list.VideoRequester;
 
 import org.json.JSONObject;
 
