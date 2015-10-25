@@ -7,6 +7,8 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -80,18 +82,33 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
 
         setupFAB();
 
-        positionPlayer();
+
 
         myPlayList = new PlayList();
         myPlayList.create(myParentActivity, myPlayer);
 
         myPaletteStack = new PaletteStack(this, myParentActivity);
+
+        new Handler().postDelayed(new Runnable()
+        {
+            public void run()
+            {
+                positionPlayer();
+            }
+        }, 500);
+
     }
 
 
     private void positionPlayer()
     {
+
         myPlayerPanel = (SlidingUpPanelLayout) myParentActivity.findViewById(R.id.palyer_sliding_panel);
+
+        int aPlayerPanelHeihgt = myPlayerPanel.getHeight();
+        int aPlayListHeight = myPlayList.getHeight();
+        myAnchorHeight = (float)(myPlayerPanel.getHeight() - myPlayList.getHeight()) / (float)myPlayerPanel.getHeight();
+
         myPlayerPanel.setAnchorPoint(myAnchorHeight);
         myPlayerPanel.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
 

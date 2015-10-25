@@ -76,6 +76,7 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
         myWebView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
         myWebView.getSettings().setAllowFileAccess(true);
         myWebView.setBackgroundColor(Color.BLACK);
+
     }
 
     @Override
@@ -95,6 +96,8 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
 
     public void setVideoId(String videoId)
     {
+
+
         if (videoId != null && !videoId.equals(this.myVideoId))
         {
             this.myVideoId = videoId;

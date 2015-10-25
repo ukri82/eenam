@@ -13,7 +13,7 @@
         android:id="@+id/play_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="12"
+        android:layout_weight="80"
         dslv:drag_start_mode = "onDown"
         dslv:drag_handle_id="@id/drag_handle_layout"
         dslv:float_background_color="@color/primary_dark"/>
@@ -28,6 +28,7 @@
         android:orientation="vertical"
         android:id="@+id/dragView"
         android:gravity="center"
+        android:layout_weight="2"
         android:background="@color/primary_high_medium"
         >
 

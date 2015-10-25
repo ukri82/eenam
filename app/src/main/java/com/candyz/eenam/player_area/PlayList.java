@@ -175,6 +175,11 @@ public class PlayList implements VideoFragmentListener, PlayListListener, PlayLi
         }
     }
 
+    public int getHeight()
+    {
+        return myPlayListView.getHeight();
+    }
+
     @Override
     public void onItemSelected(String aYoutubeId_in)
     {
