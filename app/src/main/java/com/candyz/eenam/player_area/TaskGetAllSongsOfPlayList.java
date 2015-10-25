@@ -5,8 +5,6 @@ import android.os.AsyncTask;
 import com.android.volley.RequestQueue;
 import com.candyz.eenam.misc.VolleySingleton;
 import com.candyz.eenam.model.Endpoints;
-import com.candyz.eenam.model.PlayListItem;
-import com.candyz.eenam.model.PlayListResultParser;
 import com.candyz.eenam.model.Requestor;
 import com.candyz.eenam.model.VideoItem;
 import com.candyz.eenam.model.VideoResultParser;

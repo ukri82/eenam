@@ -17,7 +17,7 @@ public class PlayListItem  implements Comparable<PlayListItem>
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private ArrayList<String> mySongIds;
 
-    PlayListItem(String anId_in, String aName_in, String aDateTime_in, String aLastSongId_in, String aSongIdList_in)
+    public PlayListItem(String anId_in, String aName_in, String aDateTime_in, String aLastSongId_in, String aSongIdList_in)
     {
         myId = anId_in;
         myName = aName_in;

@@ -6,9 +6,11 @@ import com.android.volley.RequestQueue;
 import com.candyz.eenam.misc.VolleySingleton;
 import com.candyz.eenam.model.Endpoints;
 import com.candyz.eenam.model.PlayListItem;
-import com.candyz.eenam.model.PlayListResultParser;
 import com.candyz.eenam.model.Requestor;
+import com.candyz.eenam.model.Utils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -42,7 +44,7 @@ public class TaskGetAllPlayLists extends AsyncTask<Void, Void, ArrayList<PlayLis
     protected ArrayList<PlayListItem> doInBackground(Void... params)
     {
         JSONObject response = Requestor.request(requestQueue, Endpoints.getRequestUrlGetAllPlayLists(myUserId));
-        return PlayListResultParser.parse(response);
+        return parse(response);
     }
 
     @Override
@@ -54,5 +56,34 @@ public class TaskGetAllPlayLists extends AsyncTask<Void, Void, ArrayList<PlayLis
         }
     }
 
+    public ArrayList<PlayListItem> parse(JSONObject response)
+    {
+        ArrayList<PlayListItem> listPlayLists = new ArrayList<>();
+        if (response != null && response.length() > 0)
+        {
+            try
+            {
+                JSONArray arrayItems = response.getJSONArray("SongData");
+                for (int i = 0; i < arrayItems.length(); i++)
+                {
+
+                    JSONObject currentItem = arrayItems.getJSONObject(i);
+
+                    listPlayLists.add(new PlayListItem(Utils.get(currentItem, "id"),
+                            Utils.get(currentItem, "pl_name"),
+                            Utils.get(currentItem, "LastPlayedTime"),
+                            Utils.get(currentItem, "LastPlayedSong"),
+                            Utils.get(currentItem, "song_ids")
+                    ));
+                }
+
+            }
+            catch (JSONException e)
+            {
+
+            }
+        }
+        return listPlayLists;
+    }
 
 }
