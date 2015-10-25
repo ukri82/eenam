@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**
@@ -24,18 +26,24 @@ public class VideoResultParser
                 {
                     JSONObject currentVideoItem = arrayVideoItems.getJSONObject(i);
 
-                    listVideo.add(new VideoItem(Utils.get(currentVideoItem, "song_id"),
-                                                Utils.get(currentVideoItem, "start"),
-                                                Utils.get(currentVideoItem, "start_english"),
-                                                Utils.get(currentVideoItem, "youtube_title"),
-                                                Utils.get(currentVideoItem, "youtube_url"),
-                                                Double.parseDouble(Utils.get(currentVideoItem, "user_rating")),
-                                                Utils.get(currentVideoItem, "movie"),
-                                                Utils.get(currentVideoItem, "movie_id"),
-                                                Utils.get(currentVideoItem, "raagam"),
-                                                Utils.get(currentVideoItem, "raagam_english"),
-                                                Utils.get(currentVideoItem, "raagam_id")
-                                                ));
+                    try
+                    {
+                        listVideo.add(new VideoItem(Utils.get(currentVideoItem, "song_id"),
+                                Utils.get(currentVideoItem, "start"),
+                                Utils.get(currentVideoItem, "start_english"),
+                                Utils.get(currentVideoItem, "youtube_title"),
+                                Utils.get(currentVideoItem, "youtube_url"),
+                                Double.parseDouble(Utils.get(currentVideoItem, "user_rating")),
+                                Utils.get(currentVideoItem, "movie"),
+                                Utils.get(currentVideoItem, "movie_id"),
+                                Utils.get(currentVideoItem, "raagam"),
+                                URLEncoder.encode(Utils.get(currentVideoItem, "raagam_english"), "UTF-8"),
+                                Utils.get(currentVideoItem, "raagam_id")));
+                    }
+                    catch (UnsupportedEncodingException e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
 
             }
