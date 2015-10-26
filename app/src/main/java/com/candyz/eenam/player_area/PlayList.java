@@ -4,54 +4,36 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
-import android.os.Handler;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 
 import android.text.InputType;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.MediaController;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
 import com.candyz.eenam.OverTheTopLayer;
 import com.candyz.eenam.R;
-import com.candyz.eenam.misc.VolleySingleton;
 import com.candyz.eenam.model.DeviceIdentity;
-import com.candyz.eenam.model.Endpoints;
-import com.candyz.eenam.model.Requestor;
 import com.candyz.eenam.model.VideoItem;
 import com.mobeta.android.dslv.DragSortListView;
-
-import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.UUID;
+import java.util.List;
 
 
 /**
  * Created by u on 27.09.2015.
  */
-public class PlayList implements VideoFragmentListener, PlayListListener, PlayListControlListener
+public class PlayList implements VideoFragmentListener, PlayListAdapterListener, PlayListControlListener
 {
     AppCompatActivity myParentActivity;
     VideoFragment myPlayer;
@@ -61,12 +43,16 @@ public class PlayList implements VideoFragmentListener, PlayListListener, PlayLi
     private String myPlayListSaveName = "";
 
     private String myCurrentPlayListId;
+    private String myCurrentPlayListName;
+
+    private PlayListListener myListener;
 
 
     private PlayListControl myPlayListControl;
 
-    public void create(AppCompatActivity parentActivity_in, VideoFragment aPlayer_in)
+    public void create(AppCompatActivity parentActivity_in, VideoFragment aPlayer_in, PlayListListener aListener_in)
     {
+        myListener = aListener_in;
         myParentActivity = parentActivity_in;
         myPlayer = aPlayer_in;
         myPlayer.attachVideoListener(this);
@@ -101,7 +87,13 @@ public class PlayList implements VideoFragmentListener, PlayListListener, PlayLi
 
     }
 
-
+    public void addVideoItems(List<VideoItem> aVideoList_in)
+    {
+        for(VideoItem anItem : aVideoList_in)
+        {
+            addVideoItem(anItem);
+        }
+    }
 
     public void addVideoItem(VideoItem aVideoItem_in)
     {
@@ -263,7 +255,7 @@ public class PlayList implements VideoFragmentListener, PlayListListener, PlayLi
                         @Override
                         public void onPlayListCreated(String aName_in)
                         {
-                            Toast.makeText(myPlayListView.getContext(), "Playlist " + aName_in + " saved", Toast.LENGTH_SHORT);
+                            Toast.makeText(myParentActivity, "Playlist " + aName_in + " saved", Toast.LENGTH_SHORT);
                         }
                     },DeviceIdentity.get(), myPlayListSaveName, myAdapter.getAllSongs()).execute();
 
@@ -291,9 +283,38 @@ public class PlayList implements VideoFragmentListener, PlayListListener, PlayLi
     }
 
     @Override
-    public void onPlayListSelected(String aPlayListId_in)
+    public void onDeletePlayList()
+    {
+        new TaskDeletePlayList(new TaskDeletePlayList.PlayListDeletionListener()
+        {
+            @Override
+            public void onPlayListDeleted(String aName_in)
+            {
+                Toast.makeText(myParentActivity, "Playlist " + aName_in + " deleted", Toast.LENGTH_SHORT);
+                myPlayer.pauseVideo();
+            }
+        },DeviceIdentity.get(), myCurrentPlayListName).execute();
+    }
+
+    @Override
+    public void clearPlayList()
+    {
+        myAdapter.removeAll();
+        myPlayer.pauseVideo();
+    }
+
+    @Override
+    public void addAllToPlayList()
+    {
+        if(myListener != null)
+            myListener.onAddAll();
+    }
+
+    @Override
+    public void onPlayListSelected(String aPlayListId_in, String aPlayListName_in)
     {
         myCurrentPlayListId = aPlayListId_in;
+        myCurrentPlayListName = aPlayListName_in;
         new TaskGetAllSongsOfPlayList(new TaskGetAllSongsOfPlayList.GetAllPlayListSongsQueryListener()
         {
             @Override

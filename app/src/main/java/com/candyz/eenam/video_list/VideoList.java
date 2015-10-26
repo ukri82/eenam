@@ -16,6 +16,7 @@ import com.candyz.eenam.model.VideoItem;
 import com.candyz.eenam.model.VideoQuery;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.LandingAnimator;
 
@@ -93,6 +94,10 @@ public class VideoList extends Fragment implements TaskLoadVideos.VideoItemsLoad
         new TaskLoadVideos(this, myQuery, 0, 10).execute();
     }
 
+    public List<VideoItem> getAll()
+    {
+        return myVideoAdapter.getAll();
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)

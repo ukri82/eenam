@@ -122,6 +122,11 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
         return myVideoId;
     }
 
+    public boolean isVideoLoaded()
+    {
+        return !myVideoId.isEmpty();
+    }
+
     /** Show a toast from the web page */
     @JavascriptInterface
     public void videoLoaded()
@@ -134,6 +139,7 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     public void videoEnded(int anErroCode_in)   //  0 = no error
     {
         Log.i("", "in videoEnded");
+        myVideoId = "";
         int aDelay = 20;
         if(anErroCode_in != 0)
         {

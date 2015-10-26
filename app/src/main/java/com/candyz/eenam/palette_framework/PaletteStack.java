@@ -4,7 +4,10 @@ import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.candyz.eenam.R;
+import com.candyz.eenam.model.VideoItem;
 import com.candyz.eenam.video_list.VideoListListener;
+
+import java.util.List;
 
 /**
  * Created by u on 11.10.2015.
@@ -37,6 +40,15 @@ public class PaletteStack
             aPalette.setSearchParams(aParameter_in, aParamDesc_in, true);
             myParentActivity.getSupportActionBar().setTitle("eenam" + " - " + aPalette.getDescription());
         }
+    }
+
+    public List<VideoItem> getAll()
+    {
+        ColorPalette aCurrentPalette = PaletteFrameWork.getFactory().getPalette(myCurrentPaletteName);
+        if(aCurrentPalette != null)
+            return aCurrentPalette.getAll();
+
+        return null;
     }
 
     public void slide(String aPaletteName_in)

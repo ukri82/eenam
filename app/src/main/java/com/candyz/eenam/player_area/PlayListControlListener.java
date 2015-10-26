@@ -10,6 +10,10 @@ public interface PlayListControlListener
     public void onPause();
     public void onResume();
 
+
     public void onSavePlayList();
-    public void onPlayListSelected(String aPlayListId_in);
+    public void onDeletePlayList();
+    public void clearPlayList();
+    public void addAllToPlayList();
+    public void onPlayListSelected(String aPlayListId_in, String aPlayListName_in);
 }

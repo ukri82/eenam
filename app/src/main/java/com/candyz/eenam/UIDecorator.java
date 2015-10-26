@@ -32,6 +32,7 @@ import com.candyz.eenam.drawer.FragmentDrawer;
 import com.candyz.eenam.model.VideoItem;
 import com.candyz.eenam.palette_framework.PaletteStack;
 import com.candyz.eenam.player_area.PlayList;
+import com.candyz.eenam.player_area.PlayListListener;
 import com.candyz.eenam.player_area.PlayListView;
 import com.candyz.eenam.player_area.VideoFragment;
 import com.candyz.eenam.video_list.VideoListListener;
@@ -46,7 +47,7 @@ import java.util.List;
 /**
  * Created by u on 20.09.2015.
  */
-public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.OnClickListener, VideoListListener
+public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.OnClickListener, VideoListListener, PlayListListener
 {
     private FloatingActionButton myFAB;
     private FloatingActionMenu myFABMenu;
@@ -85,7 +86,7 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
 
 
         myPlayList = new PlayList();
-        myPlayList.create(myParentActivity, myPlayer);
+        myPlayList.create(myParentActivity, myPlayer, this);
 
         myPaletteStack = new PaletteStack(this, myParentActivity);
 
@@ -291,5 +292,9 @@ public class UIDecorator implements FragmentDrawer.DrawerEventsListener, View.On
     }
 
 
-
+    @Override
+    public void onAddAll()
+    {
+        myPlayList.addVideoItems(myPaletteStack.getAll());
+    }
 }

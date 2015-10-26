@@ -231,6 +231,11 @@ public class VideoListViewAdapter extends RecyclerView.Adapter<VideoListViewAdap
         return myVideoList.size();
     }
 
+    public List<VideoItem> getAll()
+    {
+        return myVideoList;
+    }
+
 
     public void appendVideoList(List<VideoItem> data)
     {

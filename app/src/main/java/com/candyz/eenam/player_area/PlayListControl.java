@@ -55,6 +55,9 @@ public class PlayListControl extends Fragment implements View.OnClickListener, A
     TextView myCurrentSong;
     View mySave;
     Spinner myLoad;
+    View myAdd;
+    View myClear;
+    View myDelete;
     boolean myCurrentStatePlaying = true;
     String myIdentity;
 
@@ -111,6 +114,9 @@ public class PlayListControl extends Fragment implements View.OnClickListener, A
         myPlay = view.findViewById(R.id.pause_resume_video);
         myNext = view.findViewById(R.id.next_video);
         mySave = view.findViewById(R.id.save_play_list);
+        myAdd = view.findViewById(R.id.add_all_to_play_list);
+        myClear = view.findViewById(R.id.clear_play_list);
+        myDelete = view.findViewById(R.id.delete_play_list);
         myLoad = (Spinner)view.findViewById(R.id.load_play_list);
         myCurrentSong = (TextView)view.findViewById(R.id.marquee_text_view);
         Typeface myTypeface = Typeface.createFromAsset(view.getContext().getAssets(), "fonts/AnjaliOldLipi.ttf");
@@ -122,6 +128,9 @@ public class PlayListControl extends Fragment implements View.OnClickListener, A
         myNext.setOnClickListener(this);
         mySave.setOnClickListener(this);
         myLoad.setOnItemSelectedListener(this);
+        myAdd.setOnClickListener(this);
+        myClear.setOnClickListener(this);
+        myDelete.setOnClickListener(this);
     }
 
     Animation myTickerAnimation;
@@ -189,17 +198,7 @@ public class PlayListControl extends Fragment implements View.OnClickListener, A
         }
         if (v == myPlay)
         {
-            if (myCurrentStatePlaying)
-            {
-                myListener.onPause();
-                myCurrentStatePlaying = false;
-                myPlay.setBackgroundResource(android.R.drawable.ic_media_play);
-            } else
-            {
-                myListener.onResume();
-                myCurrentStatePlaying = true;
-                myPlay.setBackgroundResource(android.R.drawable.ic_media_pause);
-            }
+            playOrPause();
         }
         if (v == myNext)
         {
@@ -211,12 +210,50 @@ public class PlayListControl extends Fragment implements View.OnClickListener, A
             myListener.onSavePlayList();
         }
 
+        if (v == myAdd)
+        {
+            myListener.addAllToPlayList();
+        }
+
+        if (v == myClear)
+        {
+            myListener.clearPlayList();
+        }
+
+        if (v == myDelete)
+        {
+            deletePlayList();
+        }
     }
 
+    private void playOrPause()
+    {
+        if (myCurrentStatePlaying)
+        {
+            myListener.onPause();
+            myCurrentStatePlaying = false;
+            myPlay.setBackgroundResource(android.R.drawable.ic_media_play);
+        } else
+        {
+            myListener.onResume();
+            myCurrentStatePlaying = true;
+            myPlay.setBackgroundResource(android.R.drawable.ic_media_pause);
+        }
+    }
+    private void deletePlayList()
+    {
+        myPlayLists.remove(myCurrentSelection);
+        ArrayAdapter<PlayListItem> adapter = new ArrayAdapter<PlayListItem>(myLoad.getContext(), android.R.layout.simple_spinner_item, myPlayLists);
+        myLoad.setAdapter(adapter);
+        myListener.onDeletePlayList();
+    }
+
+    int myCurrentSelection = -1;
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
     {
-        myListener.onPlayListSelected(myPlayLists.get(position).getId());
+        myListener.onPlayListSelected(myPlayLists.get(position).getId(), myPlayLists.get(position).getName());
+        myCurrentSelection = position;
     }
 
     @Override

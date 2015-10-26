@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
+
     <LinearLayout
         android:id="@+id/enclosing_layout_media_ctrl"
         android:layout_width="wrap_content"
@@ -46,12 +47,40 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/save_play_list"
+        android:id="@+id/add_all_to_play_list"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/enclosing_layout_media_ctrl"
+        android:background="@android:drawable/ic_menu_upload"
+        android:backgroundTint="#021462"/>
+
+    <Button
+        android:id="@+id/clear_play_list"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/add_all_to_play_list"
+        android:background="@android:drawable/ic_notification_clear_all"
+        android:backgroundTint="#021462"/>
+
+
+    <Button
+        android:id="@+id/save_play_list"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/clear_play_list"
         android:background="@android:drawable/ic_menu_save"
+        android:backgroundTint="#021462"/>
+
+    <Button
+        android:id="@+id/delete_play_list"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/save_play_list"
+        android:background="@android:drawable/ic_menu_delete"
         android:backgroundTint="#021462"/>
 
     <Spinner
@@ -60,7 +89,7 @@
         android:layout_height="wrap_content"
         android:minWidth="72dp"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/save_play_list"
+        android:layout_toRightOf="@+id/delete_play_list"
         android:backgroundTint="#021462"/>
 
     <TextView

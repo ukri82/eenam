@@ -4,12 +4,14 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 
 import com.candyz.eenam.R;
+import com.candyz.eenam.model.VideoItem;
 import com.candyz.eenam.model.VideoQuery;
 
 import com.candyz.eenam.video_list.VideoList;
 import com.candyz.eenam.video_list.VideoListListener;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by u on 24.09.2015.
@@ -70,6 +72,11 @@ public class ColorPalette extends Fragment
     public boolean isShown()
     {
         return myCurrentlyDisplayed;
+    }
+
+    public List<VideoItem> getAll()
+    {
+        return myVideoList.getAll();
     }
 
     public void onHide()

@@ -28,9 +28,9 @@ class PlayListViewAdapter extends ArrayAdapter<VideoItem>
 
     static List<VideoItem> myItems = new ArrayList<>();
 
-    PlayListListener myListener;
+    PlayListAdapterListener myListener;
 
-    public PlayListViewAdapter(Context context, int itemLayoutRes, PlayListListener aListener_in)
+    public PlayListViewAdapter(Context context, int itemLayoutRes, PlayListAdapterListener aListener_in)
     {
         super(context, itemLayoutRes, R.id.play_list_card, myItems);
         myContext = context;
@@ -88,6 +88,12 @@ class PlayListViewAdapter extends ArrayAdapter<VideoItem>
     {
         int anItemIndex = getIndexOf(aYoutubeId_in);
         myItems.remove(anItemIndex);
+        notifyDataSetChanged();
+    }
+
+    public void removeAll()
+    {
+        myItems.clear();
         notifyDataSetChanged();
     }
 
@@ -198,11 +204,11 @@ class PlayListViewAdapter extends ArrayAdapter<VideoItem>
     static class ViewHolder  implements View.OnClickListener
     {
         final TextView myVideoTitle;
-        PlayListListener myListener;
+        PlayListAdapterListener myListener;
         ImageView myDeleteButton;
 
 
-        ViewHolder(View view, Context aContext_in, PlayListListener aListener_in)
+        ViewHolder(View view, Context aContext_in, PlayListAdapterListener aListener_in)
         {
             myVideoTitle = (TextView) view.findViewById(R.id.video_title);
             myDeleteButton = (ImageView) view.findViewById(R.id.delete_button);

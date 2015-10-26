@@ -36,6 +36,13 @@ public class Endpoints
         return aQueryString;
     }
 
+    public static String getRequestUrlDeletePlayList(String aUserId_in, String aPlayListName_in)
+    {
+        String aQueryString = "http://" + myServerIp + "/delete_play_list?";
+        aQueryString += "UserId=" + aUserId_in + "&PlayListName=" + aPlayListName_in;
+        return aQueryString;
+    }
+
     public static String getRequestUrlGetAllPlayLists(String aUserId_in)
     {
         String aQueryString = "http://" + myServerIp + "/get_all_play_lists?";
